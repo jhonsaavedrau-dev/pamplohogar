@@ -4,7 +4,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { leerToken, pedir } from '../lib/api';
 import type { RespuestaDetalle, TipoInmueble } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO, SERVICIOS_DISPONIBLES } from '../lib/tipos';
-import { CENTRO_PAMPLONA, MapaSelector } from '../components/MapaSelector';
+import { CENTRO_PAMPLONA } from '../components/coordenadas';
+import { MapaSelectorDiferido } from '../components/MapaDiferido';
 import { Aviso, Cargando } from '../components/Estados';
 
 const TIPOS: TipoInmueble[] = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'];
@@ -383,7 +384,7 @@ export function FormularioInmueble() {
           <p className="mb-2 text-xs text-piedra-600">
             Toca el mapa o arrastra la casita hasta donde queda el inmueble.
           </p>
-          <MapaSelector
+          <MapaSelectorDiferido
             lat={form.lat}
             lng={form.lng}
             alElegir={(lat, lng) => setForm((previo) => ({ ...previo, lat, lng }))}

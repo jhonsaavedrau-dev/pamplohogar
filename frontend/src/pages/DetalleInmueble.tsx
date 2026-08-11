@@ -7,7 +7,7 @@ import type { RespuestaContacto, RespuestaDetalle } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO } from '../lib/tipos';
 import { distancia, fechaCorta, pesos } from '../lib/formato';
 import { Carrusel } from '../components/Carrusel';
-import { Mapa } from '../components/Mapa';
+import { MapaDiferido } from '../components/MapaDiferido';
 import { Estrellas, SelectorEstrellas } from '../components/Estrellas';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
 
@@ -153,7 +153,7 @@ export function DetalleInmueble() {
           <section>
             <h2 className="mb-2 text-lg font-bold text-piedra-900">Donde queda</h2>
             <p className="mb-3 text-sm text-piedra-600">{inmueble.direccion}</p>
-            <Mapa
+            <MapaDiferido
               lat={inmueble.lat}
               lng={inmueble.lng}
               titulo={inmueble.titulo}
@@ -309,6 +309,46 @@ export function DetalleInmueble() {
           </p>
         </aside>
       </div>
+
+      {!esDueno && (
+        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur lg:hidden">
+          <div className="flex items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-lg font-extrabold text-terracota-600">
+                {pesos(inmueble.precio)}
+                <span className="text-xs font-medium text-piedra-600"> / mes</span>
+              </p>
+              <p className="truncate text-xs text-piedra-600">{inmueble.barrio}</p>
+            </div>
+
+            {contacto ? (
+              <a
+                href={contacto.enlaceWhatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="boton-primario shrink-0"
+              >
+                Escribir por WhatsApp
+              </a>
+            ) : (
+              <button
+                type="button"
+                className="boton-primario shrink-0"
+                disabled={pedirContacto.isPending}
+                onClick={() => {
+                  if (!usuario) {
+                    navegar('/entrar', { state: { desde: `/inmueble/${inmueble.id}` } });
+                    return;
+                  }
+                  pedirContacto.mutate();
+                }}
+              >
+                {pedirContacto.isPending ? 'Un momento...' : 'Contactar'}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

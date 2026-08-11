@@ -1,8 +1,6 @@
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
-
-/** Centro aproximado de Pamplona, Norte de Santander. */
-export const CENTRO_PAMPLONA = { lat: 7.3775, lng: -72.6475 } as const;
+import 'leaflet/dist/leaflet.css';
 
 const iconoSeleccion = L.divIcon({
   className: '',

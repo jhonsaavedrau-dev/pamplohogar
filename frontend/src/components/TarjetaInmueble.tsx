@@ -14,14 +14,14 @@ export function TarjetaInmueble({ inmueble, accion }: Props) {
   const portada = inmueble.fotos[0];
 
   return (
-    <article className="tarjeta group overflow-hidden">
+    <article className="tarjeta group overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-terracota-200 hover:shadow-[0_10px_28px_rgba(36,31,26,0.10)]">
       <Link to={`/inmueble/${inmueble.id}`} className="block">
         <div className="relative h-44 bg-piedra-100">
           {portada ? (
             <FotoInmueble
               url={portada.url}
               alt={inmueble.titulo}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-piedra-400">

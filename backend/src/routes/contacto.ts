@@ -6,7 +6,7 @@ import { noEncontrado, solicitudInvalida } from '../lib/errores.js';
 
 export const rutasContacto = Router();
 
-function armarEnlaceWhatsapp(telefono: string, mensaje: string): string {
+export function armarEnlaceWhatsapp(telefono: string, mensaje: string): string {
   const numero = telefono.replace(/\D/g, '');
   const conIndicativo = numero.startsWith('57') ? numero : `57${numero}`;
   return `https://wa.me/${conIndicativo}?text=${encodeURIComponent(mensaje)}`;

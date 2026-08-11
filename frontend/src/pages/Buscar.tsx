@@ -17,6 +17,35 @@ const ORDENES = [
   { valor: 'cercania', etiqueta: 'Mas cerca de la U' },
 ] as const;
 
+/** Patron de tejas que evoca las fachadas del centro historico de Pamplona. */
+function TejasDeFondo() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-x-0 top-0 h-40 w-full text-terracota-400/25"
+    >
+      <defs>
+        <pattern id="tejas" width="36" height="18" patternUnits="userSpaceOnUse">
+          <path
+            d="M0 18C0 8 8 0 18 0s18 8 18 18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </pattern>
+        <linearGradient id="desvanecer" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="1" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        <mask id="mascara-tejas">
+          <rect width="100%" height="100%" fill="url(#desvanecer)" />
+        </mask>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#tejas)" mask="url(#mascara-tejas)" />
+    </svg>
+  );
+}
+
 export function Buscar() {
   const [parametros, setParametros] = useSearchParams();
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
@@ -47,6 +76,12 @@ export function Buscar() {
     queryFn: () => pedir<RespuestaListado>(`/api/inmuebles?${consulta}`),
   });
 
+  const { data: barrios } = useQuery({
+    queryKey: ['barrios'],
+    queryFn: () => pedir<{ barrios: string[] }>('/api/inmuebles/barrios'),
+    staleTime: 5 * 60_000,
+  });
+
   const serviciosActivos = valor('servicios').split(',').filter(Boolean);
   const hayFiltros = Array.from(parametros.keys()).filter((k) => k !== 'pagina').length > 0;
 
@@ -59,39 +94,64 @@ export function Buscar() {
 
   return (
     <>
-      <section className="border-b border-piedra-200 bg-gradient-to-b from-terracota-50 to-piedra-50">
-        <div className="contenedor-app py-10 sm:py-14">
-          <h1 className="max-w-2xl text-3xl leading-tight font-extrabold text-piedra-900 sm:text-4xl">
-            Encuentra donde vivir en Pamplona sin depender del voz a voz
-          </h1>
-          <p className="mt-3 max-w-xl text-base text-piedra-600">
-            Habitaciones, apartaestudios y apartamentos publicados por arrendadores de la ciudad,
-            con precios a la vista y ubicacion en el mapa.
+      <section className="relative overflow-hidden border-b border-terracota-100 bg-gradient-to-b from-terracota-100 via-terracota-50 to-piedra-50">
+        <TejasDeFondo />
+
+        <div className="contenedor-app relative py-10 sm:py-16">
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-bold tracking-wide text-terracota-700 uppercase">
+            Pamplona, Norte de Santander
           </p>
 
-          <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <input
-              type="search"
-              className="campo flex-1"
-              placeholder="Busca por barrio, zona o palabra clave"
-              value={valor('q')}
-              onChange={(e) => actualizar('q', e.target.value)}
-              aria-label="Buscar vivienda"
-            />
-            <button
-              type="button"
-              onClick={() => setFiltrosAbiertos((v) => !v)}
-              className="boton-confianza"
-              aria-expanded={filtrosAbiertos}
-            >
-              {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
-              {serviciosActivos.length > 0 && (
-                <span className="rounded-full bg-white/25 px-2 text-sm">
-                  {serviciosActivos.length}
-                </span>
-              )}
-            </button>
+          <h1 className="max-w-2xl text-[2rem] leading-[1.1] font-extrabold tracking-tight text-piedra-900 sm:text-5xl">
+            Encuentra donde vivir
+            <span className="block text-terracota-600">sin depender del voz a voz</span>
+          </h1>
+
+          <p className="mt-4 max-w-lg text-base text-piedra-600 sm:text-lg">
+            Habitaciones, apartaestudios y apartamentos de arrendadores de la ciudad. Con el precio
+            de frente, la ubicacion en el mapa y lo que opinan otros estudiantes.
+          </p>
+
+          <div className="mt-7 rounded-2xl border border-piedra-200 bg-white p-3 shadow-[0_8px_30px_rgba(210,105,30,0.12)]">
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <input
+                type="search"
+                className="campo flex-1 border-transparent bg-piedra-50"
+                placeholder="Busca por barrio, zona o palabra clave"
+                value={valor('q')}
+                onChange={(e) => actualizar('q', e.target.value)}
+                aria-label="Buscar vivienda"
+              />
+              <button
+                type="button"
+                onClick={() => setFiltrosAbiertos((v) => !v)}
+                className="boton-confianza"
+                aria-expanded={filtrosAbiertos}
+              >
+                {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
+                {serviciosActivos.length > 0 && (
+                  <span className="rounded-full bg-white/25 px-2 text-sm">
+                    {serviciosActivos.length}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
+
+          <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-piedra-600">
+            {[
+              'Precios a la vista, sin sorpresas',
+              'El celular del arrendador queda protegido',
+              'Resenas de estudiantes que ya vivieron ahi',
+            ].map((texto) => (
+              <li key={texto} className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="text-terracota-500">
+                  ✓
+                </span>
+                {texto}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -174,14 +234,19 @@ export function Buscar() {
                 <label className="etiqueta" htmlFor="filtro-barrio">
                   Barrio
                 </label>
-                <input
+                <select
                   id="filtro-barrio"
-                  type="text"
                   className="campo"
-                  placeholder="Ej: Centro"
                   value={valor('barrio')}
                   onChange={(e) => actualizar('barrio', e.target.value)}
-                />
+                >
+                  <option value="">Todos los barrios</option>
+                  {(barrios?.barrios ?? []).map((b) => (
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>

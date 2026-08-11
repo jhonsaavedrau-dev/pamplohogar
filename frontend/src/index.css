@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'leaflet/dist/leaflet.css';
 
 @theme {
   --color-terracota-50: #fdf5ef;

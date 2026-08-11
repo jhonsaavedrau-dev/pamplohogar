@@ -1,0 +1,137 @@
+# PamploHogar
+
+Plataforma web que conecta a los estudiantes que llegan cada semestre a Pamplona, Norte de
+Santander, con arrendadores que publican habitaciones, apartaestudios y apartamentos. La idea es
+que nadie tenga que depender del voz a voz ni caer en cobros abusivos para encontrar donde vivir.
+
+Todo esta pensado primero para el celular, porque es desde ahi que entra la mayoria de estudiantes.
+
+## Que hace hoy
+
+- **Dos tipos de cuenta.** El estudiante busca, filtra, guarda favoritos, contacta y resena. El
+  arrendador publica y gestiona sus inmuebles.
+- **Publicacion de inmuebles** con hasta diez fotos, ubicacion marcada en el mapa y lista de
+  servicios incluidos.
+- **Busqueda con filtros** por texto, tipo, precio, barrio, numero de habitaciones, servicios y si
+  esta amoblado. Se puede ordenar por precio, por fecha o por cercania a la Universidad de Pamplona.
+- **Detalle del inmueble** con carrusel de fotos, mapa y la distancia real hasta la universidad.
+- **Contacto protegido.** El celular del arrendador esta oculto hasta que el estudiante pulsa
+  "Contactar". Ahi se genera un enlace de WhatsApp con el mensaje ya escrito y la solicitud queda
+  registrada para que el arrendador sepa quien le escribio.
+- **Favoritos** para guardar lo que interesa y revisarlo despues.
+- **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
+
+## Como esta organizado el proyecto
+
+```
+PAMPLONAHOGAR/
+├── backend/              El servidor: atiende las peticiones y habla con la base de datos
+│   ├── prisma/
+│   │   ├── schema.prisma   Definicion de las tablas
+│   │   ├── migrations/     Historial de cambios de la base de datos
+│   │   └── seed.ts         Datos de ejemplo (10 inmuebles de Pamplona)
+│   └── src/
+│       ├── lib/            Piezas reutilizables: base de datos, tokens, distancias, errores
+│       ├── middleware/      Revisiones que corren antes de cada peticion (sesion, permisos)
+│       ├── routes/          Las direcciones de la API agrupadas por tema
+│       ├── schemas/         Reglas de validacion de todo lo que envia el usuario
+│       ├── app.ts           Armado del servidor
+│       └── index.ts         Punto de arranque
+│
+├── frontend/             Lo que ve el usuario en el navegador
+│   ├── public/marca.svg    El icono de la casa con llave
+│   └── src/
+│       ├── components/     Piezas visuales reutilizables (tarjetas, mapa, carrusel)
+│       ├── lib/            Conexion con la API, sesion, formatos de pesos y fechas
+│       ├── pages/          Una pantalla completa por archivo
+│       ├── App.tsx         Que pantalla se muestra en cada direccion
+│       └── index.css       Colores, tipografia y estilos base
+│
+├── render.yaml           Configuracion para publicar el servidor
+└── ROADMAP.md            Lo que quedo pendiente para mas adelante
+```
+
+## Como levantarlo en tu computador
+
+Necesitas **Node.js 20 o superior** y **Git**. Nada mas: la base de datos y las fotos viven en la
+nube, no hay que instalar nada pesado.
+
+### 1. Configurar las claves
+
+Copia `backend/.env.example` a `backend/.env` y llena los valores:
+
+| Variable                | Para que sirve                                          |
+| ----------------------- | ------------------------------------------------------- |
+| `DATABASE_URL`          | Direccion de la base de datos PostgreSQL (Neon)          |
+| `JWT_SECRET`            | Cadena larga y aleatoria que firma las sesiones          |
+| `PORT`                  | Puerto del servidor, por defecto 4000                    |
+| `FRONTEND_URL`          | Direccion del frontend, para permitir sus peticiones     |
+| `CLOUDINARY_CLOUD_NAME` | Nombre de tu espacio en Cloudinary                       |
+| `CLOUDINARY_API_KEY`    | Llave publica de Cloudinary                              |
+| `CLOUDINARY_API_SECRET` | Llave secreta de Cloudinary                              |
+
+El archivo `.env` nunca se sube al repositorio: esta bloqueado desde el primer commit.
+
+### 2. Encender el servidor
+
+```bash
+cd backend && npm install && npx prisma migrate deploy && npm run dev
+```
+
+Queda escuchando en `http://localhost:4000`. Para comprobar que esta vivo, abre
+`http://localhost:4000/api/salud`.
+
+### 3. Encender la pagina
+
+En otra terminal:
+
+```bash
+cd frontend && npm install && npm run dev
+```
+
+Abre `http://localhost:5173`.
+
+### 4. Cargar los datos de ejemplo
+
+```bash
+cd backend && npm run seed
+```
+
+Crea 10 inmuebles en barrios reales de Pamplona, 3 arrendadores, 3 estudiantes y 4 resenas.
+Todas las cuentas de ejemplo usan la contrasena `pamplona2026`:
+
+- Arrendador: `marta.villamizar@ejemplo.com`
+- Estudiante: `andres.rojas@ejemplo.com`
+
+## Pruebas
+
+```bash
+cd backend && npm test
+```
+
+Cubren la logica que de verdad importa: el calculo de distancias, la firma y verificacion de
+sesiones, las reglas de validacion de cada formulario y el armado del enlace de WhatsApp.
+
+## Decisiones tecnicas
+
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query,
+  React Hook Form, Zod y Leaflet sobre OpenStreetMap.
+- **Backend:** Node.js, Express, TypeScript, Prisma, PostgreSQL, Zod, bcrypt, JSON Web Tokens,
+  helmet, cors y limite de intentos en las rutas de sesion.
+- **La busqueda es SQL normal** con filtros e `ILIKE`. No hace falta un motor de busqueda dedicado
+  para el volumen de una ciudad como Pamplona.
+- **La distancia a la universidad se calcula con la formula de Haversine** sobre las coordenadas,
+  sin extensiones geograficas en la base de datos.
+- **Se usa `bcryptjs`** en lugar de `bcrypt` porque no necesita compilarse y evita fallos de
+  instalacion en Windows y en los servidores gratuitos. El algoritmo es el mismo.
+- **Sin Docker.** Se conecta directo a la base de datos en la nube desde el primer momento.
+
+## Seguridad
+
+- Las contrasenas se guardan con bcrypt, nunca en texto plano ni en los registros del servidor.
+- Todo lo que envia el usuario se valida con Zod antes de tocar la base de datos.
+- Cada endpoint revisa que el usuario tenga permiso sobre ese recurso, no solo que haya iniciado
+  sesion. Nadie puede editar ni borrar inmuebles ajenos.
+- El celular del arrendador no viaja en las respuestas publicas.
+- Las rutas de registro e inicio de sesion tienen limite de intentos.
+- Los errores muestran un mensaje claro en espanol y dejan el detalle tecnico solo en el servidor.
