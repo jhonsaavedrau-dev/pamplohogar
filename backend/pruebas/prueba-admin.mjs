@@ -1,9 +1,15 @@
 // Verifica el panel de administrador y, sobre todo, que nadie mas pueda entrar.
-//   node pruebas/prueba-admin.mjs [direccion] [correoAdmin] [claveAdmin]
+// Crea su propio administrador temporal y lo borra al final, para no dejar
+// cuentas con permisos flotando en la base de datos.
+//   node pruebas/prueba-admin.mjs [direccion]
+import { PrismaClient } from '@prisma/client';
+
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const ADMIN_EMAIL = process.argv[3] ?? 'admin.prueba@pamplohogar.com';
-const ADMIN_CLAVE = process.argv[4] ?? 'adminprueba123';
+const ADMIN_EMAIL = `admin-temporal-${Math.floor(Math.random() * 999999)}@test.com`;
+const ADMIN_CLAVE = 'claveTemporal12345';
+
+const prisma = new PrismaClient({ log: ['error'] });
 
 console.log(`Probando el panel contra ${BASE}\n`);
 
@@ -51,15 +57,24 @@ let tokenArrendador = '';
 let idEstudiante = '';
 let idAdmin = '';
 
-await probar('el administrador puede entrar', async () => {
-  const r = await api('/auth/login', {
+await probar('se crea un administrador temporal para la prueba', async () => {
+  const r = await api('/auth/registro', {
     metodo: 'POST',
-    cuerpo: { email: ADMIN_EMAIL, password: ADMIN_CLAVE },
+    cuerpo: {
+      nombre: 'Administrador Temporal',
+      email: ADMIN_EMAIL,
+      password: ADMIN_CLAVE,
+      rol: 'ESTUDIANTE',
+    },
   });
-  exigir(r.estado === 200, `estado ${r.estado}`);
-  exigir(r.datos.usuario.rol === 'ADMIN', `su rol es ${r.datos.usuario.rol}`);
-  tokenAdmin = r.datos.token;
+  exigir(r.estado === 201, `estado ${r.estado}`);
   idAdmin = r.datos.usuario.id;
+
+  await prisma.usuario.update({ where: { id: idAdmin }, data: { rol: 'ADMIN' } });
+
+  const yo = await api('/auth/yo', { token: r.datos.token });
+  exigir(yo.datos.usuario.rol === 'ADMIN', `su rol es ${yo.datos.usuario.rol}`);
+  tokenAdmin = r.datos.token;
 });
 
 await probar('se crean cuentas normales para las pruebas', async () => {
@@ -246,6 +261,12 @@ await probar('lista las resenas para moderarlas', async () => {
   exigir(r.estado === 200, `estado ${r.estado}`);
   return `${r.datos.resenas.length} resenas`;
 });
+
+const { count } = await prisma.usuario.deleteMany({
+  where: { email: { in: [ADMIN_EMAIL, `panel-est${suf}@test.com`, `panel-arr${suf}@test.com`] } },
+});
+await prisma.$disconnect();
+console.log(`\nCuentas temporales eliminadas: ${count}.`);
 
 console.log('\n=================================');
 console.log(`RESULTADO: ${ok} pruebas pasaron, ${fallas} fallaron`);

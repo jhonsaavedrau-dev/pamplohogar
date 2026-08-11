@@ -12,6 +12,7 @@
     "migrate:deploy": "prisma migrate deploy",
     "seed": "tsx prisma/seed.ts",
     "hacer-admin": "tsx prisma/hacerAdmin.ts",
+    "limpiar-pruebas": "tsx prisma/limpiarPruebas.ts",
     "test": "vitest run",
     "test:api": "node pruebas/prueba-api.mjs"
   },
