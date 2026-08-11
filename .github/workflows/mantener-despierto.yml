@@ -1,0 +1,43 @@
+name: Mantener el servidor despierto
+
+# El plan gratuito de Render apaga el servidor cuando nadie lo usa por 15
+# minutos, y la siguiente visita puede tardar hasta 50 segundos en cargar.
+# Un estudiante que abre el enlace por WhatsApp no espera tanto: se va.
+#
+# Esto le toca el timbre cada 10 minutos para que nunca se duerma.
+# Cuando se pase al plan pago de Render, este archivo se puede borrar.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  despertar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Llamar al endpoint de salud
+        run: |
+          respuesta=$(curl -s -w "\n%{http_code}" -m 60 \
+            https://pamplohogar-api.onrender.com/api/salud)
+          cuerpo=$(echo "$respuesta" | head -n -1)
+          codigo=$(echo "$respuesta" | tail -n 1)
+
+          echo "Respuesta: $cuerpo"
+          echo "Codigo: $codigo"
+
+          if [ "$codigo" != "200" ]; then
+            echo "El servidor no respondio bien."
+            exit 1
+          fi
+
+          if ! echo "$cuerpo" | grep -q '"baseDeDatos":"conectada"'; then
+            echo "El servidor responde pero perdio la base de datos."
+            exit 1
+          fi
+
+          echo "Servidor despierto y con base de datos."
