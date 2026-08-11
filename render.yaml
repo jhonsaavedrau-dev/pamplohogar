@@ -7,7 +7,9 @@ services:
     rootDir: backend
     # --include=dev es obligatorio: con NODE_ENV=production npm omite las
     # dependencias de desarrollo y sin TypeScript instalado no hay forma de compilar.
-    buildCommand: npm install --include=dev && npx prisma generate && npx prisma migrate deploy && npx tsc
+    # esperarBase despierta la base antes de migrar: en el plan gratuito de Neon
+    # el servidor se suspende y las migraciones se rendian antes de que respondiera.
+    buildCommand: npm install --include=dev && npx prisma generate && node prisma/esperarBase.mjs && npx prisma migrate deploy && npx tsc
     startCommand: node dist/index.js
     healthCheckPath: /api/salud
     envVars:
@@ -15,6 +17,11 @@ services:
         value: "22"
       - key: NODE_ENV
         value: production
+      # El bloqueo de Prisma protege contra dos migraciones simultaneas. Aqui
+      # corre una sola instancia y solo el build migra, asi que no aplica, y
+      # con la base recien despertada es justo lo que hacia fallar el despliegue.
+      - key: PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK
+        value: "true"
       # Los siguientes valores se pegan a mano en el panel de Render.
       - key: DATABASE_URL
         sync: false
