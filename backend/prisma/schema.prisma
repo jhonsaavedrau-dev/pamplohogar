@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  ESTUDIANTE
+  ARRENDADOR
+  ADMIN
+}
+
+enum TipoInmueble {
+  HABITACION
+  APARTAESTUDIO
+  APARTAMENTO
+  CASA
+}
+
+model Usuario {
+  id           String   @id @default(cuid())
+  nombre       String
+  email        String   @unique
+  telefono     String?
+  passwordHash String
+  rol          Rol      @default(ESTUDIANTE)
+  creadoEn     DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  inmuebles         Inmueble[]          @relation("InmueblesDelArrendador")
+  favoritos         Favorito[]
+  resenasEscritas   Resena[]            @relation("ResenasEscritas")
+  resenasRecibidas  Resena[]            @relation("ResenasRecibidas")
+  solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
+
+  @@index([rol])
+}
+
+model Inmueble {
+  id           String       @id @default(cuid())
+  titulo       String
+  descripcion  String
+  tipo         TipoInmueble
+  precio       Int
+  barrio       String
+  direccion    String
+  lat          Float
+  lng          Float
+  habitaciones Int          @default(1)
+  banos        Int          @default(1)
+  servicios    String[]     @default([])
+  amoblado     Boolean      @default(false)
+  activo       Boolean      @default(true)
+  creadoEn     DateTime     @default(now())
+  actualizadoEn DateTime    @updatedAt
+
+  arrendadorId String
+  arrendador   Usuario @relation("InmueblesDelArrendador", fields: [arrendadorId], references: [id], onDelete: Cascade)
+
+  fotos       FotoInmueble[]
+  favoritos   Favorito[]
+  solicitudes SolicitudContacto[]
+  resenas     Resena[]
+
+  @@index([arrendadorId])
+  @@index([activo, precio])
+  @@index([tipo])
+  @@index([barrio])
+}
+
+model FotoInmueble {
+  id         String @id @default(cuid())
+  url        String
+  publicId   String
+  orden      Int    @default(0)
+  inmuebleId String
+
+  inmueble Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+
+  @@index([inmuebleId])
+}
+
+model Favorito {
+  id         String   @id @default(cuid())
+  usuarioId  String
+  inmuebleId String
+  creadoEn   DateTime @default(now())
+
+  usuario  Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  inmueble Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, inmuebleId])
+  @@index([usuarioId])
+}
+
+model Resena {
+  id            String   @id @default(cuid())
+  calificacion  Int
+  comentario    String
+  creadoEn      DateTime @default(now())
+
+  autorId      String
+  arrendadorId String
+  inmuebleId   String?
+
+  autor      Usuario   @relation("ResenasEscritas", fields: [autorId], references: [id], onDelete: Cascade)
+  arrendador Usuario   @relation("ResenasRecibidas", fields: [arrendadorId], references: [id], onDelete: Cascade)
+  inmueble   Inmueble? @relation(fields: [inmuebleId], references: [id], onDelete: SetNull)
+
+  @@unique([autorId, arrendadorId])
+  @@index([arrendadorId])
+}
+
+model SolicitudContacto {
+  id           String   @id @default(cuid())
+  estudianteId String
+  inmuebleId   String
+  creadoEn     DateTime @default(now())
+
+  estudiante Usuario  @relation("SolicitudesDelEstudiante", fields: [estudianteId], references: [id], onDelete: Cascade)
+  inmueble   Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+
+  @@index([inmuebleId])
+  @@index([estudianteId])
+}

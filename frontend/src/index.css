@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@theme {
+  --color-terracota-50: #fdf5ef;
+  --color-terracota-100: #fae6d5;
+  --color-terracota-200: #f3c9a6;
+  --color-terracota-400: #e08a45;
+  --color-terracota-500: #d2691e;
+  --color-terracota-600: #b45516;
+  --color-terracota-700: #8f4211;
+
+  --color-confianza-50: #eef6fc;
+  --color-confianza-100: #d6e9f7;
+  --color-confianza-500: #1f6fb2;
+  --color-confianza-600: #175a93;
+  --color-confianza-700: #114675;
+
+  --color-piedra-50: #faf9f7;
+  --color-piedra-100: #f2f0ec;
+  --color-piedra-200: #e4e0d9;
+  --color-piedra-400: #a8a196;
+  --color-piedra-600: #6b655b;
+  --color-piedra-800: #3a352e;
+  --color-piedra-900: #241f1a;
+
+  --font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-piedra-50 text-piedra-900 font-sans antialiased;
+  }
+
+  /* Objetivo tactil comodo para el pulgar en toda la aplicacion. */
+  button,
+  a[role='button'],
+  input[type='submit'] {
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-confianza-500;
+  }
+}
+
+@layer components {
+  .contenedor-app {
+    @apply mx-auto w-full max-w-5xl px-4;
+  }
+
+  .boton-primario,
+  .boton-confianza,
+  .boton-suave {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .boton-primario {
+    @apply bg-terracota-500 text-white hover:bg-terracota-600 active:bg-terracota-700;
+  }
+
+  .boton-confianza {
+    @apply bg-confianza-500 text-white hover:bg-confianza-600 active:bg-confianza-700;
+  }
+
+  .boton-suave {
+    @apply border border-piedra-200 bg-white text-piedra-800 hover:bg-piedra-100;
+  }
+
+  .campo {
+    @apply min-h-12 w-full rounded-xl border border-piedra-200 bg-white px-4 text-base text-piedra-900 placeholder:text-piedra-400 focus:border-confianza-500 focus:ring-2 focus:ring-confianza-100 focus:outline-none;
+  }
+
+  .etiqueta {
+    @apply mb-1.5 block text-sm font-semibold text-piedra-800;
+  }
+
+  .tarjeta {
+    @apply rounded-2xl border border-piedra-200 bg-white shadow-[0_1px_3px_rgba(36,31,26,0.06)];
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-piedra-100 px-3 py-1 text-xs font-medium text-piedra-600;
+  }
+}
+
+/* El mapa necesita altura explicita para renderizar. */
+.leaflet-container {
+  @apply h-full w-full rounded-2xl;
+  z-index: 0;
+}
