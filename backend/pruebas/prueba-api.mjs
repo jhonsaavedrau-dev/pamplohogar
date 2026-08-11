@@ -1,4 +1,8 @@
-const BASE = 'http://localhost:4000/api';
+// Por defecto prueba el servidor local. Para probar el de internet:
+//   node pruebas/prueba-api.mjs https://pamplohogar-api.onrender.com
+const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
+const BASE = `${RAIZ}/api`;
+console.log(`Probando contra ${BASE}\n`);
 let ok = 0;
 let fallas = 0;
 
