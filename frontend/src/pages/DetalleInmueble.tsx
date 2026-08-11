@@ -10,6 +10,8 @@ import { Carrusel } from '../components/Carrusel';
 import { MapaDiferido } from '../components/MapaDiferido';
 import { Estrellas, SelectorEstrellas } from '../components/Estrellas';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
+import { HistorialDePrecios } from '../components/HistorialDePrecios';
+import { BotonReportar } from '../components/BotonReportar';
 
 export function DetalleInmueble() {
   const { id = '' } = useParams();
@@ -93,7 +95,7 @@ export function DetalleInmueble() {
     );
   }
 
-  const { inmueble, esFavorito, esDueno, resenas } = data;
+  const { inmueble, esFavorito, esDueno, resenas, cambiosDePrecio } = data;
 
   return (
     <div className="contenedor-app py-6 pb-28 lg:pb-10">
@@ -149,6 +151,8 @@ export function DetalleInmueble() {
               </ul>
             </section>
           )}
+
+          <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 
           <section>
             <h2 className="mb-2 text-lg font-bold text-piedra-900">Donde queda</h2>
@@ -307,6 +311,12 @@ export function DetalleInmueble() {
             Publicado el {fechaCorta(inmueble.creadoEn)}. Verifica siempre el inmueble en persona
             antes de entregar dinero.
           </p>
+
+          {!esDueno && (
+            <div className="px-2">
+              <BotonReportar inmuebleId={inmueble.id} />
+            </div>
+          )}
         </aside>
       </div>
 

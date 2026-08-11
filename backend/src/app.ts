@@ -10,6 +10,7 @@ import { rutasResenas } from './routes/resenas.js';
 import { rutasContacto } from './routes/contacto.js';
 import { rutasSubidas } from './routes/subidas.js';
 import { rutasAdmin } from './routes/admin.js';
+import { rutasReportes } from './routes/reportes.js';
 import { prisma } from './lib/prisma.js';
 
 export function crearApp() {
@@ -46,6 +47,7 @@ export function crearApp() {
   app.use('/api/subidas', rutasSubidas);
   app.use('/api/admin', rutasAdmin);
   app.use('/api', rutasContacto);
+  app.use('/api', rutasReportes);
 
   app.use(rutaNoEncontrada);
   app.use(manejadorDeErrores);

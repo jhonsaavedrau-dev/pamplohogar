@@ -9,6 +9,7 @@ import {
   esquemaListadoAdmin,
   esquemaUsuariosAdmin,
 } from '../schemas/admin.js';
+import { esquemaAtenderReporte, esquemaListarReportes } from '../schemas/reporte.js';
 
 export const rutasAdmin = Router();
 
@@ -57,6 +58,7 @@ rutasAdmin.get(
       solicitudes,
       resenas,
       sinFotos,
+      reportesPendientes,
     ] = await Promise.all([
       prisma.usuario.count({ where: { rol: 'ESTUDIANTE' } }),
       prisma.usuario.count({ where: { rol: 'ARRENDADOR' } }),
@@ -66,6 +68,7 @@ rutasAdmin.get(
       prisma.solicitudContacto.count(),
       prisma.resena.count(),
       prisma.inmueble.count({ where: { activo: true, fotos: { none: {} } } }),
+      prisma.reporte.count({ where: { estado: 'PENDIENTE' } }),
     ]);
 
     const filas = await prisma.inmueble.findMany({
@@ -79,7 +82,7 @@ rutasAdmin.get(
     res.json({
       usuarios: { estudiantes, arrendadores, administradores },
       inmuebles: { activos: inmueblesActivos, ocultos: inmueblesOcultos, sinFotos },
-      actividad: { solicitudes, resenas },
+      actividad: { solicitudes, resenas, reportesPendientes },
       precios: {
         mediana: medianaPrecios,
         minimo: precios.length > 0 ? Math.min(...precios) : 0,
@@ -241,6 +244,75 @@ rutasAdmin.delete(
 
     await prisma.usuario.delete({ where: { id: req.params.id } });
     res.json({ mensaje: 'Cuenta eliminada junto con sus publicaciones.' });
+  }),
+);
+
+/** Reportes que enviaron los estudiantes, pendientes primero. */
+rutasAdmin.get(
+  '/reportes',
+  asincrono(async (req, res) => {
+    const { estado } = esquemaListarReportes.parse(req.query);
+
+    const reportes = await prisma.reporte.findMany({
+      where: estado === 'todos' ? {} : { estado },
+      include: {
+        autor: { select: { id: true, nombre: true, email: true } },
+        atendidoPor: { select: { nombre: true } },
+        inmueble: {
+          select: {
+            id: true,
+            titulo: true,
+            precio: true,
+            activo: true,
+            arrendador: { select: { nombre: true, email: true } },
+          },
+        },
+      },
+      orderBy: [{ estado: 'asc' }, { creadoEn: 'desc' }],
+      take: 100,
+    });
+
+    const pendientes = await prisma.reporte.count({ where: { estado: 'PENDIENTE' } });
+
+    res.json({
+      pendientes,
+      reportes: reportes.map((r) => ({
+        id: r.id,
+        motivo: r.motivo,
+        detalle: r.detalle,
+        estado: r.estado,
+        creadoEn: r.creadoEn,
+        atendidoEn: r.atendidoEn,
+        notaAdmin: r.notaAdmin,
+        atendidoPor: r.atendidoPor?.nombre ?? null,
+        autor: { nombre: r.autor.nombre, email: r.autor.email },
+        inmueble: r.inmueble,
+      })),
+    });
+  }),
+);
+
+/** Marca un reporte como atendido o descartado. */
+rutasAdmin.patch(
+  '/reportes/:id',
+  asincrono(async (req, res) => {
+    const datos = esquemaAtenderReporte.parse(req.body);
+
+    const existente = await prisma.reporte.findUnique({ where: { id: req.params.id } });
+    if (!existente) throw noEncontrado('Ese reporte no existe.');
+
+    const reporte = await prisma.reporte.update({
+      where: { id: req.params.id },
+      data: {
+        estado: datos.estado,
+        atendidoEn: new Date(),
+        atendidoPorId: req.usuario!.sub,
+        notaAdmin: datos.notaAdmin ?? null,
+      },
+      select: { id: true, estado: true },
+    });
+
+    res.json({ reporte });
   }),
 );
 

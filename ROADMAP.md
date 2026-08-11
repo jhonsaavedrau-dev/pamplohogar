@@ -18,10 +18,17 @@ completo y guardado en un computador.
 - [x] ~~**Panel de administrador.**~~ Hecho el 11 de agosto de 2026: resumen de la plataforma,
       moderacion de inmuebles, gestion de cuentas y retiro de resenas. Marca solo los precios
       alejados de la mediana de la ciudad y los inmuebles sin fotos.
-- [ ] **Reportar una publicacion.** Un boton para que el estudiante avise de un anuncio falso o de
-      un cobro abusivo. Hoy el administrador tiene que encontrarlos el mismo.
-- [ ] **Registro de lo que hace cada administrador.** Hoy si un administrador elimina algo no queda
-      constancia de quien fue. Con un solo administrador no importa; con varios, si.
+- [x] ~~**Reportar una publicacion.**~~ Hecho: el estudiante avisa desde el detalle eligiendo un
+      motivo, y le llega al administrador a una cola con contador. Queda registrado quien atendio
+      cada reporte y con que nota.
+- [x] ~~**Borrar de Cloudinary las fotos que se quitan.**~~ Hecho: al editar o eliminar un inmueble
+      se borran tambien de Cloudinary las fotos que ya no se usan.
+- [ ] **Registro de lo que hace cada administrador.** Los reportes ya guardan quien los atendio,
+      pero eliminar un inmueble o una cuenta todavia no deja rastro. Con un solo administrador no
+      importa; con varios, si.
+- [ ] **Separar la base de datos de pruebas de la de produccion.** Hoy el computador y el sitio en
+      internet usan la misma. Mientras los datos son de ejemplo no pasa nada, pero con arrendadores
+      reales publicando es peligroso probar en local.
 - [ ] **Editar el orden de las fotos** arrastrandolas, y elegir cual es la portada.
 - [ ] **Borrar de Cloudinary las fotos que se quitan.** Hoy se quitan del inmueble pero el archivo
       sigue ocupando espacio en la cuenta.
@@ -37,8 +44,8 @@ completo y guardado en un computador.
       busca.
 - [ ] **Comparador** de hasta tres inmuebles lado a lado.
 - [ ] **Buscador de roomies** para estudiantes que quieren compartir arriendo y repartir gastos.
-- [ ] **Historial de precios** de cada inmueble, para hacer visible cuando alguien sube el precio de
-      un semestre a otro.
+- [x] ~~**Historial de precios**~~ Hecho: cada cambio de precio queda registrado y el estudiante ve
+      en el detalle cuanto subio o bajo desde que se publico, con la fecha de cada cambio.
 - [ ] **Ficha en PDF** del inmueble, para compartirla por fuera de la plataforma.
 - [ ] **Resenas del barrio**, no solo del arrendador: ruido, seguridad, transporte.
 

@@ -24,6 +24,21 @@ enum TipoInmueble {
   CASA
 }
 
+enum MotivoReporte {
+  PRECIO_ABUSIVO
+  INFORMACION_FALSA
+  NO_EXISTE
+  NO_RESPONDE
+  TRATO_IRRESPETUOSO
+  OTRO
+}
+
+enum EstadoReporte {
+  PENDIENTE
+  ATENDIDO
+  DESCARTADO
+}
+
 model Usuario {
   id           String   @id @default(cuid())
   nombre       String
@@ -39,6 +54,8 @@ model Usuario {
   resenasEscritas   Resena[]            @relation("ResenasEscritas")
   resenasRecibidas  Resena[]            @relation("ResenasRecibidas")
   solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
+  reportesHechos    Reporte[]           @relation("ReportesDelAutor")
+  reportesAtendidos Reporte[]           @relation("ReportesAtendidos")
 
   @@index([rol])
 }
@@ -64,10 +81,12 @@ model Inmueble {
   arrendadorId String
   arrendador   Usuario @relation("InmueblesDelArrendador", fields: [arrendadorId], references: [id], onDelete: Cascade)
 
-  fotos       FotoInmueble[]
-  favoritos   Favorito[]
-  solicitudes SolicitudContacto[]
-  resenas     Resena[]
+  fotos          FotoInmueble[]
+  favoritos      Favorito[]
+  solicitudes    SolicitudContacto[]
+  resenas        Resena[]
+  reportes       Reporte[]
+  cambiosDePrecio CambioDePrecio[]
 
   @@index([arrendadorId])
   @@index([activo, precio])
@@ -116,6 +135,44 @@ model Resena {
 
   @@unique([autorId, arrendadorId])
   @@index([arrendadorId])
+}
+
+// Aviso de un estudiante sobre una publicacion que no deberia estar.
+model Reporte {
+  id         String        @id @default(cuid())
+  motivo     MotivoReporte
+  detalle    String
+  estado     EstadoReporte @default(PENDIENTE)
+  creadoEn   DateTime      @default(now())
+  atendidoEn DateTime?
+  notaAdmin  String?
+
+  autorId    String
+  inmuebleId String
+  atendidoPorId String?
+
+  autor       Usuario  @relation("ReportesDelAutor", fields: [autorId], references: [id], onDelete: Cascade)
+  inmueble    Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+  atendidoPor Usuario? @relation("ReportesAtendidos", fields: [atendidoPorId], references: [id], onDelete: SetNull)
+
+  @@unique([autorId, inmuebleId])
+  @@index([estado, creadoEn])
+  @@index([inmuebleId])
+}
+
+// Cada vez que un arrendador cambia el precio queda registrado.
+// Sirve para que el estudiante vea si le estan subiendo el arriendo
+// de un semestre a otro, que es una de las quejas mas comunes.
+model CambioDePrecio {
+  id             String   @id @default(cuid())
+  precioAnterior Int
+  precioNuevo    Int
+  creadoEn       DateTime @default(now())
+
+  inmuebleId String
+  inmueble   Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+
+  @@index([inmuebleId, creadoEn])
 }
 
 model SolicitudContacto {

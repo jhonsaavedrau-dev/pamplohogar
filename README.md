@@ -20,9 +20,13 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
   registrada para que el arrendador sepa quien le escribio.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
 - **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
-- **Panel de administracion** para ver como va la plataforma y moderar: retirar o eliminar
-  publicaciones, gestionar cuentas y quitar resenas abusivas. Marca solo los inmuebles con precio
-  muy lejano al tipico de la ciudad y los que no tienen fotos.
+- **Reportar una publicacion.** El estudiante avisa desde el detalle si le cobraron mas de lo
+  publicado, si el inmueble no existe o si lo trataron mal. El arrendador nunca sabe quien reporto.
+- **Historial de precios.** Cada cambio de precio queda registrado, y el estudiante ve cuanto subio
+  o bajo desde que se publico. Sirve para negociar con datos y no de memoria.
+- **Panel de administracion** para ver como va la plataforma y moderar: atender los reportes,
+  retirar o eliminar publicaciones, gestionar cuentas y quitar resenas abusivas. Marca solo los
+  inmuebles con precio muy lejano al tipico de la ciudad y los que no tienen fotos.
 
 ## Como esta organizado el proyecto
 

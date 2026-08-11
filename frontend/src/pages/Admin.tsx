@@ -4,9 +4,11 @@ import { Resumen } from '../components/admin/Resumen';
 import { InmueblesAdmin } from '../components/admin/InmueblesAdmin';
 import { UsuariosAdmin } from '../components/admin/UsuariosAdmin';
 import { ResenasAdmin } from '../components/admin/ResenasAdmin';
+import { ReportesAdmin } from '../components/admin/ReportesAdmin';
 
 const SECCIONES = [
   { clave: 'resumen', etiqueta: 'Resumen' },
+  { clave: 'reportes', etiqueta: 'Reportes' },
   { clave: 'inmuebles', etiqueta: 'Inmuebles' },
   { clave: 'usuarios', etiqueta: 'Usuarios' },
   { clave: 'resenas', etiqueta: 'Resenas' },
@@ -51,6 +53,7 @@ export function Admin() {
       </nav>
 
       {seccion === 'resumen' && <Resumen />}
+      {seccion === 'reportes' && <ReportesAdmin />}
       {seccion === 'inmuebles' && <InmueblesAdmin />}
       {seccion === 'usuarios' && <UsuariosAdmin />}
       {seccion === 'resenas' && <ResenasAdmin />}

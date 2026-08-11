@@ -1,21 +1,12 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { v2 as cloudinary } from 'cloudinary';
 import { asincrono } from '../middleware/asincrono.js';
 import { requiereRol, requiereSesion } from '../middleware/auth.js';
 import { solicitudInvalida } from '../lib/errores.js';
-import { cloudinaryConfigurado, env } from '../lib/env.js';
+import { cloudinaryConfigurado } from '../lib/env.js';
+import { cloudinary } from '../lib/cloudinary.js';
 
 export const rutasSubidas = Router();
-
-if (cloudinaryConfigurado) {
-  cloudinary.config({
-    cloud_name: env.CLOUDINARY_CLOUD_NAME,
-    api_key: env.CLOUDINARY_API_KEY,
-    api_secret: env.CLOUDINARY_API_SECRET,
-    secure: true,
-  });
-}
 
 const TIPOS_PERMITIDOS = ['image/jpeg', 'image/png', 'image/webp'];
 

@@ -61,11 +61,80 @@ export interface RespuestaListado {
   totalPaginas: number;
 }
 
+export interface CambioDePrecio {
+  precioAnterior: number;
+  precioNuevo: number;
+  creadoEn: string;
+}
+
 export interface RespuestaDetalle {
   inmueble: Inmueble;
   esFavorito: boolean;
   esDueno: boolean;
   resenas: Resena[];
+  cambiosDePrecio: CambioDePrecio[];
+}
+
+export type MotivoReporte =
+  | 'PRECIO_ABUSIVO'
+  | 'INFORMACION_FALSA'
+  | 'NO_EXISTE'
+  | 'NO_RESPONDE'
+  | 'TRATO_IRRESPETUOSO'
+  | 'OTRO';
+
+export type EstadoReporte = 'PENDIENTE' | 'ATENDIDO' | 'DESCARTADO';
+
+export const MOTIVOS_REPORTE: { valor: MotivoReporte; etiqueta: string; ayuda: string }[] = [
+  {
+    valor: 'PRECIO_ABUSIVO',
+    etiqueta: 'Me cobraron mas de lo publicado',
+    ayuda: 'El precio real no es el que aparece aqui',
+  },
+  {
+    valor: 'INFORMACION_FALSA',
+    etiqueta: 'La publicacion no dice la verdad',
+    ayuda: 'Las fotos, el tamano o los servicios no coinciden',
+  },
+  {
+    valor: 'NO_EXISTE',
+    etiqueta: 'El inmueble no existe',
+    ayuda: 'Fui a la direccion y no hay nada',
+  },
+  {
+    valor: 'NO_RESPONDE',
+    etiqueta: 'El arrendador nunca contesta',
+    ayuda: 'Escribi varias veces y no hubo respuesta',
+  },
+  {
+    valor: 'TRATO_IRRESPETUOSO',
+    etiqueta: 'Me trataron mal',
+    ayuda: 'Hubo groserias, discriminacion o acoso',
+  },
+  { valor: 'OTRO', etiqueta: 'Otra cosa', ayuda: 'Cuentanos que paso' },
+];
+
+export const ETIQUETAS_MOTIVO: Record<MotivoReporte, string> = Object.fromEntries(
+  MOTIVOS_REPORTE.map((m) => [m.valor, m.etiqueta]),
+) as Record<MotivoReporte, string>;
+
+export interface ReporteAdmin {
+  id: string;
+  motivo: MotivoReporte;
+  detalle: string;
+  estado: EstadoReporte;
+  creadoEn: string;
+  atendidoEn: string | null;
+  notaAdmin: string | null;
+  atendidoPor: string | null;
+  autor: { nombre: string; email: string };
+  inmueble: {
+    id: string;
+    titulo: string;
+    precio: number;
+    activo: boolean;
+    arrendador: { nombre: string; email: string };
+  };
 }
 
 export interface RespuestaContacto {
@@ -77,7 +146,7 @@ export interface RespuestaContacto {
 export interface ResumenAdmin {
   usuarios: { estudiantes: number; arrendadores: number; administradores: number };
   inmuebles: { activos: number; ocultos: number; sinFotos: number };
-  actividad: { solicitudes: number; resenas: number };
+  actividad: { solicitudes: number; resenas: number; reportesPendientes: number };
   precios: { mediana: number; minimo: number; maximo: number; inusuales: number };
 }
 

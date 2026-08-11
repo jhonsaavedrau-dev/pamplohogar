@@ -5,6 +5,7 @@ import { asincrono } from '../middleware/asincrono.js';
 import { requiereRol, requiereSesion, sesionOpcional } from '../middleware/auth.js';
 import { noEncontrado, prohibido } from '../lib/errores.js';
 import { distanciaAUniversidad } from '../lib/geo.js';
+import { borrarFotos } from '../lib/cloudinary.js';
 import {
   esquemaActualizarInmueble,
   esquemaBusqueda,
@@ -199,6 +200,12 @@ rutasInmuebles.get(
       take: 20,
     });
 
+    const cambiosDePrecio = await prisma.cambioDePrecio.findMany({
+      where: { inmuebleId: inmueble.id },
+      orderBy: { creadoEn: 'asc' },
+      select: { precioAnterior: true, precioNuevo: true, creadoEn: true },
+    });
+
     let esFavorito = false;
     if (req.usuario) {
       const fav = await prisma.favorito.findUnique({
@@ -211,6 +218,7 @@ rutasInmuebles.get(
       inmueble: formatearInmueble(inmueble, calificaciones),
       esFavorito,
       esDueno,
+      cambiosDePrecio,
       resenas: resenas.map((r) => ({
         id: r.id,
         calificacion: r.calificacion,
@@ -275,6 +283,32 @@ rutasInmuebles.patch(
     const datos = esquemaActualizarInmueble.parse(req.body);
     const { fotos, ...camposSimples } = datos;
 
+    // Si cambia el precio queda registrado, para que el estudiante pueda ver
+    // despues si le subieron el arriendo de un semestre a otro.
+    if (datos.precio !== undefined && datos.precio !== existente.precio) {
+      await prisma.cambioDePrecio.create({
+        data: {
+          inmuebleId: existente.id,
+          precioAnterior: existente.precio,
+          precioNuevo: datos.precio,
+        },
+      });
+    }
+
+    // Las fotos que el arrendador quito se borran tambien de Cloudinary,
+    // si no se quedan ocupando espacio de la cuenta para siempre.
+    if (fotos !== undefined) {
+      const anteriores = await prisma.fotoInmueble.findMany({
+        where: { inmuebleId: existente.id },
+        select: { publicId: true },
+      });
+      const conservados = new Set(fotos.map((f) => f.publicId));
+      const descartados = anteriores
+        .map((f) => f.publicId)
+        .filter((id) => !conservados.has(id));
+      await borrarFotos(descartados);
+    }
+
     const inmueble = await prisma.inmueble.update({
       where: { id: req.params.id },
       data: {
@@ -311,7 +345,14 @@ rutasInmuebles.delete(
       throw prohibido('Solo puedes retirar los inmuebles que tu publicaste.');
     }
 
+    const fotos = await prisma.fotoInmueble.findMany({
+      where: { inmuebleId: existente.id },
+      select: { publicId: true },
+    });
+
     await prisma.inmueble.delete({ where: { id: req.params.id } });
+    await borrarFotos(fotos.map((f) => f.publicId));
+
     res.json({ mensaje: 'Inmueble eliminado.' });
   }),
 );

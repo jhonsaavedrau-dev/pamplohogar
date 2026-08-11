@@ -46,6 +46,21 @@ export function Resumen() {
 
   return (
     <div className="space-y-6">
+      {data.actividad.reportesPendientes > 0 && (
+        <div className="rounded-2xl border border-terracota-200 bg-terracota-50 p-4">
+          <p className="font-bold text-terracota-700">
+            Tienes {data.actividad.reportesPendientes}{' '}
+            {data.actividad.reportesPendientes === 1
+              ? 'reporte sin revisar'
+              : 'reportes sin revisar'}
+          </p>
+          <p className="mt-1 text-sm text-piedra-600">
+            Son avisos de estudiantes sobre publicaciones que no deberian estar. Revisalos en la
+            pestana Reportes.
+          </p>
+        </div>
+      )}
+
       <section>
         <h2 className="mb-3 text-lg font-bold text-piedra-900">Quien esta en la plataforma</h2>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">

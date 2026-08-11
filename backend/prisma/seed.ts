@@ -266,6 +266,33 @@ const RESENAS = [
   },
 ];
 
+/**
+ * Historial de precios de ejemplo, para que la funcion se vea desde el primer dia.
+ * El indice es la posicion del inmueble dentro del grupo de su arrendador.
+ */
+const HISTORIALES = [
+  {
+    indiceArrendador: 0,
+    indiceInmueble: 3,
+    cambios: [
+      { anterior: 700000, nuevo: 780000, hace: 240 },
+      { anterior: 780000, nuevo: 850000, hace: 95 },
+    ],
+  },
+  {
+    indiceArrendador: 1,
+    indiceInmueble: 0,
+    cambios: [{ anterior: 420000, nuevo: 450000, hace: 140 }],
+  },
+  {
+    indiceArrendador: 2,
+    indiceInmueble: 1,
+    cambios: [{ anterior: 1200000, nuevo: 1100000, hace: 60 }],
+  },
+];
+
+const haceDias = (dias: number): Date => new Date(Date.now() - dias * 24 * 60 * 60 * 1000);
+
 async function main(): Promise<void> {
   process.stdout.write('Limpiando datos anteriores de la semilla...\n');
 
@@ -298,11 +325,15 @@ async function main(): Promise<void> {
   process.stdout.write('Creando inmuebles...\n');
 
   let total = 0;
+  const creados: string[][] = [];
+
   for (const [indice, grupo] of INMUEBLES.entries()) {
     const arrendador = arrendadores[indice];
+    const idsDelGrupo: string[] = [];
+
     for (const semilla of grupo) {
       const { fotos, ...campos } = semilla;
-      await prisma.inmueble.create({
+      const inmueble = await prisma.inmueble.create({
         data: {
           ...campos,
           arrendadorId: arrendador.id,
@@ -315,7 +346,30 @@ async function main(): Promise<void> {
           },
         },
       });
+      idsDelGrupo.push(inmueble.id);
       total += 1;
+    }
+
+    creados.push(idsDelGrupo);
+  }
+
+  process.stdout.write('Creando historial de precios...\n');
+
+  let totalCambios = 0;
+  for (const historial of HISTORIALES) {
+    const inmuebleId = creados[historial.indiceArrendador]?.[historial.indiceInmueble];
+    if (!inmuebleId) continue;
+
+    for (const cambio of historial.cambios) {
+      await prisma.cambioDePrecio.create({
+        data: {
+          inmuebleId,
+          precioAnterior: cambio.anterior,
+          precioNuevo: cambio.nuevo,
+          creadoEn: haceDias(cambio.hace),
+        },
+      });
+      totalCambios += 1;
     }
   }
 
@@ -340,7 +394,8 @@ async function main(): Promise<void> {
   }
 
   process.stdout.write(
-    `\nListo. ${total} inmuebles, ${arrendadores.length} arrendadores, ${estudiantes.length} estudiantes y ${RESENAS.length} resenas.\n` +
+    `\nListo. ${total} inmuebles, ${arrendadores.length} arrendadores, ${estudiantes.length} estudiantes, ` +
+      `${RESENAS.length} resenas y ${totalCambios} cambios de precio.\n` +
       `Cuentas de prueba (todas con la contrasena pamplona2026):\n` +
       `  Arrendador: ${ARRENDADORES[0].email}\n` +
       `  Estudiante: ${ESTUDIANTES[0].email}\n`,
