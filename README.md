@@ -19,6 +19,8 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
   "Contactar". Ahi se genera un enlace de WhatsApp con el mensaje ya escrito y la solicitud queda
   registrada para que el arrendador sepa quien le escribio.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
+- **Comparador** de hasta tres inmuebles lado a lado, resaltando cual es el mas barato, el mas
+  cercano a la universidad y el de mejor arrendador.
 - **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
 - **Reportar una publicacion.** El estudiante avisa desde el detalle si le cobraron mas de lo
   publicado, si el inmueble no existe o si lo trataron mal. El arrendador nunca sabe quien reporto.

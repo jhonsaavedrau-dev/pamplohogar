@@ -68,6 +68,7 @@ export function MisInmuebles() {
               <TarjetaInmueble
                 key={inmueble.id}
                 inmueble={inmueble}
+                comparable={false}
                 accion={
                   <div className="flex gap-2">
                     <Link

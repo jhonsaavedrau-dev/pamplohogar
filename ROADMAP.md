@@ -29,7 +29,9 @@ completo y guardado en un computador.
 - [ ] **Separar la base de datos de pruebas de la de produccion.** Hoy el computador y el sitio en
       internet usan la misma. Mientras los datos son de ejemplo no pasa nada, pero con arrendadores
       reales publicando es peligroso probar en local.
-- [ ] **Editar el orden de las fotos** arrastrandolas, y elegir cual es la portada.
+- [x] ~~**Editar el orden de las fotos** y elegir cual es la portada.~~ Hecho con botones de subir,
+      bajar y hacer portada, en vez de arrastrar: arrastrar es incomodo en celular y la plataforma
+      se usa sobre todo desde el telefono.
 - [ ] **Borrar de Cloudinary las fotos que se quitan.** Hoy se quitan del inmueble pero el archivo
       sigue ocupando espacio en la cuenta.
 - [ ] **Limitar los intentos por cuenta y no solo por conexion.** Hoy solo se cuentan los intentos
@@ -42,7 +44,9 @@ completo y guardado en un computador.
 - [ ] **Chat interno en tiempo real** entre estudiante y arrendador, para no depender de WhatsApp.
 - [ ] **Notificaciones** por correo cuando aparece un inmueble que encaja con lo que el estudiante
       busca.
-- [ ] **Comparador** de hasta tres inmuebles lado a lado.
+- [x] ~~**Comparador** de hasta tres inmuebles lado a lado.~~ Hecho: se marcan desde el listado y se
+      ven en una tabla que resalta el mas barato, el mas cercano y el mejor calificado. La seleccion
+      vive en el navegador, no en la cuenta.
 - [ ] **Buscador de roomies** para estudiantes que quieren compartir arriendo y repartir gastos.
 - [x] ~~**Historial de precios**~~ Hecho: cada cambio de precio queda registrado y el estudiante ve
       en el detalle cuanto subio o bajo desde que se publico, con la fecha de cada cambio.

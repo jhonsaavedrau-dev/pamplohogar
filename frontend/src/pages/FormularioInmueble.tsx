@@ -137,6 +137,25 @@ export function FormularioInmueble() {
     setForm((previo) => ({ ...previo, fotos: previo.fotos.filter((_, i) => i !== indice) }));
   };
 
+  const moverFoto = (indice: number, direccion: -1 | 1) => {
+    setForm((previo) => {
+      const destino = indice + direccion;
+      if (destino < 0 || destino >= previo.fotos.length) return previo;
+      const copia = [...previo.fotos];
+      [copia[indice], copia[destino]] = [copia[destino], copia[indice]];
+      return { ...previo, fotos: copia };
+    });
+  };
+
+  const hacerPortada = (indice: number) => {
+    setForm((previo) => {
+      if (indice === 0) return previo;
+      const copia = [...previo.fotos];
+      const [elegida] = copia.splice(indice, 1);
+      return { ...previo, fotos: [elegida, ...copia] };
+    });
+  };
+
   const validar = (): string | null => {
     if (form.titulo.trim().length < 10) return 'El titulo debe tener al menos 10 caracteres.';
     if (form.descripcion.trim().length < 30)
@@ -411,25 +430,71 @@ export function FormularioInmueble() {
           </label>
 
           {form.fotos.length > 0 && (
-            <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
-              {form.fotos.map((foto, indice) => (
-                <div key={foto.publicId} className="relative">
-                  <img
-                    src={foto.url}
-                    alt={`Foto ${indice + 1}`}
-                    className="h-24 w-full rounded-lg object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => quitarFoto(indice)}
-                    aria-label={`Quitar foto ${indice + 1}`}
-                    className="absolute top-1 right-1 grid h-7 w-7 place-items-center rounded-full bg-piedra-900/80 text-sm font-bold text-white"
+            <>
+              <p className="mt-3 mb-2 text-xs text-piedra-600">
+                La primera es la que ven los estudiantes en el listado. Ordenalas con las flechas.
+              </p>
+              <ul className="space-y-2">
+                {form.fotos.map((foto, indice) => (
+                  <li
+                    key={foto.publicId}
+                    className="flex items-center gap-3 rounded-xl border border-piedra-200 bg-white p-2"
                   >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <div className="relative shrink-0">
+                      <img
+                        src={foto.url}
+                        alt={`Foto ${indice + 1}`}
+                        className="h-16 w-20 rounded-lg object-cover"
+                      />
+                      {indice === 0 && (
+                        <span className="absolute -top-1.5 -left-1.5 rounded-full bg-terracota-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                          Portada
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-1 flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => moverFoto(indice, -1)}
+                        disabled={indice === 0}
+                        aria-label={`Subir la foto ${indice + 1}`}
+                        className="grid h-10 w-10 place-items-center rounded-lg border border-piedra-200 text-lg text-piedra-800 disabled:opacity-35"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moverFoto(indice, 1)}
+                        disabled={indice === form.fotos.length - 1}
+                        aria-label={`Bajar la foto ${indice + 1}`}
+                        className="grid h-10 w-10 place-items-center rounded-lg border border-piedra-200 text-lg text-piedra-800 disabled:opacity-35"
+                      >
+                        ↓
+                      </button>
+                      {indice !== 0 && (
+                        <button
+                          type="button"
+                          onClick={() => hacerPortada(indice)}
+                          className="min-h-10 rounded-lg border border-piedra-200 px-3 text-sm font-semibold text-confianza-600"
+                        >
+                          Hacer portada
+                        </button>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => quitarFoto(indice)}
+                      aria-label={`Quitar la foto ${indice + 1}`}
+                      className="grid h-10 w-10 shrink-0 place-items-center rounded-lg text-lg font-bold text-piedra-600 hover:bg-piedra-100"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
 

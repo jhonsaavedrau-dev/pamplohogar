@@ -9,6 +9,8 @@ import { Registro } from './pages/Registro';
 import { Favoritos } from './pages/Favoritos';
 import { MisInmuebles } from './pages/MisInmuebles';
 import { FormularioInmueble } from './pages/FormularioInmueble';
+import { Comparar } from './pages/Comparar';
+import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
 
@@ -21,6 +23,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Buscar />} />
           <Route path="/inmueble/:id" element={<DetalleInmueble />} />
+          <Route path="/comparar" element={<Comparar />} />
           <Route path="/entrar" element={<Entrar />} />
           <Route path="/registro" element={<Registro />} />
 
@@ -70,6 +73,7 @@ export function App() {
         </Routes>
       </main>
 
+      <BarraComparador />
       <PiePagina />
     </div>
   );

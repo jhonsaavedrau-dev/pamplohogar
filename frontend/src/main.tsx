@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ProveedorSesion } from './lib/sesion';
+import { ProveedorComparador } from './lib/comparador';
 import { LimiteDeError } from './components/LimiteDeError';
 import { App } from './App';
 import './index.css';
@@ -22,7 +23,9 @@ createRoot(raiz).render(
       <QueryClientProvider client={cliente}>
         <BrowserRouter>
           <ProveedorSesion>
-            <App />
+            <ProveedorComparador>
+              <App />
+            </ProveedorComparador>
           </ProveedorSesion>
         </BrowserRouter>
       </QueryClientProvider>

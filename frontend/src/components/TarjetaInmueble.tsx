@@ -4,14 +4,19 @@ import { ETIQUETAS_TIPO } from '../lib/tipos';
 import { distancia, pesos } from '../lib/formato';
 import { Estrellas } from './Estrellas';
 import { FotoInmueble } from './FotoInmueble';
+import { useComparador } from '../lib/comparador';
 
 interface Props {
   inmueble: Inmueble;
   accion?: React.ReactNode;
+  /** El comparador no tiene sentido en la pantalla del arrendador. */
+  comparable?: boolean;
 }
 
-export function TarjetaInmueble({ inmueble, accion }: Props) {
+export function TarjetaInmueble({ inmueble, accion, comparable = true }: Props) {
   const portada = inmueble.fotos[0];
+  const { contiene, alternar, estaLleno } = useComparador();
+  const marcado = contiene(inmueble.id);
 
   return (
     <article className="tarjeta group overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-terracota-200 hover:shadow-[0_10px_28px_rgba(36,31,26,0.10)]">
@@ -71,6 +76,26 @@ export function TarjetaInmueble({ inmueble, accion }: Props) {
           </div>
         </div>
       </Link>
+
+      {comparable && (
+        <div className="border-t border-piedra-200 px-4 py-2">
+          <label
+            className={`flex items-center gap-2 text-sm font-medium ${
+              !marcado && estaLleno ? 'text-piedra-400' : 'text-piedra-800'
+            }`}
+          >
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded border-piedra-200 text-confianza-500 focus:ring-confianza-500"
+              checked={marcado}
+              disabled={!marcado && estaLleno}
+              onChange={() => alternar(inmueble.id)}
+            />
+            {marcado ? 'Se va a comparar' : estaLleno ? 'Ya elegiste tres' : 'Comparar'}
+          </label>
+        </div>
+      )}
+
       {accion && <div className="border-t border-piedra-200 p-3">{accion}</div>}
     </article>
   );
