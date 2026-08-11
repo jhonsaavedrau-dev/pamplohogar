@@ -61,7 +61,7 @@ function formatearInmueble(
     activo: inmueble.activo,
     creadoEn: inmueble.creadoEn,
     distanciaUniversidadKm: Math.round(distanciaAUniversidad(inmueble.lat, inmueble.lng) * 10) / 10,
-    fotos: inmueble.fotos.map((f) => ({ id: f.id, url: f.url })),
+    fotos: inmueble.fotos.map((f) => ({ id: f.id, url: f.url, publicId: f.publicId })),
     arrendador: {
       id: inmueble.arrendador.id,
       nombre: inmueble.arrendador.nombre,

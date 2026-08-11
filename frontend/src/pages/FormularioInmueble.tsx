@@ -82,7 +82,7 @@ export function FormularioInmueble() {
       servicios: i.servicios,
       lat: i.lat,
       lng: i.lng,
-      fotos: i.fotos.map((f) => ({ url: f.url, publicId: f.id })),
+      fotos: i.fotos.map((f) => ({ url: f.url, publicId: f.publicId })),
     });
   }, [existente]);
 

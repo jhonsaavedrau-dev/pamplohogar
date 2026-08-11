@@ -40,7 +40,11 @@ rutasFavoritos.get(
           amoblado: f.inmueble.amoblado,
           distanciaUniversidadKm:
             Math.round(distanciaAUniversidad(f.inmueble.lat, f.inmueble.lng) * 10) / 10,
-          fotos: f.inmueble.fotos.map((foto) => ({ id: foto.id, url: foto.url })),
+          fotos: f.inmueble.fotos.map((foto) => ({
+            id: foto.id,
+            url: foto.url,
+            publicId: foto.publicId,
+          })),
           arrendador: { id: f.inmueble.arrendador.id, nombre: f.inmueble.arrendador.nombre },
         })),
     });

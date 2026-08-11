@@ -272,6 +272,9 @@ async function main(): Promise<void> {
   const correos = [...ARRENDADORES, ...ESTUDIANTES].map((u) => u.email);
   await prisma.usuario.deleteMany({ where: { email: { in: correos } } });
 
+  // Las cuentas que crean las pruebas de la API terminan en @test.com y no aportan nada.
+  await prisma.usuario.deleteMany({ where: { email: { endsWith: '@test.com' } } });
+
   const passwordHash = await bcrypt.hash('pamplona2026', 10);
 
   process.stdout.write('Creando arrendadores y estudiantes de ejemplo...\n');

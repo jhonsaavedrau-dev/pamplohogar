@@ -22,6 +22,10 @@ completo y guardado en un computador.
 - [ ] **Editar el orden de las fotos** arrastrandolas, y elegir cual es la portada.
 - [ ] **Borrar de Cloudinary las fotos que se quitan.** Hoy se quitan del inmueble pero el archivo
       sigue ocupando espacio en la cuenta.
+- [ ] **Limitar los intentos por cuenta y no solo por conexion.** Hoy solo se cuentan los intentos
+      fallidos, asi que un salon entero entrando desde el wifi de la universidad no se bloquea
+      entre si. Pero si alguien ataca desde esa misma red, los demas quedan frenados quince
+      minutos. Contar los fallos por correo, ademas de por conexion, quita ese efecto colateral.
 
 ## Mediano plazo
 

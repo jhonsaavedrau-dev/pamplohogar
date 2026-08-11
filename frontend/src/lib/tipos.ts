@@ -14,6 +14,7 @@ export interface Usuario {
 export interface Foto {
   id: string;
   url: string;
+  publicId: string;
 }
 
 export interface ArrendadorResumen {

@@ -11,17 +11,38 @@ import { esquemaActualizarPerfil, esquemaLogin, esquemaRegistro } from '../schem
 
 export const rutasAuth = Router();
 
-const limitador = rateLimit({
+/**
+ * Solo cuentan los intentos fallidos.
+ * En el wifi de la universidad muchos estudiantes comparten la misma direccion IP,
+ * asi que castigar los inicios de sesion correctos dejaria por fuera a medio campus.
+ * Lo que interesa frenar es a quien esta probando contrasenas a la fuerza.
+ */
+const limitadorLogin = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 20,
+  limit: 25,
+  skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { mensaje: 'Demasiados intentos. Espera unos minutos y vuelve a probar.' },
+  message: {
+    mensaje: 'Demasiados intentos fallidos. Espera quince minutos y vuelve a probar.',
+  },
+});
+
+/** Crear cuentas es mucho menos frecuente, pero conviene frenar el registro masivo. */
+const limitadorRegistro = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 30,
+  skipFailedRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    mensaje: 'Se crearon demasiadas cuentas desde esta conexion. Intenta mas tarde.',
+  },
 });
 
 rutasAuth.post(
   '/registro',
-  limitador,
+  limitadorRegistro,
   asincrono(async (req, res) => {
     const datos = esquemaRegistro.parse(req.body);
 
@@ -47,7 +68,7 @@ rutasAuth.post(
 
 rutasAuth.post(
   '/login',
-  limitador,
+  limitadorLogin,
   asincrono(async (req, res) => {
     const datos = esquemaLogin.parse(req.body);
 
