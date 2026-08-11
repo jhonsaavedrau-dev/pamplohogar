@@ -18,6 +18,8 @@ services:
       # Los siguientes valores se pegan a mano en el panel de Render.
       - key: DATABASE_URL
         sync: false
+      - key: DIRECT_URL
+        sync: false
       - key: JWT_SECRET
         sync: false
       - key: FRONTEND_URL

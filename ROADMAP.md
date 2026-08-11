@@ -15,10 +15,13 @@ completo y guardado en un computador.
 - [ ] **Verificacion de correo al registrarse.** Hoy el registro entra directo. Conviene confirmar
       el correo antes de dejar publicar, sobre todo para los arrendadores.
 - [ ] **Recuperar contrasena.** Hoy no hay forma de recuperarla si se olvida.
-- [ ] **Panel de administrador.** El rol `ADMIN` ya existe en la base de datos pero hoy solo se usa
-      para moderar a mano. Falta la pantalla para revisar y retirar publicaciones sospechosas.
+- [x] ~~**Panel de administrador.**~~ Hecho el 11 de agosto de 2026: resumen de la plataforma,
+      moderacion de inmuebles, gestion de cuentas y retiro de resenas. Marca solo los precios
+      alejados de la mediana de la ciudad y los inmuebles sin fotos.
 - [ ] **Reportar una publicacion.** Un boton para que el estudiante avise de un anuncio falso o de
-      un cobro abusivo.
+      un cobro abusivo. Hoy el administrador tiene que encontrarlos el mismo.
+- [ ] **Registro de lo que hace cada administrador.** Hoy si un administrador elimina algo no queda
+      constancia de quien fue. Con un solo administrador no importa; con varios, si.
 - [ ] **Editar el orden de las fotos** arrastrandolas, y elegir cual es la portada.
 - [ ] **Borrar de Cloudinary las fotos que se quitan.** Hoy se quitan del inmueble pero el archivo
       sigue ocupando espacio en la cuenta.

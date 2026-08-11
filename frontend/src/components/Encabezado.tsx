@@ -42,6 +42,11 @@ export function Encabezado() {
               Mis inmuebles
             </NavLink>
           )}
+          {usuario?.rol === 'ADMIN' && (
+            <NavLink to="/admin" className={claseEnlace}>
+              Panel
+            </NavLink>
+          )}
           {usuario ? (
             <button type="button" onClick={cerrarSesion} className="boton-suave ml-2">
               Salir
@@ -93,6 +98,11 @@ export function Encabezado() {
                   Publicar inmueble
                 </NavLink>
               </>
+            )}
+            {usuario?.rol === 'ADMIN' && (
+              <NavLink to="/admin" className={claseEnlace} onClick={cerrar}>
+                Panel de administracion
+              </NavLink>
             )}
 
             <div className="space-y-2 pt-3">

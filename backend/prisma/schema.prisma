@@ -4,7 +4,11 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Conexion agrupada: aguanta mientras la base despierta y reparte las
+  // consultas concurrentes sin abrir una conexion nueva para cada una.
+  url = env("DATABASE_URL")
+  // Conexion directa: solo para migraciones, que la agrupada no soporta.
+  directUrl = env("DIRECT_URL")
 }
 
 enum Rol {

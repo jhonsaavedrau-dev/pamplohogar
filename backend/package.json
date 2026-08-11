@@ -11,6 +11,7 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "seed": "tsx prisma/seed.ts",
+    "hacer-admin": "tsx prisma/hacerAdmin.ts",
     "test": "vitest run",
     "test:api": "node pruebas/prueba-api.mjs"
   },

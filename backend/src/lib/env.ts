@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 const esquemaEnv = z.object({
   DATABASE_URL: z.string().min(1, 'Falta DATABASE_URL'),
+  DIRECT_URL: z.string().min(1, 'Falta DIRECT_URL'),
   JWT_SECRET: z.string().min(16, 'JWT_SECRET debe tener al menos 16 caracteres'),
   PORT: z.coerce.number().int().positive().default(4000),
   FRONTEND_URL: z.string().default('http://localhost:5173'),

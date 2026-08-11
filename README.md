@@ -20,6 +20,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
   registrada para que el arrendador sepa quien le escribio.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
 - **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
+- **Panel de administracion** para ver como va la plataforma y moderar: retirar o eliminar
+  publicaciones, gestionar cuentas y quitar resenas abusivas. Marca solo los inmuebles con precio
+  muy lejano al tipico de la ciudad y los que no tienen fotos.
 
 ## Como esta organizado el proyecto
 
@@ -103,14 +106,43 @@ Todas las cuentas de ejemplo usan la contrasena `pamplona2026`:
 - Arrendador: `marta.villamizar@ejemplo.com`
 - Estudiante: `andres.rojas@ejemplo.com`
 
+### 5. Crear un administrador
+
+El registro de la pagina solo permite crear estudiantes y arrendadores. El rol de administrador se
+otorga a proposito desde este computador, nunca desde la web:
+
+```bash
+cd backend && npm run hacer-admin -- tucorreo@ejemplo.com
+```
+
+La cuenta ya debe existir. Despues de correrlo hay que cerrar sesion y volver a entrar.
+
+Asi, aunque alguien lograra entrar a una cuenta de administrador, no podria crear mas
+administradores ni dejarte por fuera.
+
 ## Pruebas
 
 ```bash
 cd backend && npm test
 ```
 
-Cubren la logica que de verdad importa: el calculo de distancias, la firma y verificacion de
-sesiones, las reglas de validacion de cada formulario y el armado del enlace de WhatsApp.
+Son 45 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
+verificacion de sesiones, las reglas de validacion de cada formulario y el armado del enlace de
+WhatsApp.
+
+Con el servidor encendido se pueden correr ademas las pruebas de la plataforma completa:
+
+```bash
+cd backend && npm run test:api
+```
+
+```bash
+cd backend && node pruebas/prueba-admin.mjs
+```
+
+La primera recorre los 32 flujos de estudiante y arrendador. La segunda verifica las 29 reglas del
+panel de administracion, sobre todo que nadie sin ese rol pueda entrar. Ambas aceptan una direccion
+como argumento para probar el servidor de internet en vez del local.
 
 ## Decisiones tecnicas
 

@@ -9,6 +9,7 @@ import { Registro } from './pages/Registro';
 import { Favoritos } from './pages/Favoritos';
 import { MisInmuebles } from './pages/MisInmuebles';
 import { FormularioInmueble } from './pages/FormularioInmueble';
+import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
 
 export function App() {
@@ -52,6 +53,15 @@ export function App() {
             element={
               <RutaProtegida roles={['ARRENDADOR', 'ADMIN']}>
                 <FormularioInmueble />
+              </RutaProtegida>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <RutaProtegida roles={['ADMIN']}>
+                <Admin />
               </RutaProtegida>
             }
           />
