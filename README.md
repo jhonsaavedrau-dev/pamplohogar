@@ -10,6 +10,8 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 
 - **Dos tipos de cuenta.** El estudiante busca, filtra, guarda favoritos, contacta y resena. El
   arrendador publica y gestiona sus inmuebles.
+- **Recuperar la contrasena** con un enlace de un solo uso que vence en una hora, y **confirmar el
+  correo** al registrarse.
 - **Publicacion de inmuebles** con hasta diez fotos, ubicacion marcada en el mapa y lista de
   servicios incluidos.
 - **Busqueda con filtros** por texto, tipo, precio, barrio, numero de habitaciones, servicios y si

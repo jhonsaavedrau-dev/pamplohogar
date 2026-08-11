@@ -39,6 +39,22 @@ enum EstadoReporte {
   DESCARTADO
 }
 
+enum TipoToken {
+  RECUPERAR_CLAVE
+  VERIFICAR_CORREO
+}
+
+enum AccionAdmin {
+  OCULTO_INMUEBLE
+  MOSTRO_INMUEBLE
+  ELIMINO_INMUEBLE
+  ELIMINO_USUARIO
+  CAMBIO_ROL
+  ELIMINO_RESENA
+  ATENDIO_REPORTE
+  DESCARTO_REPORTE
+}
+
 model Usuario {
   id           String   @id @default(cuid())
   nombre       String
@@ -46,6 +62,7 @@ model Usuario {
   telefono     String?
   passwordHash String
   rol          Rol      @default(ESTUDIANTE)
+  emailVerificadoEn DateTime?
   creadoEn     DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 
@@ -56,8 +73,49 @@ model Usuario {
   solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
   reportesHechos    Reporte[]           @relation("ReportesDelAutor")
   reportesAtendidos Reporte[]           @relation("ReportesAtendidos")
+  tokens            TokenCorreo[]
+  accionesDeAdmin   RegistroAdmin[]
 
   @@index([rol])
+}
+
+// Deja constancia de lo que hace cada administrador.
+//
+// Se guarda una descripcion en texto y no solo el id de lo afectado, porque
+// casi siempre lo que se registra es un borrado: si guardaramos una relacion,
+// al desaparecer el inmueble o la cuenta se perderia justo el rastro que
+// queremos conservar.
+model RegistroAdmin {
+  id          String      @id @default(cuid())
+  accion      AccionAdmin
+  descripcion String
+  creadoEn    DateTime    @default(now())
+
+  adminId String
+  admin   Usuario @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([creadoEn])
+  @@index([adminId])
+}
+
+// Enlaces de un solo uso que se mandan por correo, para recuperar la
+// contrasena o confirmar la direccion.
+//
+// Se guarda el hash y nunca el codigo: si alguien llegara a leer la base de
+// datos, no podria usar los enlaces que estan en camino.
+model TokenCorreo {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  tipo      TipoToken
+  expiraEn  DateTime
+  usadoEn   DateTime?
+  creadoEn  DateTime  @default(now())
+
+  usuarioId String
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId, tipo])
+  @@index([expiraEn])
 }
 
 model Inmueble {

@@ -9,6 +9,10 @@ import { Registro } from './pages/Registro';
 import { Favoritos } from './pages/Favoritos';
 import { MisInmuebles } from './pages/MisInmuebles';
 import { FormularioInmueble } from './pages/FormularioInmueble';
+import { Recuperar } from './pages/Recuperar';
+import { CambiarClave } from './pages/CambiarClave';
+import { ConfirmarCorreo } from './pages/ConfirmarCorreo';
+import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
 import { Comparar } from './pages/Comparar';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
@@ -18,6 +22,7 @@ export function App() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Encabezado />
+      <AvisoCorreoSinConfirmar />
 
       <main className="flex-1">
         <Routes>
@@ -26,6 +31,9 @@ export function App() {
           <Route path="/comparar" element={<Comparar />} />
           <Route path="/entrar" element={<Entrar />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/recuperar" element={<Recuperar />} />
+          <Route path="/cambiar-clave" element={<CambiarClave />} />
+          <Route path="/confirmar-correo" element={<ConfirmarCorreo />} />
 
           <Route
             path="/favoritos"

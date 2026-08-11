@@ -11,6 +11,7 @@ import { rutasContacto } from './routes/contacto.js';
 import { rutasSubidas } from './routes/subidas.js';
 import { rutasAdmin } from './routes/admin.js';
 import { rutasReportes } from './routes/reportes.js';
+import { rutasRecuperacion } from './routes/recuperacion.js';
 import { prisma } from './lib/prisma.js';
 
 export function crearApp() {
@@ -41,6 +42,7 @@ export function crearApp() {
   });
 
   app.use('/api/auth', rutasAuth);
+  app.use('/api/auth', rutasRecuperacion);
   app.use('/api/inmuebles', rutasInmuebles);
   app.use('/api/favoritos', rutasFavoritos);
   app.use('/api/resenas', rutasResenas);

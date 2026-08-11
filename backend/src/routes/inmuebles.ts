@@ -6,6 +6,7 @@ import { requiereRol, requiereSesion, sesionOpcional } from '../middleware/auth.
 import { noEncontrado, prohibido } from '../lib/errores.js';
 import { distanciaAUniversidad } from '../lib/geo.js';
 import { borrarFotos } from '../lib/cloudinary.js';
+import { anotarAccion } from '../lib/registroAdmin.js';
 import {
   esquemaActualizarInmueble,
   esquemaBusqueda,
@@ -329,6 +330,18 @@ rutasInmuebles.patch(
       include: inclusionListado,
     });
 
+    if (req.usuario!.rol === 'ADMIN' && existente.arrendadorId !== req.usuario!.sub) {
+      if (datos.activo === false) {
+        anotarAccion(
+          req.usuario!.sub,
+          'OCULTO_INMUEBLE',
+          `"${existente.titulo}" de ${existente.arrendadorId}`,
+        );
+      } else if (datos.activo === true) {
+        anotarAccion(req.usuario!.sub, 'MOSTRO_INMUEBLE', `"${existente.titulo}"`);
+      }
+    }
+
     const calificaciones = await promediosPorArrendador([inmueble.arrendadorId]);
     res.json({ inmueble: formatearInmueble(inmueble, calificaciones) });
   }),
@@ -352,6 +365,10 @@ rutasInmuebles.delete(
 
     await prisma.inmueble.delete({ where: { id: req.params.id } });
     await borrarFotos(fotos.map((f) => f.publicId));
+
+    if (req.usuario!.rol === 'ADMIN' && existente.arrendadorId !== req.usuario!.sub) {
+      anotarAccion(req.usuario!.sub, 'ELIMINO_INMUEBLE', `"${existente.titulo}" en ${existente.barrio}`);
+    }
 
     res.json({ mensaje: 'Inmueble eliminado.' });
   }),

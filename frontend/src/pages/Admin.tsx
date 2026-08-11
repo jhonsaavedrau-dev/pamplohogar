@@ -5,6 +5,7 @@ import { InmueblesAdmin } from '../components/admin/InmueblesAdmin';
 import { UsuariosAdmin } from '../components/admin/UsuariosAdmin';
 import { ResenasAdmin } from '../components/admin/ResenasAdmin';
 import { ReportesAdmin } from '../components/admin/ReportesAdmin';
+import { RegistroAdmin } from '../components/admin/RegistroAdmin';
 
 const SECCIONES = [
   { clave: 'resumen', etiqueta: 'Resumen' },
@@ -12,6 +13,7 @@ const SECCIONES = [
   { clave: 'inmuebles', etiqueta: 'Inmuebles' },
   { clave: 'usuarios', etiqueta: 'Usuarios' },
   { clave: 'resenas', etiqueta: 'Resenas' },
+  { clave: 'registro', etiqueta: 'Registro' },
 ] as const;
 
 type Seccion = (typeof SECCIONES)[number]['clave'];
@@ -57,6 +59,7 @@ export function Admin() {
       {seccion === 'inmuebles' && <InmueblesAdmin />}
       {seccion === 'usuarios' && <UsuariosAdmin />}
       {seccion === 'resenas' && <ResenasAdmin />}
+      {seccion === 'registro' && <RegistroAdmin />}
     </div>
   );
 }

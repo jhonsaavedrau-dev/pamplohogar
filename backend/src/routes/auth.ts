@@ -8,6 +8,9 @@ import { conflicto, noAutorizado, noEncontrado } from '../lib/errores.js';
 import { asincrono } from '../middleware/asincrono.js';
 import { requiereSesion } from '../middleware/auth.js';
 import { esquemaActualizarPerfil, esquemaLogin, esquemaRegistro } from '../schemas/auth.js';
+import { correoConfigurado, correoDeVerificacion, enviarCorreo } from '../lib/correo.js';
+import { crearToken } from '../lib/tokens.js';
+import { origenesPermitidos } from '../lib/env.js';
 
 export const rutasAuth = Router();
 
@@ -60,6 +63,25 @@ rutasAuth.post(
         rol: datos.rol,
       },
     });
+
+    // El correo de confirmacion se manda pero no se espera: si el servicio esta
+    // caido, la persona igual queda registrada y puede pedirlo despues.
+    if (correoConfigurado) {
+      void crearToken(usuario.id, 'VERIFICAR_CORREO')
+        .then((codigo) => {
+          const base = origenesPermitidos[0] ?? 'http://localhost:5173';
+          return enviarCorreo(
+            correoDeVerificacion(
+              usuario.email,
+              usuario.nombre.split(' ')[0],
+              `${base}/confirmar-correo?token=${codigo}`,
+            ),
+          );
+        })
+        .catch(() => {
+          process.stderr.write('[PamploHogar] No se pudo enviar el correo de bienvenida.\n');
+        });
+    }
 
     const token = firmarToken({ sub: usuario.id, rol: usuario.rol });
     res.status(201).json({ token, usuario: aUsuarioPublico(usuario) });

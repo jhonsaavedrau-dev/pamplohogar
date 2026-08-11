@@ -6,6 +6,7 @@ export interface UsuarioPublico {
   email: string;
   rol: Usuario['rol'];
   telefono: string | null;
+  emailVerificado: boolean;
   creadoEn: Date;
 }
 
@@ -17,6 +18,7 @@ export function aUsuarioPublico(usuario: Usuario): UsuarioPublico {
     email: usuario.email,
     rol: usuario.rol,
     telefono: usuario.telefono,
+    emailVerificado: usuario.emailVerificadoEn !== null,
     creadoEn: usuario.creadoEn,
   };
 }

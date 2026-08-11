@@ -10,6 +10,8 @@ const esquemaEnv = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional().default(''),
   CLOUDINARY_API_KEY: z.string().optional().default(''),
   CLOUDINARY_API_SECRET: z.string().optional().default(''),
+  RESEND_API_KEY: z.string().optional().default(''),
+  CORREO_REMITENTE: z.string().optional().default('PamploHogar <onboarding@resend.dev>'),
 });
 
 const resultado = esquemaEnv.safeParse(process.env);

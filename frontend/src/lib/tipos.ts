@@ -8,6 +8,7 @@ export interface Usuario {
   email: string;
   rol: Rol;
   telefono: string | null;
+  emailVerificado: boolean;
   creadoEn: string;
 }
 

@@ -10,6 +10,7 @@ import {
   esquemaUsuariosAdmin,
 } from '../schemas/admin.js';
 import { esquemaAtenderReporte, esquemaListarReportes } from '../schemas/reporte.js';
+import { anotarAccion } from '../lib/registroAdmin.js';
 
 export const rutasAdmin = Router();
 
@@ -224,6 +225,12 @@ rutasAdmin.patch(
       select: { id: true, nombre: true, rol: true },
     });
 
+    anotarAccion(
+      req.usuario!.sub,
+      'CAMBIO_ROL',
+      `${usuario.nombre} (${usuario.email}) paso de ${usuario.rol} a ${rol}`,
+    );
+
     res.json({ usuario: actualizado });
   }),
 );
@@ -242,7 +249,15 @@ rutasAdmin.delete(
       throw prohibido('No puedes eliminar a otro administrador desde aqui.');
     }
 
+    const cuantos = await prisma.inmueble.count({ where: { arrendadorId: usuario.id } });
     await prisma.usuario.delete({ where: { id: req.params.id } });
+
+    anotarAccion(
+      req.usuario!.sub,
+      'ELIMINO_USUARIO',
+      `${usuario.nombre} (${usuario.email}), con ${cuantos} inmuebles`,
+    );
+
     res.json({ mensaje: 'Cuenta eliminada junto con sus publicaciones.' });
   }),
 );
@@ -312,7 +327,36 @@ rutasAdmin.patch(
       select: { id: true, estado: true },
     });
 
+    anotarAccion(
+      req.usuario!.sub,
+      datos.estado === 'ATENDIDO' ? 'ATENDIO_REPORTE' : 'DESCARTO_REPORTE',
+      `Reporte por ${existente.motivo}${datos.notaAdmin ? `: ${datos.notaAdmin}` : ''}`,
+    );
+
     res.json({ reporte });
+  }),
+);
+
+/** Que ha hecho cada administrador, lo mas reciente primero. */
+rutasAdmin.get(
+  '/registro',
+  asincrono(async (_req, res) => {
+    const registros = await prisma.registroAdmin.findMany({
+      include: { admin: { select: { nombre: true, email: true } } },
+      orderBy: { creadoEn: 'desc' },
+      take: 200,
+    });
+
+    res.json({
+      registros: registros.map((r) => ({
+        id: r.id,
+        accion: r.accion,
+        descripcion: r.descripcion,
+        creadoEn: r.creadoEn,
+        admin: r.admin.nombre,
+        adminEmail: r.admin.email,
+      })),
+    });
   }),
 );
 

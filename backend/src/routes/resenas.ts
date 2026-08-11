@@ -4,6 +4,7 @@ import { asincrono } from '../middleware/asincrono.js';
 import { requiereRol, requiereSesion } from '../middleware/auth.js';
 import { noEncontrado, solicitudInvalida } from '../lib/errores.js';
 import { esquemaCrearResena } from '../schemas/resena.js';
+import { anotarAccion } from '../lib/registroAdmin.js';
 
 export const rutasResenas = Router();
 
@@ -93,6 +94,15 @@ rutasResenas.delete(
       throw solicitudInvalida('Solo puedes borrar tus propias resenas.');
     }
     await prisma.resena.delete({ where: { id: req.params.id } });
+
+    if (req.usuario!.rol === 'ADMIN' && resena.autorId !== req.usuario!.sub) {
+      anotarAccion(
+        req.usuario!.sub,
+        'ELIMINO_RESENA',
+        `${resena.calificacion} estrellas: "${resena.comentario.slice(0, 120)}"`,
+      );
+    }
+
     res.json({ mensaje: 'Resena eliminada.' });
   }),
 );

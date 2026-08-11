@@ -82,6 +82,12 @@ export function Entrar() {
           {isSubmitting ? 'Entrando...' : 'Entrar'}
         </button>
 
+        <p className="text-center text-sm">
+          <Link to="/recuperar" className="font-semibold text-confianza-600 underline">
+            Olvidaste tu contrasena?
+          </Link>
+        </p>
+
         <p className="text-center text-sm text-piedra-600">
           No tienes cuenta?{' '}
           <Link to="/registro" className="font-semibold text-confianza-600 underline">
