@@ -26,9 +26,10 @@ completo y guardado en un computador.
 - [ ] **Registro de lo que hace cada administrador.** Los reportes ya guardan quien los atendio,
       pero eliminar un inmueble o una cuenta todavia no deja rastro. Con un solo administrador no
       importa; con varios, si.
-- [ ] **Separar la base de datos de pruebas de la de produccion.** Hoy el computador y el sitio en
-      internet usan la misma. Mientras los datos son de ejemplo no pasa nada, pero con arrendadores
-      reales publicando es peligroso probar en local.
+- [x] ~~**Separar la base de datos de pruebas de la de produccion.**~~ Hecho: el computador usa
+      `pamplohogar_dev` y internet sigue con `neondb`, las dos dentro del mismo proyecto de Neon.
+      Hay una prueba (`prueba-aislamiento.mjs`) que borra un inmueble en pruebas y comprueba que en
+      internet no cambia nada.
 - [x] ~~**Editar el orden de las fotos** y elegir cual es la portada.~~ Hecho con botones de subir,
       bajar y hacer portada, en vez de arrastrar: arrastrar es incomodo en celular y la plataforma
       se usa sobre todo desde el telefono.
