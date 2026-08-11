@@ -14,6 +14,24 @@ export function borrarToken(): void {
   window.localStorage.removeItem(CLAVE_TOKEN);
 }
 
+type Aviso = () => void;
+const avisosDeSesionPerdida = new Set<Aviso>();
+
+/**
+ * Permite que la aplicacion se entere cuando el servidor rechaza la sesion.
+ * Sin esto la pantalla queda mostrando al usuario como si siguiera dentro,
+ * mientras cada peticion falla por detras.
+ */
+export function alPerderSesion(aviso: Aviso): () => void {
+  avisosDeSesionPerdida.add(aviso);
+  return () => avisosDeSesionPerdida.delete(aviso);
+}
+
+function anunciarSesionPerdida(): void {
+  borrarToken();
+  avisosDeSesionPerdida.forEach((aviso) => aviso());
+}
+
 /** Error con el mensaje en espanol que devolvio el servidor. */
 export class ErrorApi extends Error {
   readonly estado: number;
@@ -67,7 +85,7 @@ export async function pedir<T>(ruta: string, opciones: OpcionesPeticion = {}): P
       datos !== null && typeof datos === 'object' && 'mensaje' in datos
         ? String((datos as { mensaje: unknown }).mensaje)
         : 'Algo salio mal. Intenta de nuevo.';
-    if (respuesta.status === 401) borrarToken();
+    if (respuesta.status === 401) anunciarSesionPerdida();
     throw new ErrorApi(respuesta.status, mensaje);
   }
 

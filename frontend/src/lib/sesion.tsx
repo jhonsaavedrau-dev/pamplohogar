@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import { borrarToken, guardarToken, leerToken, pedir } from './api';
+import { alPerderSesion, borrarToken, guardarToken, leerToken, pedir } from './api';
 import type { Rol, Usuario } from './tipos';
 
 interface ValorSesion {
@@ -51,6 +51,10 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   useEffect(() => {
     void refrescar();
   }, [refrescar]);
+
+  // Si el servidor rechaza la sesion en cualquier peticion, la pantalla se entera
+  // de una vez en lugar de seguir mostrando al usuario como si estuviera dentro.
+  useEffect(() => alPerderSesion(() => setUsuario(null)), []);
 
   const entrar = useCallback(async (email: string, password: string) => {
     const datos = await pedir<RespuestaAuth>('/api/auth/login', {
