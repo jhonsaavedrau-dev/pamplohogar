@@ -13,3 +13,6 @@ Thumbs.db
 coverage/
 frontend/dist/
 backend/dist/
+
+# Archivo temporal que TypeScript regenera en cada compilacion
+*.tsbuildinfo

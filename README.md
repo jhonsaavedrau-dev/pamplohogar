@@ -29,6 +29,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
 - **Reportar una publicacion.** El estudiante avisa desde el detalle si le cobraron mas de lo
   publicado, si el inmueble no existe o si lo trataron mal. El arrendador nunca sabe quien reporto.
+- **Comparacion con lo normal del barrio.** El detalle le dice al estudiante cuanto se cobra
+  normalmente por algo parecido en esa zona y si lo que esta viendo se sale de ahi. Se usa la
+  mediana, no el promedio, y no se muestra nada si hay menos de cuatro publicaciones parecidas.
 - **Historial de precios.** Cada cambio de precio queda registrado, y el estudiante ve cuanto subio
   o bajo desde que se publico. Sirve para negociar con datos y no de memoria.
 - **Panel de administracion** para ver como va la plataforma y moderar: atender los reportes,
@@ -137,9 +140,9 @@ administradores ni dejarte por fuera.
 cd backend && npm test
 ```
 
-Son 45 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
-verificacion de sesiones, las reglas de validacion de cada formulario y el armado del enlace de
-WhatsApp.
+Son 55 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
+verificacion de sesiones, las reglas de validacion de cada formulario, el armado del enlace de
+WhatsApp y la referencia de precio del barrio.
 
 Con el servidor encendido se pueden correr ademas las pruebas de la plataforma completa:
 
