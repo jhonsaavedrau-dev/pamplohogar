@@ -1,10 +1,11 @@
 // Verifica que quede constancia de lo que hace cada administrador.
 //   node pruebas/prueba-registro-admin.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando el registro de administradores contra ${BASE}\n`);
 

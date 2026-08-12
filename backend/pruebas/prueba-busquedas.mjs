@@ -1,10 +1,11 @@
 // Verifica las busquedas guardadas y el aviso por correo.
 //   node pruebas/prueba-busquedas.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando busquedas guardadas contra ${BASE}\n`);
 

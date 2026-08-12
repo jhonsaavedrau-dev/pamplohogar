@@ -181,8 +181,12 @@ cd backend && node pruebas/prueba-admin.mjs
 ```
 
 La primera recorre los 32 flujos de estudiante y arrendador. La segunda verifica las 29 reglas del
-panel de administracion, sobre todo que nadie sin ese rol pueda entrar. Ambas aceptan una direccion
-como argumento para probar el servidor de internet en vez del local.
+panel de administracion, sobre todo que nadie sin ese rol pueda entrar.
+
+Todas aceptan una direccion como argumento para apuntar a otro servidor, pero se niegan a correr
+contra internet si no se les dice ademas con que base de datos limpiar. Crean cuentas y las borran
+al final, y si crean alla y limpian aca quedan cuentas falsas en la plataforma de verdad. Paso una
+vez y por eso esta el freno.
 
 ## Decisiones tecnicas
 

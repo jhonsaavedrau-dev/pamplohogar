@@ -1,10 +1,11 @@
 // Verifica el buscador de roomies.
 //   node pruebas/prueba-roomies.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando roomies contra ${BASE}\n`);
 

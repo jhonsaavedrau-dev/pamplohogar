@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
 import { asincrono } from '../middleware/asincrono.js';
 import { requiereSesion } from '../middleware/auth.js';
-import { noAutorizado, solicitudInvalida } from '../lib/errores.js';
+import { demasiadosIntentos, noAutorizado, solicitudInvalida } from '../lib/errores.js';
 import { firmarToken, verificarPasoIntermedio } from '../lib/jwt.js';
 import { aUsuarioPublico } from '../lib/usuarioPublico.js';
 import {
@@ -15,7 +15,7 @@ import {
   direccionParaLaApp,
   revisarCodigo,
 } from '../lib/dobleFactor.js';
-import { limpiarFallos } from '../lib/intentosDeEntrada.js';
+import { anotarFallo, limpiarFallos, revisarFreno } from '../lib/intentosDeEntrada.js';
 import {
   esquemaActivarDobleFactor,
   esquemaApagarDobleFactor,
@@ -25,20 +25,34 @@ import {
 export const rutasDobleFactor = Router();
 
 /**
- * Frena a quien pruebe codigos al azar.
+ * Frena a quien pruebe codigos al azar desde una misma conexion.
  *
- * Son un millon de combinaciones y cada una vale treinta segundos. Con veinte
- * intentos cada quince minutos, adivinar uno llevaria siglos, y a quien de
- * verdad esta entrando le sobran veinte intentos para copiar bien seis
- * digitos.
+ * El tope es holgado a proposito, igual que en el inicio de sesion: en el wifi
+ * de la universidad todos comparten una sola direccion, y con un tope bajo una
+ * persona equivocandose dejaria a todo el salon sin poder entrar. El trabajo
+ * fino lo hace el freno por cuenta, que frena solo la cuenta que se esta
+ * atacando.
  */
-const limitadorCodigo = rateLimit({
+const limitadorPorConexion = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 20,
+  limit: 150,
   skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { mensaje: 'Demasiados códigos fallidos. Espera quince minutos.' },
+  message: { mensaje: 'Demasiados códigos fallidos desde esta conexión. Espera quince minutos.' },
+});
+
+/**
+ * Configurar o quitar la verificacion exige tener la sesion abierta, asi que
+ * abusar de esto ya cuesta una cuenta. Con un tope mas bajo alcanza.
+ */
+const limitadorDeAjustes = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 40,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { mensaje: 'Demasiados intentos. Espera quince minutos.' },
 });
 
 const resumir = (codigo: string): string =>
@@ -96,7 +110,7 @@ rutasDobleFactor.post(
 rutasDobleFactor.post(
   '/doble-factor/activar',
   requiereSesion,
-  limitadorCodigo,
+  limitadorDeAjustes,
   asincrono(async (req, res) => {
     const datos = esquemaActivarDobleFactor.parse(req.body);
     const usuario = await prisma.usuario.findUnique({ where: { id: req.usuario!.sub } });
@@ -136,7 +150,7 @@ rutasDobleFactor.post(
 rutasDobleFactor.post(
   '/doble-factor/apagar',
   requiereSesion,
-  limitadorCodigo,
+  limitadorDeAjustes,
   asincrono(async (req, res) => {
     const datos = esquemaApagarDobleFactor.parse(req.body);
     const usuario = await prisma.usuario.findUnique({ where: { id: req.usuario!.sub } });
@@ -164,7 +178,7 @@ rutasDobleFactor.post(
 /** Segundo tramo del inicio de sesion: el codigo de la app o uno de respaldo. */
 rutasDobleFactor.post(
   '/login/codigo',
-  limitadorCodigo,
+  limitadorPorConexion,
   asincrono(async (req, res) => {
     const datos = esquemaCodigoDeEntrada.parse(req.body);
 
@@ -176,6 +190,14 @@ rutasDobleFactor.post(
     const usuario = await prisma.usuario.findUnique({ where: { id: usuarioId } });
     if (!usuario || usuario.dobleFactorActivadoEn === null || usuario.dobleFactorClave === null) {
       throw noAutorizado('Vuelve a escribir tu correo y contraseña.');
+    }
+
+    const freno = revisarFreno(usuario.bloqueadoHasta, new Date());
+    if (freno.frenada) {
+      throw demasiadosIntentos(
+        `Demasiados códigos fallidos con esta cuenta. Espera ${freno.minutosQueFaltan} ` +
+          `${freno.minutosQueFaltan === 1 ? 'minuto' : 'minutos'}.`,
+      );
     }
 
     const revision = revisarCodigo(
@@ -208,6 +230,8 @@ rutasDobleFactor.post(
     });
 
     if (respaldo === null) {
+      // Ni de la app ni de respaldo: cuenta como intento fallido de la cuenta.
+      await anotarFallo(usuario.id, usuario.intentosFallidos);
       throw noAutorizado('Ese código no es correcto.');
     }
 

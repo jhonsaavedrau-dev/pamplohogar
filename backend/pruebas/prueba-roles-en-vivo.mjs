@@ -1,11 +1,12 @@
 // Comprueba que un cambio de rol tiene efecto de inmediato, sin volver a entrar,
 // y que quitarle el rol a alguien le corta los permisos al instante.
 //   node pruebas/prueba-roles-en-vivo.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient();
+const prisma = baseDeLaPrueba(RAIZ);
 
 let ok = 0;
 let fallas = 0;

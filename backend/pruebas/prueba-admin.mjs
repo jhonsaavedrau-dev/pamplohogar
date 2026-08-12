@@ -2,14 +2,15 @@
 // Crea su propio administrador temporal y lo borra al final, para no dejar
 // cuentas con permisos flotando en la base de datos.
 //   node pruebas/prueba-admin.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
 const ADMIN_EMAIL = `admin-temporal-${Math.floor(Math.random() * 999999)}@test.com`;
 const ADMIN_CLAVE = 'claveTemporal12345';
 
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando el panel contra ${BASE}\n`);
 

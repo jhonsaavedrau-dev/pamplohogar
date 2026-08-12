@@ -2,11 +2,12 @@
 // de los enlaces: un solo uso, con vencimiento y sin filtrar quien tiene cuenta.
 //   node pruebas/prueba-recuperacion.mjs [direccion]
 import { createHash, randomBytes } from 'node:crypto';
-import { PrismaClient } from '@prisma/client';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando recuperacion contra ${BASE}\n`);
 

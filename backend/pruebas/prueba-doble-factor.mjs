@@ -1,11 +1,12 @@
 // Verifica la entrada en dos pasos con app de autenticacion.
 //   node pruebas/prueba-doble-factor.mjs [direccion]
-import { PrismaClient } from '@prisma/client';
 import { createHmac } from 'node:crypto';
+
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
 
 const RAIZ = (process.argv[2] ?? 'http://localhost:4000').replace(/\/$/, '');
 const BASE = `${RAIZ}/api`;
-const prisma = new PrismaClient({ log: ['error'] });
+const prisma = baseDeLaPrueba(RAIZ);
 
 console.log(`Probando la entrada en dos pasos contra ${BASE}\n`);
 
@@ -259,6 +260,34 @@ try {
     exigir(r.estado === 401, `estado ${r.estado}`);
     await prisma.usuario.deleteMany({ where: { email: otro } });
     return 'una sesion normal tampoco vale como pase intermedio';
+  });
+
+  await probar('los códigos fallidos frenan la cuenta, no la conexión', async () => {
+    // Es el mismo freno del inicio de sesion: en el wifi de la universidad
+    // todos comparten una direccion, y castigar la conexion dejaria a todo el
+    // salon por fuera. Frenar la cuenta atacada no molesta a nadie mas.
+    try {
+      const primera = await entrar();
+      for (let i = 0; i < 10; i++) {
+        await api('/auth/login/codigo', {
+          metodo: 'POST',
+          cuerpo: { paseIntermedio: primera.datos.paseIntermedio, codigo: '000000' },
+        });
+      }
+
+      // Con la cuenta frenada, ni siquiera pasa del primer tramo.
+      const frenado = await entrar();
+      exigir(frenado.estado === 429, `estado ${frenado.estado}`);
+      exigir(/este correo/.test(frenado.datos.mensaje), `mensaje: ${frenado.datos.mensaje}`);
+      return frenado.datos.mensaje;
+    } finally {
+      // Se adelanta el reloj para no esperar quince minutos de verdad, y va en
+      // finally para que un fallo aqui no tumbe las pruebas que siguen.
+      await prisma.usuario.update({
+        where: { email: correo },
+        data: { bloqueadoHasta: null, intentosFallidos: 0 },
+      });
+    }
   });
 
   await probar('apagarla exige la contraseña', async () => {
