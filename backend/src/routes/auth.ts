@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
 import { firmarPasoIntermedio, firmarToken } from '../lib/jwt.js';
+import { mandarCodigo } from '../lib/codigoPorCorreo.js';
 import { aUsuarioPublico } from '../lib/usuarioPublico.js';
 import { conflicto, demasiadosIntentos, noAutorizado, noEncontrado } from '../lib/errores.js';
 import { anotarFallo, limpiarFallos, revisarFreno } from '../lib/intentosDeEntrada.js';
@@ -134,9 +135,17 @@ rutasAuth.post(
     // nada: solo da un pase de cinco minutos para escribir el codigo. El
     // contador de fallos se limpia hasta que termine de entrar, no antes.
     if (usuario.dobleFactorActivadoEn !== null) {
+      // Con el metodo de correo hay que mandar el codigo ahora. Si el envio
+      // falla se dice, en vez de dejar a la persona esperando un correo que
+      // nunca va a llegar.
+      const porCorreo = usuario.metodoDobleFactor === 'CORREO';
+      const salio = porCorreo ? await mandarCodigo(usuario.id) : true;
+
       res.json({
         requiereCodigo: true,
+        metodo: usuario.metodoDobleFactor,
         paseIntermedio: firmarPasoIntermedio(usuario.id),
+        ...(porCorreo ? { correoEnviado: salio } : {}),
       });
       return;
     }

@@ -35,11 +35,14 @@ interface RespuestaAuth {
 interface RespuestaConCodigo {
   requiereCodigo: true;
   paseIntermedio: string;
+  metodo: 'APP' | 'CORREO';
+  /** Solo cuando el codigo va por correo: si de verdad salio. */
+  correoEnviado?: boolean;
 }
 
 export type ResultadoEntrar =
   | { listo: true; usuario: Usuario }
-  | { listo: false; paseIntermedio: string };
+  | { listo: false; paseIntermedio: string; metodo: 'APP' | 'CORREO'; correoEnviado?: boolean };
 
 export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
@@ -77,7 +80,12 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     });
 
     if ('requiereCodigo' in datos) {
-      return { listo: false, paseIntermedio: datos.paseIntermedio };
+      return {
+        listo: false,
+        paseIntermedio: datos.paseIntermedio,
+        metodo: datos.metodo,
+        correoEnviado: datos.correoEnviado,
+      };
     }
 
     guardarToken(datos.token);

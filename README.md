@@ -10,9 +10,10 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 
 - **Dos tipos de cuenta.** El estudiante busca, filtra, guarda favoritos, contacta y resena. El
   arrendador publica y gestiona sus inmuebles.
-- **Verificacion en dos pasos**, opcional, con app de autenticacion. Pide un codigo del celular
-  ademas de la contrasena. Entrega ocho codigos de respaldo por si se pierde el telefono, para que
-  activarla no sea arriesgarse a perder la cuenta.
+- **Verificacion en dos pasos**, opcional, con app de autenticacion o con codigo por correo. Pide
+  un codigo ademas de la contrasena. Entrega ocho codigos de respaldo por si se pierde el telefono
+  o el acceso al correo, para que activarla no sea arriesgarse a perder la cuenta. Activar la de
+  correo exige recibir un codigo de prueba y escribirlo: si el correo no llega, no se activa nada.
 - **Recuperar la contrasena** con un enlace de un solo uso que vence en una hora, y **confirmar el
   correo** al registrarse.
 - **Publicacion de inmuebles** con hasta diez fotos, ubicacion marcada en el mapa y lista de

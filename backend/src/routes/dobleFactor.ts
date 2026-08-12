@@ -20,7 +20,14 @@ import {
   esquemaActivarDobleFactor,
   esquemaApagarDobleFactor,
   esquemaCodigoDeEntrada,
+  esquemaPrepararDobleFactor,
 } from '../schemas/dobleFactor.js';
+import {
+  gastarCodigo,
+  mandarCodigo,
+  revisarCodigoDeCorreo,
+} from '../lib/codigoPorCorreo.js';
+import { correoConfigurado } from '../lib/correo.js';
 
 export const rutasDobleFactor = Router();
 
@@ -65,7 +72,7 @@ rutasDobleFactor.get(
   asincrono(async (req, res) => {
     const usuario = await prisma.usuario.findUnique({
       where: { id: req.usuario!.sub },
-      select: { dobleFactorActivadoEn: true },
+      select: { dobleFactorActivadoEn: true, metodoDobleFactor: true },
     });
 
     const respaldos = await prisma.codigoRespaldo.count({
@@ -74,6 +81,8 @@ rutasDobleFactor.get(
 
     res.json({
       activada: usuario?.dobleFactorActivadoEn != null,
+      metodo: usuario?.metodoDobleFactor ?? 'APP',
+      correoDisponible: correoConfigurado,
       desde: usuario?.dobleFactorActivadoEn ?? null,
       codigosDeRespaldoSinUsar: respaldos,
     });
@@ -93,13 +102,37 @@ rutasDobleFactor.post(
 
     // Se genera una clave nueva cada vez que se prepara. Si alguien empezo y
     // dejo la pantalla a medias, la clave vieja deja de servir.
+    const { metodo } = esquemaPrepararDobleFactor.parse(req.body);
+
+    if (metodo === 'CORREO') {
+      await prisma.usuario.update({
+        where: { id: usuario.id },
+        data: { metodoDobleFactor: 'CORREO', dobleFactorClave: null, dobleFactorUltimoPaso: null },
+      });
+
+      // Se manda un codigo de prueba de una. Si no llega, la verificacion no
+      // se activa: asi nadie queda encerrado fuera de su propia cuenta por
+      // confiar en un correo que nunca iba a salir.
+      const salio = await mandarCodigo(usuario.id);
+      if (!salio) {
+        throw solicitudInvalida(
+          'No pudimos enviarte el correo de prueba, así que no activamos nada. ' +
+            'Usa la app de autenticación mientras tanto.',
+        );
+      }
+
+      res.json({ metodo: 'CORREO', correoEnviadoA: usuario.email });
+      return;
+    }
+
     const clave = claveNueva();
     await prisma.usuario.update({
       where: { id: usuario.id },
-      data: { dobleFactorClave: clave, dobleFactorUltimoPaso: null },
+      data: { metodoDobleFactor: 'APP', dobleFactorClave: clave, dobleFactorUltimoPaso: null },
     });
 
     res.json({
+      metodo: 'APP',
       direccionParaLaApp: direccionParaLaApp(clave, usuario.email),
       claveParaEscribir: claveLegible(clave),
     });
@@ -118,15 +151,32 @@ rutasDobleFactor.post(
     if (usuario.dobleFactorActivadoEn !== null) {
       throw solicitudInvalida('Ya tienes la verificación activada.');
     }
-    if (usuario.dobleFactorClave === null) {
-      throw solicitudInvalida('Primero configura la app de autenticación.');
-    }
+    let paso: number | null = null;
 
-    const revision = revisarCodigo(usuario.dobleFactorClave, datos.codigo, new Date(), null);
-    if (revision.estado !== 'bueno') {
-      throw solicitudInvalida('Ese código no es correcto. Revisa la app e intenta de nuevo.');
+    if (usuario.metodoDobleFactor === 'CORREO') {
+      const r = revisarCodigoDeCorreo(
+        usuario.codigoCorreoHash,
+        usuario.codigoCorreoExpira,
+        datos.codigo,
+        new Date(),
+      );
+      if (r === 'vencido') {
+        throw solicitudInvalida('Ese código ya venció. Pide uno nuevo.');
+      }
+      if (r !== 'bueno') {
+        throw solicitudInvalida('Ese código no es correcto. Revisa el correo que te llegó.');
+      }
+      await gastarCodigo(usuario.id);
+    } else {
+      if (usuario.dobleFactorClave === null) {
+        throw solicitudInvalida('Primero configura la app de autenticación.');
+      }
+      const revision = revisarCodigo(usuario.dobleFactorClave, datos.codigo, new Date(), null);
+      if (revision.estado !== 'bueno') {
+        throw solicitudInvalida('Ese código no es correcto. Revisa la app e intenta de nuevo.');
+      }
+      paso = revision.paso;
     }
-    const paso = revision.paso;
 
     const codigos = codigosDeRespaldo();
 
@@ -166,6 +216,9 @@ rutasDobleFactor.post(
           dobleFactorClave: null,
           dobleFactorActivadoEn: null,
           dobleFactorUltimoPaso: null,
+          metodoDobleFactor: 'APP',
+          codigoCorreoHash: null,
+          codigoCorreoExpira: null,
         },
       }),
       prisma.codigoRespaldo.deleteMany({ where: { usuarioId: usuario.id } }),
@@ -188,7 +241,7 @@ rutasDobleFactor.post(
     }
 
     const usuario = await prisma.usuario.findUnique({ where: { id: usuarioId } });
-    if (!usuario || usuario.dobleFactorActivadoEn === null || usuario.dobleFactorClave === null) {
+    if (!usuario || usuario.dobleFactorActivadoEn === null) {
       throw noAutorizado('Vuelve a escribir tu correo y contraseña.');
     }
 
@@ -200,8 +253,62 @@ rutasDobleFactor.post(
       );
     }
 
+    // Por correo el camino es otro: no hay app ni ventanas de treinta segundos.
+    if (usuario.metodoDobleFactor === 'CORREO') {
+      const r = revisarCodigoDeCorreo(
+        usuario.codigoCorreoHash,
+        usuario.codigoCorreoExpira,
+        datos.codigo,
+        new Date(),
+      );
+
+      if (r === 'bueno') {
+        await gastarCodigo(usuario.id);
+        await limpiarFallos(usuario.id);
+        res.json({
+          token: firmarToken({ sub: usuario.id, rol: usuario.rol }),
+          usuario: aUsuarioPublico(usuario),
+        });
+        return;
+      }
+
+      if (r === 'vencido') {
+        throw noAutorizado('Ese código ya venció. Pide uno nuevo y revisa tu correo.');
+      }
+
+      const deRespaldo = await prisma.codigoRespaldo.findFirst({
+        where: { usuarioId: usuario.id, usadoEn: null, hash: resumir(datos.codigo) },
+      });
+      if (deRespaldo === null) {
+        await anotarFallo(usuario.id, usuario.intentosFallidos);
+        throw noAutorizado('Ese código no es correcto.');
+      }
+
+      await prisma.codigoRespaldo.update({
+        where: { id: deRespaldo.id },
+        data: { usadoEn: new Date() },
+      });
+      await limpiarFallos(usuario.id);
+      const quedanRespaldos = await prisma.codigoRespaldo.count({
+        where: { usuarioId: usuario.id, usadoEn: null },
+      });
+      res.json({
+        token: firmarToken({ sub: usuario.id, rol: usuario.rol }),
+        usuario: aUsuarioPublico(usuario),
+        usoCodigoDeRespaldo: true,
+        codigosDeRespaldoSinUsar: quedanRespaldos,
+      });
+      return;
+    }
+
+    // Aqui abajo ya solo queda el metodo de app, que si necesita la clave.
+    const claveDeLaApp = usuario.dobleFactorClave;
+    if (claveDeLaApp === null) {
+      throw noAutorizado('Vuelve a escribir tu correo y contraseña.');
+    }
+
     const revision = revisarCodigo(
-      usuario.dobleFactorClave,
+      claveDeLaApp,
       datos.codigo,
       new Date(),
       usuario.dobleFactorUltimoPaso,
@@ -251,5 +358,32 @@ rutasDobleFactor.post(
       usoCodigoDeRespaldo: true,
       codigosDeRespaldoSinUsar: quedan,
     });
+  }),
+);
+
+/** Para cuando el correo se demora, se borra por error o vence. */
+rutasDobleFactor.post(
+  '/login/codigo/reenviar',
+  limitadorPorConexion,
+  asincrono(async (req, res) => {
+    const pase = typeof req.body?.paseIntermedio === 'string' ? req.body.paseIntermedio : '';
+    const usuarioId = verificarPasoIntermedio(pase);
+    if (usuarioId === null) {
+      throw noAutorizado('Se venció el tiempo. Vuelve a escribir tu correo y contraseña.');
+    }
+
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: usuarioId },
+      select: { metodoDobleFactor: true, dobleFactorActivadoEn: true },
+    });
+    if (!usuario || usuario.dobleFactorActivadoEn === null) {
+      throw noAutorizado('Vuelve a escribir tu correo y contraseña.');
+    }
+    if (usuario.metodoDobleFactor !== 'CORREO') {
+      throw solicitudInvalida('Tu cuenta usa la app de autenticación, no el correo.');
+    }
+
+    const salio = await mandarCodigo(usuarioId);
+    res.json({ enviado: salio });
   }),
 );

@@ -6,6 +6,12 @@ const codigo = z
   .min(6, 'El código va de seis dígitos.')
   .max(20, 'Ese código es demasiado largo.');
 
+export const esquemaPrepararDobleFactor = z.object({
+  metodo: z.enum(['APP', 'CORREO'], {
+    errorMap: () => ({ message: 'Elige si el código llega por app o por correo.' }),
+  }),
+});
+
 export const esquemaActivarDobleFactor = z.object({ codigo });
 
 export const esquemaApagarDobleFactor = z.object({

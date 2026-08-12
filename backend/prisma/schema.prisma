@@ -89,6 +89,12 @@ model Usuario {
   // escriba un codigo bueno: si no, quedaria a medio activar y sin poder entrar.
   dobleFactorClave      String?
   dobleFactorActivadoEn DateTime?
+  // Por donde llega el codigo: la app de autenticacion o el correo.
+  metodoDobleFactor     MetodoDobleFactor @default(APP)
+  // Para el metodo de correo: el resumen del codigo enviado y hasta cuando
+  // vale. Se guarda el resumen y no el codigo, igual que las contrasenas.
+  codigoCorreoHash      String?
+  codigoCorreoExpira    DateTime?
   // El ultimo intervalo de treinta segundos que ya se uso, para que un codigo
   // visto por encima del hombro no sirva dos veces.
   dobleFactorUltimoPaso Int?
@@ -454,4 +460,9 @@ model CodigoRespaldo {
   usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   @@index([usuarioId])
+}
+
+enum MetodoDobleFactor {
+  APP
+  CORREO
 }

@@ -111,7 +111,11 @@ try {
   });
 
   await probar('preparar entrega la clave y el enlace para la app', async () => {
-    const r = await api('/auth/doble-factor/preparar', { metodo: 'POST', token });
+    const r = await api('/auth/doble-factor/preparar', {
+      metodo: 'POST',
+      token,
+      cuerpo: { metodo: 'APP' },
+    });
     exigir(r.estado === 200, `estado ${r.estado}`);
     exigir(r.datos.direccionParaLaApp.startsWith('otpauth://totp/'), 'enlace raro');
     exigir(r.datos.claveParaEscribir.includes(' '), 'la clave no viene en pedacitos');
@@ -280,7 +284,7 @@ try {
       exigir(frenado.estado === 429, `estado ${frenado.estado}`);
       exigir(/este correo/.test(frenado.datos.mensaje), `mensaje: ${frenado.datos.mensaje}`);
       return frenado.datos.mensaje;
-    } finally {
+} finally {
       // Se adelanta el reloj para no esperar quince minutos de verdad, y va en
       // finally para que un fallo aqui no tumbe las pruebas que siguen.
       await prisma.usuario.update({
@@ -316,6 +320,117 @@ try {
     const login = await entrar();
     exigir(login.datos.token, 'sigue pidiendo codigo despues de apagarla');
   });
+    await probar('con el metodo de correo, entrar avisa si el correo no salio', async () => {
+    await prisma.usuario.update({
+      where: { email: correo },
+      data: {
+        metodoDobleFactor: 'CORREO',
+        dobleFactorActivadoEn: new Date(),
+        dobleFactorClave: null,
+        intentosFallidos: 0,
+        bloqueadoHasta: null,
+      },
+    });
+
+    const login = await entrar();
+    exigir(login.datos.requiereCodigo === true, 'no pidio codigo');
+    exigir(login.datos.metodo === 'CORREO', `metodo ${login.datos.metodo}`);
+    // A una direccion de prueba el servicio de correo no entrega, y la pagina
+    // lo dice en vez de dejar a la persona esperando algo que nunca llega.
+    exigir(login.datos.correoEnviado === false, 'dijo que si salio el correo');
+    return 'no deja a nadie esperando un correo que nunca va a llegar';
+  });
+
+  /** Pone un codigo conocido, como si acabara de llegar al correo. */
+  const ponerCodigo = async (minutosDeVida = 10) => {
+    const { createHash, randomInt } = await import('node:crypto');
+    const codigo = String(randomInt(0, 1000000)).padStart(6, '0');
+    await prisma.usuario.update({
+      where: { email: correo },
+      data: {
+        codigoCorreoHash: createHash('sha256').update(codigo).digest('hex'),
+        codigoCorreoExpira: new Date(Date.now() + minutosDeVida * 60 * 1000),
+      },
+    });
+    return codigo;
+  };
+
+  await probar('el código del correo no queda legible en la base', async () => {
+    const codigo = await ponerCodigo();
+    const guardado = await prisma.usuario.findUnique({
+      where: { email: correo },
+      select: { codigoCorreoHash: true },
+    });
+    exigir(guardado.codigoCorreoHash !== codigo, 'el codigo quedo escrito tal cual');
+    exigir(guardado.codigoCorreoHash.length === 64, 'no parece un resumen');
+    return 'quien lea la base no puede entrar con el';
+  });
+
+  await probar('con el código del correo SI entra', async () => {
+    const login = await entrar();
+    const codigo = await ponerCodigo();
+    const r = await api('/auth/login/codigo', {
+      metodo: 'POST',
+      cuerpo: { paseIntermedio: login.datos.paseIntermedio, codigo },
+    });
+    exigir(r.estado === 200, `estado ${r.estado}: ${JSON.stringify(r.datos)}`);
+    exigir(r.datos.token, 'no entrego sesion');
+  });
+
+  await probar('el código del correo no sirve dos veces', async () => {
+    const uno = await entrar();
+    const codigo = await ponerCodigo();
+    const primera = await api('/auth/login/codigo', {
+      metodo: 'POST',
+      cuerpo: { paseIntermedio: uno.datos.paseIntermedio, codigo },
+    });
+    exigir(primera.estado === 200, `la primera fallo: ${primera.estado}`);
+
+    const dos = await entrar();
+    const segunda = await api('/auth/login/codigo', {
+      metodo: 'POST',
+      cuerpo: { paseIntermedio: dos.datos.paseIntermedio, codigo },
+    });
+    exigir(segunda.estado === 401, `el repetido entro: ${segunda.estado}`);
+    return 'se borra apenas se usa';
+  });
+
+  await probar('un código vencido lo dice, no dice que está mal', async () => {
+    const login = await entrar();
+    const codigo = await ponerCodigo(-1);
+    const r = await api('/auth/login/codigo', {
+      metodo: 'POST',
+      cuerpo: { paseIntermedio: login.datos.paseIntermedio, codigo },
+    });
+    exigir(r.estado === 401, `estado ${r.estado}`);
+    exigir(/venci/i.test(r.datos.mensaje), `mensaje: ${r.datos.mensaje}`);
+    return 'si no, la persona busca un error de tecleo que no existe';
+  });
+
+  await probar('con el método de correo, un código de respaldo también entra', async () => {
+    const { createHash } = await import('node:crypto');
+    // Al apagar la verificacion se borraron todos, asi que se pone uno nuevo
+    // como lo haria el servidor: guardando solo el resumen.
+    const deRespaldo = 'AAAA11-BBBB22';
+    const usuario = await prisma.usuario.findUnique({ where: { email: correo }, select: { id: true } });
+    await prisma.codigoRespaldo.create({
+      data: { usuarioId: usuario.id, hash: createHash('sha256').update(deRespaldo).digest('hex') },
+    });
+    await prisma.usuario.update({
+      where: { email: correo },
+      data: { intentosFallidos: 0, bloqueadoHasta: null },
+    });
+
+    const login = await entrar();
+    const r = await api('/auth/login/codigo', {
+      metodo: 'POST',
+      cuerpo: { paseIntermedio: login.datos.paseIntermedio, codigo: deRespaldo },
+    });
+    exigir(r.estado === 200, `estado ${r.estado}: ${r.datos?.mensaje}`);
+    exigir(r.datos.usoCodigoDeRespaldo === true, 'no lo reconocio como de respaldo');
+    return 'perder el acceso al correo tampoco es perder la cuenta';
+  });
+
 } finally {
   await prisma.usuario.deleteMany({ where: { email: { contains: `df-` } } });
   await prisma.$disconnect();

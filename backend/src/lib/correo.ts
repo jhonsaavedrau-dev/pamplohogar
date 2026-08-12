@@ -7,8 +7,11 @@ interface Mensaje {
   asunto: string;
   titulo: string;
   parrafos: string[];
-  textoBoton: string;
-  enlace: string;
+  /** Los correos con boton llevan estos dos. Los que llevan codigo, no. */
+  textoBoton?: string;
+  enlace?: string;
+  /** Un codigo para copiar, cuando no hay nada en que pulsar. */
+  codigo?: string;
   pie: string;
 }
 
@@ -30,13 +33,24 @@ function armarHtml(m: Mensaje): string {
       </p>
       <h1 style="margin:0 0 16px;font-size:22px;line-height:1.3;color:#241f1a">${m.titulo}</h1>
       ${parrafos}
-      <p style="margin:24px 0">
-        <a href="${m.enlace}" style="display:inline-block;background:#d2691e;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px">${m.textoBoton}</a>
+      ${
+        m.codigo !== undefined
+          ? `<p style="margin:24px 0;text-align:center">
+        <span style="display:inline-block;background:#faf4ef;border:2px dashed #e8c4a5;color:#241f1a;padding:16px 28px;border-radius:14px;font-weight:800;font-size:32px;letter-spacing:10px">${m.codigo}</span>
+      </p>`
+          : ''
+      }
+      ${
+        m.enlace !== undefined
+          ? `<p style="margin:24px 0">
+        <a href="${m.enlace}" style="display:inline-block;background:#d2691e;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px">${m.textoBoton ?? 'Abrir'}</a>
       </p>
       <p style="margin:0 0 8px;font-size:13px;color:#6b655b">
         Si el boton no funciona, copia y pega esta dirección en tu navegador:
       </p>
-      <p style="margin:0 0 24px;font-size:13px;color:#1f6fb2;word-break:break-all">${m.enlace}</p>
+      <p style="margin:0 0 24px;font-size:13px;color:#1f6fb2;word-break:break-all">${m.enlace}</p>`
+          : ''
+      }
       <hr style="border:none;border-top:1px solid #e4e0d9;margin:24px 0" />
       <p style="margin:0;font-size:13px;line-height:1.6;color:#6b655b">${m.pie}</p>
     </td></tr>
@@ -178,5 +192,18 @@ export function correoDeVerificacion(para: string, nombre: string, enlace: strin
     textoBoton: 'Confirmar mi correo',
     enlace,
     pie: 'Si no creaste esta cuenta, ignora este correo y no pasara nada.',
+  };
+}
+
+export function correoDeCodigoDeEntrada(para: string, nombre: string, codigo: string): Mensaje {
+  return {
+    para,
+    asunto: `${codigo} es tu código para entrar a PamploHogar`,
+    titulo: `Hola ${nombre}, este es tu código`,
+    parrafos: [
+      'Escríbelo en la página para terminar de entrar. Vence en diez minutos.',
+    ],
+    codigo,
+    pie: 'Si no estabas intentando entrar, alguien sabe tu contraseña. Cámbiala cuanto antes.',
   };
 }

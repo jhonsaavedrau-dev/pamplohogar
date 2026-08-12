@@ -5,15 +5,21 @@ import { useSesion } from '../lib/sesion';
 import { fechaCorta } from '../lib/formato';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
 
+type Metodo = 'APP' | 'CORREO';
+
 interface EstadoDobleFactor {
   activada: boolean;
+  metodo: Metodo;
+  correoDisponible: boolean;
   desde: string | null;
   codigosDeRespaldoSinUsar: number;
 }
 
 interface Preparacion {
-  direccionParaLaApp: string;
-  claveParaEscribir: string;
+  metodo: Metodo;
+  direccionParaLaApp?: string;
+  claveParaEscribir?: string;
+  correoEnviadoA?: string;
 }
 
 export function MiCuenta() {
@@ -38,7 +44,11 @@ export function MiCuenta() {
   });
 
   const preparar = useMutation({
-    mutationFn: () => pedir<Preparacion>('/api/auth/doble-factor/preparar', { metodo: 'POST' }),
+    mutationFn: (comoLlega: Metodo) =>
+      pedir<Preparacion>('/api/auth/doble-factor/preparar', {
+        metodo: 'POST',
+        cuerpo: { metodo: comoLlega },
+      }),
     onSuccess: (r) => {
       setPreparacion(r);
       avisar('');
@@ -135,8 +145,9 @@ export function MiCuenta() {
         {data.activada ? (
           <div className="space-y-3">
             <p className="rounded-xl bg-verificado-50 px-4 py-3 text-sm font-semibold text-verificado-700">
-              Activada{data.desde !== null ? ` desde el ${fechaCorta(data.desde)}` : ''}. Te quedan{' '}
-              {data.codigosDeRespaldoSinUsar} códigos de respaldo.
+              Activada{data.desde !== null ? ` desde el ${fechaCorta(data.desde)}` : ''}, con el
+              código {data.metodo === 'CORREO' ? 'por correo' : 'de tu app de autenticación'}. Te
+              quedan {data.codigosDeRespaldoSinUsar} códigos de respaldo.
             </p>
 
             <div>
@@ -164,27 +175,60 @@ export function MiCuenta() {
           </div>
         ) : preparacion === null ? (
           <div className="space-y-3">
-            <p className="text-sm text-piedra-700">
-              Vas a necesitar una app de autenticación en el celular. Sirve cualquiera: Google
-              Authenticator, Microsoft Authenticator, Authy, 2FAS.
-            </p>
+            <p className="text-sm font-semibold text-piedra-900">¿Por dónde quieres el código?</p>
+
             <button
               type="button"
-              className="boton-confianza w-full"
+              className="tarjeta w-full p-4 text-left transition-colors hover:bg-piedra-50"
               disabled={preparar.isPending}
-              onClick={() => preparar.mutate()}
+              onClick={() => preparar.mutate('APP')}
             >
-              {preparar.isPending ? 'Un momento...' : 'Activar la verificación'}
+              <strong className="text-piedra-900">Con una app de autenticación</strong>
+              <p className="mt-1 text-sm text-piedra-700">
+                Google Authenticator, Microsoft Authenticator, Authy o la que uses. Funciona sin
+                internet y el código cambia cada treinta segundos. Es la más segura.
+              </p>
             </button>
+
+            <button
+              type="button"
+              className="tarjeta w-full p-4 text-left transition-colors hover:bg-piedra-50 disabled:opacity-60"
+              disabled={preparar.isPending}
+              onClick={() => preparar.mutate('CORREO')}
+            >
+              <strong className="text-piedra-900">Por correo</strong>
+              <p className="mt-1 text-sm text-piedra-700">
+                Te llega un código de seis dígitos cada vez que entres. No hay que instalar nada.
+              </p>
+              {/*
+                Se dice antes, no despues. Si el correo no sale, la activacion
+                se cae sola y no se activa nada, pero es mejor que la persona
+                sepa por que puede pasarle.
+              */}
+              <p className="mt-2 text-sm text-piedra-600">
+                Te vamos a mandar un código de prueba. Si no te llega, no se activa nada.
+              </p>
+            </button>
+
+            {preparar.isPending && <p className="text-sm text-piedra-600">Un momento...</p>}
           </div>
         ) : (
           <div className="space-y-4">
+            {preparacion.metodo === 'CORREO' ? (
+              <div>
+                <h3 className="font-bold text-piedra-900">1. Revisa tu correo</h3>
+                <p className="mt-1 text-sm text-piedra-700">
+                  Te mandamos un código a <strong>{preparacion.correoEnviadoA}</strong>. Puede
+                  demorarse un minuto, y a veces cae en correo no deseado.
+                </p>
+              </div>
+            ) : (
             <div>
               <h3 className="font-bold text-piedra-900">1. Configura tu app</h3>
               <p className="mt-1 text-sm text-piedra-700">
                 Desde el celular, toca este botón y tu app queda lista sola.
               </p>
-              <a href={preparacion.direccionParaLaApp} className="boton-confianza mt-2 w-full">
+              <a href={preparacion.direccionParaLaApp ?? '#'} className="boton-confianza mt-2 w-full">
                 Abrir mi app de autenticación
               </a>
               <p className="mt-3 text-sm text-piedra-700">
@@ -196,8 +240,14 @@ export function MiCuenta() {
               </p>
             </div>
 
+            )}
+
             <div>
-              <h3 className="font-bold text-piedra-900">2. Escribe el código que te muestra</h3>
+              <h3 className="font-bold text-piedra-900">
+                {preparacion.metodo === 'CORREO'
+                  ? '2. Escribe el código que te llegó'
+                  : '2. Escribe el código que te muestra'}
+              </h3>
               <input
                 className="campo mt-2 text-center text-2xl tracking-[0.4em]"
                 inputMode="numeric"

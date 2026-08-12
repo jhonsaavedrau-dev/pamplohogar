@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSesion } from '../lib/sesion';
+import { pedir } from '../lib/api';
 import { Aviso } from '../components/Estados';
 
 const esquema = z.object({
@@ -21,6 +22,9 @@ export function Entrar() {
   // Cuando la cuenta tiene verificacion en dos pasos, aqui queda el pase que
   // permite terminar de entrar escribiendo el codigo.
   const [paseIntermedio, setPaseIntermedio] = useState('');
+  const [porCorreo, setPorCorreo] = useState(false);
+  const [correoSalio, setCorreoSalio] = useState(true);
+  const [reenviando, setReenviando] = useState(false);
   const [codigo, setCodigo] = useState('');
   const [enviandoCodigo, setEnviandoCodigo] = useState(false);
 
@@ -38,6 +42,8 @@ export function Entrar() {
       const resultado = await entrar(datos.email, datos.password);
       if (!resultado.listo) {
         setPaseIntermedio(resultado.paseIntermedio);
+        setPorCorreo(resultado.metodo === 'CORREO');
+        setCorreoSalio(resultado.correoEnviado !== false);
         return;
       }
       navegar(destino, { replace: true });
@@ -64,8 +70,9 @@ export function Entrar() {
       <div className="contenedor-app max-w-md py-10">
         <h1 className="titular">Escribe tu código</h1>
         <p className="mt-2 text-sm text-piedra-600">
-          Tu cuenta tiene verificación en dos pasos. Abre tu app de autenticación y escribe el
-          código de seis dígitos que te muestre.
+          {porCorreo
+            ? 'Tu cuenta tiene verificación en dos pasos. Te mandamos un código de seis dígitos a tu correo.'
+            : 'Tu cuenta tiene verificación en dos pasos. Abre tu app de autenticación y escribe el código de seis dígitos que te muestre.'}
         </p>
 
         <form
@@ -77,6 +84,12 @@ export function Entrar() {
           }}
         >
           {errorServidor && <Aviso tipo="error">{errorServidor}</Aviso>}
+
+          {porCorreo && !correoSalio && (
+            <Aviso tipo="error">
+              No pudimos enviarte el correo con el código. Usa uno de tus códigos de respaldo.
+            </Aviso>
+          )}
 
           <div>
             <label className="etiqueta" htmlFor="codigo">
@@ -103,8 +116,32 @@ export function Entrar() {
             {enviandoCodigo ? 'Comprobando...' : 'Entrar'}
           </button>
 
+          {porCorreo && (
+            <button
+              type="button"
+              className="tocable text-sm font-semibold text-confianza-600"
+              disabled={reenviando}
+              onClick={() => {
+                setReenviando(true);
+                setErrorServidor('');
+                void pedir<{ enviado: boolean }>('/api/auth/login/codigo/reenviar', {
+                  metodo: 'POST',
+                  cuerpo: { paseIntermedio },
+                })
+                  .then((r) => setCorreoSalio(r.enviado))
+                  .catch((e) =>
+                    setErrorServidor(e instanceof Error ? e.message : 'No pudimos reenviarlo.'),
+                  )
+                  .finally(() => setReenviando(false));
+              }}
+            >
+              {reenviando ? 'Enviando...' : 'No me llegó, mándamelo otra vez'}
+            </button>
+          )}
+
           <p className="text-sm text-piedra-600">
-            Si perdiste el celular, escribe aquí uno de los códigos de respaldo que guardaste.
+            Si perdiste {porCorreo ? 'el acceso al correo' : 'el celular'}, escribe aquí uno de los
+            códigos de respaldo que guardaste.
           </p>
 
           <button
