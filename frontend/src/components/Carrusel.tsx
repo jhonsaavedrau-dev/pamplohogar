@@ -23,6 +23,8 @@ export function Carrusel({ fotos, titulo }: { fotos: Foto[]; titulo: string }) {
           url={fotos[indice].url}
           alt={`${titulo}, foto ${indice + 1} de ${fotos.length}`}
           cargaDiferida={false}
+          anchoBase={1200}
+          medidas="(min-width: 1024px) 700px, 100vw"
           className="h-full w-full object-cover"
         />
 
@@ -63,7 +65,13 @@ export function Carrusel({ fotos, titulo }: { fotos: Foto[]; titulo: string }) {
                 i === indice ? 'border-terracota-500' : 'border-transparent'
               }`}
             >
-              <FotoInmueble url={foto.url} alt="" className="h-full w-full object-cover" />
+              <FotoInmueble
+                url={foto.url}
+                alt=""
+                anchoBase={400}
+                medidas="80px"
+                className="h-full w-full object-cover"
+              />
             </button>
           ))}
         </div>

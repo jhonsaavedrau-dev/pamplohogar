@@ -55,6 +55,11 @@ export function TarjetaInmueble({
 
   const puedeGuardar = usuario !== null && usuario.id !== inmueble.arrendador.id;
 
+  // Recien publicado: le sirve al estudiante para saber que todavia esta libre.
+  const DIAS_NUEVO = 14;
+  const esNuevo =
+    Date.now() - new Date(inmueble.creadoEn).getTime() < DIAS_NUEVO * 24 * 60 * 60 * 1000;
+
   return (
     <article
       data-revelar
@@ -75,12 +80,32 @@ export function TarjetaInmueble({
               </div>
             )}
 
+            {/* Degradado bajo la foto para que la distancia se lea sobre
+                cualquier imagen, clara u oscura. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-piedra-900/65 to-transparent"
+            />
+
             <span className="absolute top-3 left-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-piedra-800 shadow-[var(--shadow-suave)] backdrop-blur-sm">
               {ETIQUETAS_TIPO[inmueble.tipo]}
             </span>
 
+            <span className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                <path d="M8 1a5 5 0 0 0-5 5c0 3.6 4.3 8.4 4.5 8.6a.7.7 0 0 0 1 0C8.7 14.4 13 9.6 13 6a5 5 0 0 0-5-5Zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+              </svg>
+              {distancia(inmueble.distanciaUniversidadKm)}
+            </span>
+
+            {esNuevo && (
+              <span className="absolute top-3 right-3 rounded-full bg-verificado-600 px-2.5 py-1 text-xs font-bold text-white shadow-[var(--shadow-suave)]">
+                Nuevo
+              </span>
+            )}
+
             {!inmueble.activo && (
-              <span className="absolute bottom-3 left-3 rounded-full bg-piedra-900/85 px-2.5 py-1 text-xs font-bold text-white">
+              <span className="absolute right-3 bottom-3 rounded-full bg-piedra-900/85 px-2.5 py-1 text-xs font-bold text-white">
                 Oculto
               </span>
             )}
@@ -113,13 +138,7 @@ export function TarjetaInmueble({
             {inmueble.titulo}
           </h3>
 
-          <p className="mt-1.5 text-sm text-piedra-600">
-            {inmueble.barrio}
-            <span className="mx-1.5 text-piedra-300" aria-hidden="true">
-              ·
-            </span>
-            {distancia(inmueble.distanciaUniversidadKm)}
-          </p>
+          <p className="mt-1.5 text-sm text-piedra-600">{inmueble.barrio}</p>
 
           <div className="mt-3 flex flex-wrap gap-1.5">
             <span className="chip">

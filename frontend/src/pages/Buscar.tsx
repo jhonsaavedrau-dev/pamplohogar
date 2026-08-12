@@ -100,7 +100,9 @@ export function Buscar() {
       <section className="con-grano relative overflow-hidden border-b border-piedra-200 bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
         <TejasDeFondo />
 
-        <div className="contenedor-app relative py-12 sm:py-20">
+        {/* El encabezado es fijo y tapaba la etiqueta de arriba: por eso el
+            espacio superior es mayor que el inferior. */}
+        <div className="contenedor-app relative pt-14 pb-12 sm:pt-20 sm:pb-20">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
             Pamplona, Norte de Santander

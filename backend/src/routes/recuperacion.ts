@@ -21,13 +21,35 @@ import {
 
 export const rutasRecuperacion = Router();
 
-const limitador = rateLimit({
+/**
+ * Envio de correos: se limita porque cada uno cuesta y podria usarse para
+ * llenarle la bandeja a alguien. El tope es generoso porque en el wifi de la
+ * universidad todos los estudiantes salen con la misma direccion.
+ */
+const limitadorEnvio = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 12,
+  limit: 40,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     mensaje: 'Pediste demasiados correos seguidos. Espera un rato y vuelve a intentarlo.',
+  },
+});
+
+/**
+ * Canje del enlace: solo cuentan los intentos fallidos.
+ * Cambiar la contrasena con un enlace valido no es un ataque; adivinar
+ * enlaces si. Contar los aciertos dejaria por fuera a quien de verdad esta
+ * recuperando su cuenta desde una conexion compartida.
+ */
+const limitadorCanje = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 25,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    mensaje: 'Demasiados enlaces invalidos. Espera un rato y pide uno nuevo.',
   },
 });
 
@@ -41,7 +63,7 @@ const baseDelSitio = (): string => origenesPermitidos[0] ?? 'http://localhost:51
  */
 rutasRecuperacion.post(
   '/recuperar',
-  limitador,
+  limitadorEnvio,
   asincrono(async (req, res) => {
     const { email } = esquemaPedirRecuperacion.parse(req.body);
 
@@ -74,7 +96,7 @@ rutasRecuperacion.post(
 /** Cambia la contrasena usando el enlace del correo. */
 rutasRecuperacion.post(
   '/restablecer',
-  limitador,
+  limitadorCanje,
   asincrono(async (req, res) => {
     const datos = esquemaRestablecerClave.parse(req.body);
 
@@ -103,7 +125,7 @@ rutasRecuperacion.post(
 rutasRecuperacion.post(
   '/verificar/enviar',
   requiereSesion,
-  limitador,
+  limitadorEnvio,
   asincrono(async (req, res) => {
     if (!correoConfigurado) {
       throw solicitudInvalida('Todavia no podemos enviar correos. Intenta mas tarde.');
@@ -135,6 +157,7 @@ rutasRecuperacion.post(
 /** Confirma el correo con el enlace recibido. */
 rutasRecuperacion.post(
   '/verificar/confirmar',
+  limitadorCanje,
   asincrono(async (req, res) => {
     const { token: codigo } = esquemaConfirmarCorreo.parse(req.body);
 
