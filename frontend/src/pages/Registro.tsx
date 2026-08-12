@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSesion } from '../lib/sesion';
 import { Aviso } from '../components/Estados';
+import { BotonGoogle } from '../components/BotonGoogle';
 
 const esquema = z
   .object({
@@ -26,7 +27,7 @@ const esquema = z
 type Datos = z.infer<typeof esquema>;
 
 export function Registro() {
-  const { registrar } = useSesion();
+  const { registrar, entrarConGoogle } = useSesion();
   const navegar = useNavigate();
   const [errorServidor, setErrorServidor] = useState('');
 
@@ -175,6 +176,17 @@ export function Registro() {
             Entrar
           </Link>
         </p>
+
+        <BotonGoogle
+          alRecibirCredencial={(credencial) => {
+            setErrorServidor('');
+            void entrarConGoogle(credencial)
+              .then(() => navegar('/', { replace: true }))
+              .catch((e) =>
+                setErrorServidor(e instanceof Error ? e.message : 'No pudimos entrar con Google.'),
+              );
+          }}
+        />
       </form>
     </div>
   );

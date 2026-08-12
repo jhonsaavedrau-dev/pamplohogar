@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useSesion } from '../lib/sesion';
 import { pedir } from '../lib/api';
 import { Aviso } from '../components/Estados';
+import { BotonGoogle } from '../components/BotonGoogle';
 
 const esquema = z.object({
   email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
@@ -15,7 +16,7 @@ const esquema = z.object({
 type Datos = z.infer<typeof esquema>;
 
 export function Entrar() {
-  const { entrar, terminarConCodigo } = useSesion();
+  const { entrar, entrarConGoogle, terminarConCodigo } = useSesion();
   const navegar = useNavigate();
   const ubicacion = useLocation();
   const [errorServidor, setErrorServidor] = useState('');
@@ -217,6 +218,25 @@ export function Entrar() {
             Crear una
           </Link>
         </p>
+
+        <BotonGoogle
+          alRecibirCredencial={(credencial) => {
+            setErrorServidor('');
+            void entrarConGoogle(credencial)
+              .then((r) => {
+                if (!r.listo) {
+                  setPaseIntermedio(r.paseIntermedio);
+                  setPorCorreo(r.metodo === 'CORREO');
+                  setCorreoSalio(r.correoEnviado !== false);
+                  return;
+                }
+                navegar(destino, { replace: true });
+              })
+              .catch((e) =>
+                setErrorServidor(e instanceof Error ? e.message : 'No pudimos entrar con Google.'),
+              );
+          }}
+        />
       </form>
     </div>
   );

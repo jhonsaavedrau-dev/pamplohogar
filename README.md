@@ -8,6 +8,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 
 ## Que hace hoy
 
+- **Entrar con la cuenta de Google**, ademas del correo y la contrasena. Si el correo no existe se
+  crea la cuenta como estudiante, ya con el correo confirmado, porque Google lo confirma. No se
+  salta la verificacion en dos pasos de quien la tenga activada.
 - **Dos tipos de cuenta.** El estudiante busca, filtra, guarda favoritos, contacta y resena. El
   arrendador publica y gestiona sus inmuebles.
 - **Verificacion en dos pasos**, opcional, con app de autenticacion o con codigo por correo. Pide
@@ -109,6 +112,7 @@ Copia `backend/.env.example` a `backend/.env` y llena los valores:
 | `CLOUDINARY_CLOUD_NAME` | Nombre de tu espacio en Cloudinary                       |
 | `CLOUDINARY_API_KEY`    | Llave publica de Cloudinary                              |
 | `CLOUDINARY_API_SECRET` | Llave secreta de Cloudinary                              |
+| `GOOGLE_CLIENT_ID`      | Para el boton de entrar con Google. Vacio lo apaga       |
 
 El archivo `.env` nunca se sube al repositorio: esta bloqueado desde el primer commit.
 
@@ -144,6 +148,22 @@ Todas las cuentas de ejemplo usan la contrasena `pamplona2026`:
 
 - Arrendador: `marta.villamizar@ejemplo.com`
 - Estudiante: `andres.rojas@ejemplo.com`
+
+### Encender el boton de entrar con Google
+
+Es opcional. Si `GOOGLE_CLIENT_ID` esta vacio, el boton no aparece y no se descarga nada de Google.
+
+1. Entra a `console.cloud.google.com` y crea un proyecto.
+2. Busca **APIs y servicios**, luego **Pantalla de consentimiento de OAuth**. Elige externo, pon
+   PamploHogar como nombre y tu correo de contacto.
+3. Ve a **Credenciales**, **Crear credenciales**, **ID de cliente de OAuth**, tipo
+   **Aplicacion web**.
+4. En **Origenes autorizados de JavaScript** agrega `http://localhost:5173` y la direccion publica
+   de la pagina. No hace falta ninguna URI de redireccion.
+5. Copia el **ID de cliente** y ponlo en `GOOGLE_CLIENT_ID`, en el `.env` y en Render.
+
+El ID de cliente es publico: va tambien dentro de la pagina. No es un secreto y no hace falta el
+"client secret".
 
 ### 5. Crear un administrador
 

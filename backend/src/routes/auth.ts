@@ -4,15 +4,23 @@ import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
 import { firmarPasoIntermedio, firmarToken } from '../lib/jwt.js';
 import { mandarCodigo } from '../lib/codigoPorCorreo.js';
+import { googleConfigurado, personaDeGoogle } from '../lib/google.js';
+import { randomBytes } from 'node:crypto';
 import { aUsuarioPublico } from '../lib/usuarioPublico.js';
-import { conflicto, demasiadosIntentos, noAutorizado, noEncontrado } from '../lib/errores.js';
+import {
+  conflicto,
+  demasiadosIntentos,
+  noAutorizado,
+  noEncontrado,
+  solicitudInvalida,
+} from '../lib/errores.js';
 import { anotarFallo, limpiarFallos, revisarFreno } from '../lib/intentosDeEntrada.js';
 import { asincrono } from '../middleware/asincrono.js';
 import { requiereSesion } from '../middleware/auth.js';
 import { esquemaActualizarPerfil, esquemaLogin, esquemaRegistro } from '../schemas/auth.js';
 import { correoConfigurado, correoDeVerificacion, enviarCorreo } from '../lib/correo.js';
 import { crearToken } from '../lib/tokens.js';
-import { origenesPermitidos } from '../lib/env.js';
+import { env, origenesPermitidos } from '../lib/env.js';
 
 export const rutasAuth = Router();
 
@@ -156,6 +164,101 @@ rutasAuth.post(
 
     const token = firmarToken({ sub: usuario.id, rol: usuario.rol });
     res.json({ token, usuario: aUsuarioPublico(usuario) });
+  }),
+);
+
+/** Si el boton de Google esta encendido. La pagina lo consulta al cargar. */
+rutasAuth.get('/google/estado', (_req, res) => {
+  res.json({ disponible: googleConfigurado, clienteId: env.GOOGLE_CLIENT_ID });
+});
+
+/**
+ * Entrar con la cuenta de Google.
+ *
+ * Sirve para entrar y para crear la cuenta: si el correo no existe todavia se
+ * crea como estudiante, que es lo que va a ser casi todo el que llegue por
+ * aqui. Un arrendador puede cambiar despues, o registrarse por el camino
+ * normal si prefiere.
+ */
+rutasAuth.post(
+  '/google',
+  limitadorLogin,
+  asincrono(async (req, res) => {
+    if (!googleConfigurado) {
+      throw solicitudInvalida('Entrar con Google no está disponible por ahora.');
+    }
+
+    const credencial = typeof req.body?.credencial === 'string' ? req.body.credencial : '';
+    if (credencial === '') throw solicitudInvalida('Falta la credencial de Google.');
+
+    const persona = await personaDeGoogle(credencial);
+    if (persona === null) {
+      throw noAutorizado('No pudimos comprobar tu cuenta de Google. Intenta de nuevo.');
+    }
+
+    const existente = await prisma.usuario.findUnique({ where: { email: persona.email } });
+
+    if (existente !== null) {
+      const freno = revisarFreno(existente.bloqueadoHasta, new Date());
+      if (freno.frenada) {
+        throw demasiadosIntentos(
+          `Esta cuenta está frenada. Espera ${freno.minutosQueFaltan} ` +
+            `${freno.minutosQueFaltan === 1 ? 'minuto' : 'minutos'}.`,
+        );
+      }
+
+      // Con verificacion en dos pasos activada, entrar con Google tampoco se
+      // la salta. Si no, activarla no serviria de nada: bastaria con tener el
+      // Google de la persona abierto.
+      if (existente.dobleFactorActivadoEn !== null) {
+        const porCorreo = existente.metodoDobleFactor === 'CORREO';
+        const salio = porCorreo ? await mandarCodigo(existente.id) : true;
+        res.json({
+          requiereCodigo: true,
+          metodo: existente.metodoDobleFactor,
+          paseIntermedio: firmarPasoIntermedio(existente.id),
+          ...(porCorreo ? { correoEnviado: salio } : {}),
+        });
+        return;
+      }
+
+      // Google ya confirmo que ese correo es suyo, asi que la insignia de
+      // correo confirmado se puede dar sin mandar nada.
+      const actualizado =
+        existente.emailVerificadoEn === null
+          ? await prisma.usuario.update({
+              where: { id: existente.id },
+              data: { emailVerificadoEn: new Date(), intentosFallidos: 0, bloqueadoHasta: null },
+            })
+          : existente;
+
+      res.json({
+        token: firmarToken({ sub: actualizado.id, rol: actualizado.rol }),
+        usuario: aUsuarioPublico(actualizado),
+      });
+      return;
+    }
+
+    // Cuenta nueva. No hay contrasena, asi que se guarda un hash de algo que
+    // nadie sabe: la cuenta solo se abre por Google o pidiendo contrasena
+    // nueva desde "Olvide mi contrasena".
+    const passwordHash = await bcrypt.hash(randomBytes(32).toString('hex'), 10);
+
+    const usuario = await prisma.usuario.create({
+      data: {
+        nombre: persona.nombre.slice(0, 80),
+        email: persona.email,
+        passwordHash,
+        rol: 'ESTUDIANTE',
+        emailVerificadoEn: new Date(),
+      },
+    });
+
+    res.status(201).json({
+      token: firmarToken({ sub: usuario.id, rol: usuario.rol }),
+      usuario: aUsuarioPublico(usuario),
+      cuentaNueva: true,
+    });
   }),
 );
 

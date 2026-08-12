@@ -74,6 +74,9 @@ model Usuario {
   nombre       String
   email        String   @unique
   telefono     String?
+  // Quien entra con Google no tiene contrasena: se le guarda un hash imposible
+  // de acertar, para que el campo siga siendo obligatorio y nadie entre con
+  // una contrasena vacia.
   passwordHash String
   rol          Rol      @default(ESTUDIANTE)
   emailVerificadoEn DateTime?

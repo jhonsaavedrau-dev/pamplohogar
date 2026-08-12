@@ -14,6 +14,9 @@ const esquemaEnv = z.object({
   CORREO_REMITENTE: z.string().optional().default('PamploHogar <onboarding@resend.dev>'),
   // Clave de la tarea programada que manda los avisos. Vacia significa apagado.
   CLAVE_AVISOS: z.string().optional().default(''),
+  // Identificador de cliente de Google, para el boton de entrar con Google.
+  // Es publico: va tambien en la pagina. Vacio significa apagado.
+  GOOGLE_CLIENT_ID: z.string().optional().default(''),
 });
 
 const resultado = esquemaEnv.safeParse(process.env);

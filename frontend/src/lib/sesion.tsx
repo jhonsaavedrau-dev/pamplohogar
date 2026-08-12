@@ -8,6 +8,7 @@ interface ValorSesion {
   cargando: boolean;
   entrar: (email: string, password: string) => Promise<ResultadoEntrar>;
   terminarConCodigo: (paseIntermedio: string, codigo: string) => Promise<Usuario>;
+  entrarConGoogle: (credencial: string) => Promise<ResultadoEntrar>;
   registrar: (datos: DatosRegistro) => Promise<Usuario>;
   salir: () => void;
   refrescar: () => Promise<void>;
@@ -93,6 +94,27 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     return { listo: true, usuario: datos.usuario };
   }, []);
 
+  const entrarConGoogle = useCallback(async (credencial: string): Promise<ResultadoEntrar> => {
+    const datos = await pedir<RespuestaAuth | RespuestaConCodigo>('/api/auth/google', {
+      metodo: 'POST',
+      cuerpo: { credencial },
+    });
+
+    // Con verificacion en dos pasos, Google tampoco se la salta.
+    if ('requiereCodigo' in datos) {
+      return {
+        listo: false,
+        paseIntermedio: datos.paseIntermedio,
+        metodo: datos.metodo,
+        correoEnviado: datos.correoEnviado,
+      };
+    }
+
+    guardarToken(datos.token);
+    setUsuario(datos.usuario);
+    return { listo: true, usuario: datos.usuario };
+  }, []);
+
   const terminarConCodigo = useCallback(async (paseIntermedio: string, codigo: string) => {
     const datos = await pedir<RespuestaAuth>('/api/auth/login/codigo', {
       metodo: 'POST',
@@ -119,8 +141,17 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   }, []);
 
   const valor = useMemo(
-    () => ({ usuario, cargando, entrar, terminarConCodigo, registrar, salir, refrescar }),
-    [usuario, cargando, entrar, terminarConCodigo, registrar, salir, refrescar],
+    () => ({
+      usuario,
+      cargando,
+      entrar,
+      entrarConGoogle,
+      terminarConCodigo,
+      registrar,
+      salir,
+      refrescar,
+    }),
+    [usuario, cargando, entrar, entrarConGoogle, terminarConCodigo, registrar, salir, refrescar],
   );
 
   return <ContextoSesion.Provider value={valor}>{children}</ContextoSesion.Provider>;
