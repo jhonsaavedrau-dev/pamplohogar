@@ -50,6 +50,9 @@ export function Encabezado() {
           <NavLink to="/roomies" className={claseEnlace}>
             Roomies
           </NavLink>
+          <NavLink to="/mapa-de-precios" className={claseEnlace}>
+            Precios
+          </NavLink>
           {usuario && (
             <>
               <NavLink to="/favoritos" className={claseEnlace}>
@@ -116,6 +119,9 @@ export function Encabezado() {
             </NavLink>
             <NavLink to="/roomies" className={claseEnlace} onClick={cerrar}>
               Buscar roomie
+            </NavLink>
+            <NavLink to="/mapa-de-precios" className={claseEnlace} onClick={cerrar}>
+              Mapa de precios
             </NavLink>
             {usuario && (
               <>

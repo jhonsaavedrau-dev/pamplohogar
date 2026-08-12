@@ -8,10 +8,12 @@ import { distanciaAUniversidad } from '../lib/geo.js';
 import { borrarFotos } from '../lib/cloudinary.js';
 import { anotarAccion } from '../lib/registroAdmin.js';
 import { referenciaDePrecio } from '../lib/referenciaPrecio.js';
+import { mapaDePrecios } from '../lib/mapaDePrecios.js';
 import {
   esquemaActualizarInmueble,
   esquemaBusqueda,
   esquemaCrearInmueble,
+  TIPOS,
 } from '../schemas/inmueble.js';
 
 export const rutasInmuebles = Router();
@@ -146,6 +148,24 @@ rutasInmuebles.get(
       porPagina: POR_PAGINA,
       totalPaginas: Math.max(1, Math.ceil(total / POR_PAGINA)),
     });
+  }),
+);
+
+/**
+ * Precio tipico por zona, para pintar el mapa de precios.
+ *
+ * Va antes de la ruta con :id para que "mapa-de-precios" no se confunda con
+ * el identificador de un inmueble.
+ */
+rutasInmuebles.get(
+  '/mapa-de-precios',
+  asincrono(async (req, res) => {
+    const pedido = typeof req.query.tipo === 'string' ? req.query.tipo : 'HABITACION';
+    const tipo = (TIPOS as readonly string[]).includes(pedido)
+      ? (pedido as (typeof TIPOS)[number])
+      : 'HABITACION';
+
+    res.json(await mapaDePrecios(tipo));
   }),
 );
 

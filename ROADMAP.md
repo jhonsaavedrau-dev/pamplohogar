@@ -73,7 +73,11 @@ completo y guardado en un computador.
 
 ## Largo plazo
 
-- [ ] **Mapa de calor de precios** por zona de la ciudad.
+- [x] ~~**Mapa de calor de precios** por zona de la ciudad.~~ Hecho el 12 de agosto de 2026: circulos
+      por barrio coloreados segun se cobre mas o menos que en el resto de Pamplona, con un boton por
+      tipo de inmueble porque una habitacion y una casa no compiten por el mismo estudiante. Una
+      zona solo se pinta con tres publicaciones o mas; mientras tanto se muestran las publicaciones
+      sueltas como puntos, que es un dato cierto y no un promedio inventado.
 - [ ] **Aplicacion instalable que funcione sin internet** para consultar lo ya visto.
 - [ ] **Autenticacion en dos pasos** para las cuentas de arrendador.
 

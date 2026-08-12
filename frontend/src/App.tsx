@@ -16,6 +16,7 @@ import { ConfirmarCorreo } from './pages/ConfirmarCorreo';
 import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
 import { Comparar } from './pages/Comparar';
 import { Roomies } from './pages/Roomies';
+import { MapaDePrecios } from './pages/MapaDePrecios';
 import { MiPerfilRoomie } from './pages/MiPerfilRoomie';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
@@ -33,6 +34,7 @@ export function App() {
           <Route path="/inmueble/:id" element={<DetalleInmueble />} />
           <Route path="/comparar" element={<Comparar />} />
           <Route path="/roomies" element={<Roomies />} />
+          <Route path="/mapa-de-precios" element={<MapaDePrecios />} />
           <Route
             path="/roomies/mi-perfil"
             element={

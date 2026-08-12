@@ -29,6 +29,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Resenas** del estudiante sobre el arrendador, con promedio de estrellas visible en cada tarjeta.
 - **Reportar una publicacion.** El estudiante avisa desde el detalle si le cobraron mas de lo
   publicado, si el inmueble no existe o si lo trataron mal. El arrendador nunca sabe quien reporto.
+- **Mapa de precios de la ciudad.** Muestra en que zonas se cobra mas y en cuales menos, con un
+  boton por tipo de inmueble. Un barrio solo se pinta como zona cuando tiene al menos tres
+  publicaciones de ese tipo; con menos se ven las publicaciones sueltas como puntos.
 - **Comparacion con lo normal del barrio.** El detalle le dice al estudiante cuanto se cobra
   normalmente por algo parecido en esa zona y si lo que esta viendo se sale de ahi. Se usa la
   mediana, no el promedio, y no se muestra nada si hay menos de cuatro publicaciones parecidas.
@@ -118,8 +121,9 @@ Abre `http://localhost:5173`.
 cd backend && npm run seed
 ```
 
-Crea 10 inmuebles en barrios reales de Pamplona, 3 arrendadores, 5 estudiantes, 4 resenas de
-arrendador y 9 opiniones sobre barrios.
+Crea 21 inmuebles en barrios reales de Pamplona, 3 arrendadores, 5 estudiantes, 4 resenas de
+arrendador y 9 opiniones sobre barrios. Estan agrupados como se agrupa de verdad la vivienda
+estudiantil, cerca de la universidad y en el centro, para que el mapa de precios tenga zonas.
 Todas las cuentas de ejemplo usan la contrasena `pamplona2026`:
 
 - Arrendador: `marta.villamizar@ejemplo.com`

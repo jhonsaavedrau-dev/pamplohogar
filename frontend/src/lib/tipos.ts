@@ -88,6 +88,37 @@ export interface RespuestaResenasBarrio {
   resenas: ResenaBarrio[];
 }
 
+export type NivelDePrecio = 'barato' | 'normal' | 'caro';
+
+export interface ZonaDelMapa {
+  barrio: string;
+  lat: number;
+  lng: number;
+  mediana: number;
+  inmuebles: number;
+  nivel: NivelDePrecio;
+  diferenciaPorcentaje: number;
+}
+
+export interface PuntoDelMapa {
+  id: string;
+  titulo: string;
+  barrio: string;
+  lat: number;
+  lng: number;
+  precio: number;
+  nivel: NivelDePrecio;
+}
+
+export interface MapaDePrecios {
+  tipo: TipoInmueble;
+  medianaDeLaCiudad: number;
+  minimoPorBarrio: number;
+  zonas: ZonaDelMapa[];
+  puntos: PuntoDelMapa[];
+  barriosConPocosDatos: string[];
+}
+
 export interface ReferenciaDePrecio {
   mediana: number;
   muestras: number;
@@ -232,6 +263,19 @@ export const ETIQUETAS_TIPO: Record<TipoInmueble, string> = {
   APARTAMENTO: 'Apartamento',
   CASA: 'Casa',
 };
+
+/**
+ * El plural de cada tipo con su genero, porque en espanol no basta con
+ * pegarle una s: no existen "los casas" ni "casas publicados". Va escrito a
+ * mano y no calculado, que sale mas corto que adivinarlo.
+ */
+export const PLURAL_TIPO: Record<TipoInmueble, { articulo: string; nombre: string; final: string }> =
+  {
+    HABITACION: { articulo: 'las', nombre: 'habitaciones', final: 'publicadas' },
+    APARTAESTUDIO: { articulo: 'los', nombre: 'apartaestudios', final: 'publicados' },
+    APARTAMENTO: { articulo: 'los', nombre: 'apartamentos', final: 'publicados' },
+    CASA: { articulo: 'las', nombre: 'casas', final: 'publicadas' },
+  };
 
 export const ETIQUETAS_SERVICIO: Record<string, string> = {
   wifi: 'Wifi',
