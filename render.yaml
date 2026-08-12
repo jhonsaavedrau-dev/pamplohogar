@@ -33,8 +33,12 @@ services:
         sync: false
       - key: RESEND_API_KEY
         sync: false
+      # Va aqui con su valor y no como secreto a proposito: el identificador de
+      # cliente de Google es publico, viaja al navegador en cada visita para
+      # dibujar el boton. El que nunca se comparte es el secreto del cliente,
+      # que esta aplicacion ni siquiera usa.
       - key: GOOGLE_CLIENT_ID
-        sync: false
+        value: 772262287924-9osflrte6829rdkm0afig67k0rj0udvg.apps.googleusercontent.com
       - key: CLAVE_AVISOS
         sync: false
       - key: CORREO_REMITENTE

@@ -67,8 +67,20 @@ export function BotonGoogle({
 
   const clienteId = data?.disponible === true ? data.clienteId : '';
 
+  // Google no deja pedir la altura, pero el ancho si. Se mide el hueco donde
+  // va, para que quede tan ancho como el boton de al lado y no flotando mas
+  // angosto en el medio. Se vuelve a medir si cambia el tamano de la ventana.
+  const [ancho, setAncho] = useState(0);
+
   useEffect(() => {
-    if (clienteId === '' || caja.current === null) return;
+    const medir = () => setAncho(caja.current?.offsetWidth ?? 0);
+    medir();
+    window.addEventListener('resize', medir);
+    return () => window.removeEventListener('resize', medir);
+  }, [clienteId]);
+
+  useEffect(() => {
+    if (clienteId === '' || caja.current === null || ancho === 0) return;
 
     let cancelado = false;
     cargarLibreria()
@@ -85,7 +97,8 @@ export function BotonGoogle({
           text: 'continue_with',
           shape: 'pill',
           locale: 'es-419',
-          width: 320,
+          // Google lo limita a 400, que es mas de lo que mide el formulario.
+          width: Math.min(400, ancho),
         });
       })
       .catch(() => {
@@ -95,7 +108,7 @@ export function BotonGoogle({
     return () => {
       cancelado = true;
     };
-  }, [clienteId, alRecibirCredencial]);
+  }, [clienteId, ancho, alRecibirCredencial]);
 
   if (clienteId === '') return null;
 
@@ -114,8 +127,15 @@ export function BotonGoogle({
         <span className="text-xs font-semibold tracking-wide text-piedra-500 uppercase">o</span>
         <span className="h-px flex-1 bg-piedra-200" />
       </div>
-      {/* Google dibuja su propio boton aqui dentro. */}
-      <div ref={caja} className="flex justify-center" />
+      {/*
+        Google dibuja su propio boton aqui dentro y no deja pedirle la altura:
+        sale de 40 y los nuestros son de 48. En vez de estirarlo a la fuerza,
+        que se veria borroso, se centra en un hueco de 48 para que las filas
+        queden parejas.
+      */}
+      <div className="grid min-h-12 place-items-center">
+        <div ref={caja} className="w-full" />
+      </div>
     </div>
   );
 }
