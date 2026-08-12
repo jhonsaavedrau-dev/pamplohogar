@@ -88,6 +88,35 @@ export interface RespuestaResenasBarrio {
   resenas: ResenaBarrio[];
 }
 
+export interface ResumenConversacion {
+  id: string;
+  con: string;
+  inmuebleId: string;
+  inmuebleTitulo: string;
+  foto: string | null;
+  ultimoMensaje: string | null;
+  ultimoEn: string;
+  sinLeer: number;
+}
+
+export interface MensajeDelChat {
+  id: string;
+  texto: string;
+  creadoEn: string;
+  mio: boolean;
+  leido: boolean;
+}
+
+export interface RespuestaConversacion {
+  conversacion: {
+    id: string;
+    con: string;
+    soyElArrendador: boolean;
+    inmueble: { id: string; titulo: string; precio: number; barrio: string };
+  };
+  mensajes: MensajeDelChat[];
+}
+
 export type NivelDePrecio = 'barato' | 'normal' | 'caro';
 
 export interface ZonaDelMapa {

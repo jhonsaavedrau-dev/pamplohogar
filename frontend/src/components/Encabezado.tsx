@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { useSesion } from '../lib/sesion';
+import { pedir } from '../lib/api';
 import { Marca } from './Marca';
+
+/** El punto rojo con los mensajes sin leer, al lado del enlace. */
+function PuntoSinLeer({ cuantos }: { cuantos: number }) {
+  if (cuantos === 0) return null;
+  return (
+    <span className="ml-1.5 inline-grid h-5 min-w-5 place-items-center rounded-full bg-terracota-600 px-1 text-xs font-bold text-white">
+      {cuantos > 9 ? '9+' : cuantos}
+    </span>
+  );
+}
 
 export function Encabezado() {
   const { usuario, salir } = useSesion();
@@ -18,6 +30,16 @@ export function Encabezado() {
     window.addEventListener('scroll', alDesplazar, { passive: true });
     return () => window.removeEventListener('scroll', alDesplazar);
   }, []);
+
+  // Se revisa cada medio minuto: lo justo para enterarse sin estar
+  // preguntandole al servidor todo el tiempo desde cada pestana abierta.
+  const { data: correo } = useQuery({
+    queryKey: ['mensajesSinLeer'],
+    queryFn: () => pedir<{ sinLeer: number }>('/api/mensajes/sin-leer'),
+    enabled: usuario !== null,
+    refetchInterval: 30000,
+  });
+  const sinLeer = correo?.sinLeer ?? 0;
 
   const cerrar = () => setAbierto(false);
 
@@ -55,6 +77,10 @@ export function Encabezado() {
           </NavLink>
           {usuario && (
             <>
+              <NavLink to="/mensajes" className={claseEnlace}>
+                Mensajes
+                <PuntoSinLeer cuantos={sinLeer} />
+              </NavLink>
               <NavLink to="/favoritos" className={claseEnlace}>
                 Favoritos
               </NavLink>
@@ -125,6 +151,10 @@ export function Encabezado() {
             </NavLink>
             {usuario && (
               <>
+                <NavLink to="/mensajes" className={claseEnlace} onClick={cerrar}>
+                  Mis mensajes
+                  <PuntoSinLeer cuantos={sinLeer} />
+                </NavLink>
                 <NavLink to="/favoritos" className={claseEnlace} onClick={cerrar}>
                   Mis favoritos
                 </NavLink>

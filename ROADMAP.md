@@ -49,7 +49,11 @@ completo y guardado en un computador.
 
 ## Mediano plazo
 
-- [ ] **Chat interno en tiempo real** entre estudiante y arrendador, para no depender de WhatsApp.
+- [x] ~~**Chat interno** entre estudiante y arrendador, para no depender de WhatsApp.~~ Hecho el 12
+      de agosto de 2026: un hilo por estudiante e inmueble, con punto de mensajes sin leer en el
+      menu. No usa conexion permanente sino que revisa cada ocho segundos, porque el servidor
+      gratuito se duerme y una conexion abierta se caeria sin que nadie se entere. Ni siquiera el
+      administrador puede leer los hilos ajenos.
 - [x] ~~**Notificaciones** por correo cuando aparece un inmueble que encaja.~~ Hecho: el estudiante
       guarda su busqueda desde el buscador y una tarea diaria le avisa. Solo cuentan los inmuebles
       publicados despues de guardar, y nunca los suyos propios.

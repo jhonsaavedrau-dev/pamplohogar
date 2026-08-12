@@ -71,6 +71,17 @@ export function DetalleInmueble() {
     },
   });
 
+  const abrirChat = useMutation({
+    mutationFn: () =>
+      pedir<{ conversacionId: string }>('/api/conversaciones', {
+        metodo: 'POST',
+        cuerpo: { inmuebleId: id },
+      }),
+    onSuccess: (r) => navegar(`/mensajes/${r.conversacionId}`),
+    onError: (e) =>
+      setErrorContacto(e instanceof Error ? e.message : 'No pudimos abrir la conversación.'),
+  });
+
   const eliminar = useMutation({
     mutationFn: () => pedir(`/api/inmuebles/${id}`, { metodo: 'DELETE' }),
     onSuccess: () => {
@@ -322,6 +333,28 @@ export function DetalleInmueble() {
                 <p className="text-center text-xs text-piedra-600">
                   Mostramos el número solo cuando pulsas el boton, para proteger al arrendador del
                   spam.
+                </p>
+              </>
+            )}
+
+            {!esDueno && (
+              <>
+                <button
+                  type="button"
+                  className="boton-confianza w-full"
+                  disabled={abrirChat.isPending}
+                  onClick={() => {
+                    if (!usuario) {
+                      navegar('/entrar', { state: { desde: `/inmueble/${inmueble.id}` } });
+                      return;
+                    }
+                    abrirChat.mutate();
+                  }}
+                >
+                  {abrirChat.isPending ? 'Abriendo...' : 'Escribir por la página'}
+                </button>
+                <p className="text-center text-xs text-piedra-600">
+                  Sin dar tu número, y queda escrito lo que acordaron.
                 </p>
               </>
             )}

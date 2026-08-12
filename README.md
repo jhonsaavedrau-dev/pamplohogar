@@ -20,6 +20,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Contacto protegido.** El celular del arrendador esta oculto hasta que el estudiante pulsa
   "Contactar". Ahi se genera un enlace de WhatsApp con el mensaje ya escrito y la solicitud queda
   registrada para que el arrendador sepa quien le escribio.
+- **Chat dentro de la pagina.** El estudiante escribe al arrendador sin dar su numero, y queda por
+  escrito lo que acordaron. Un hilo por publicacion, para que un arrendador con seis habitaciones
+  sepa por cual le estan preguntando. Nadie mas puede leerlos, ni el administrador.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
 - **Comparador** de hasta tres inmuebles lado a lado, resaltando cual es el mas barato, el mas
   cercano a la universidad y el de mejor arrendador.

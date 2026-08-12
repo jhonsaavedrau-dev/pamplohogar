@@ -17,6 +17,8 @@ import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
 import { Comparar } from './pages/Comparar';
 import { Roomies } from './pages/Roomies';
 import { MapaDePrecios } from './pages/MapaDePrecios';
+import { Mensajes } from './pages/Mensajes';
+import { Conversacion } from './pages/Conversacion';
 import { MiPerfilRoomie } from './pages/MiPerfilRoomie';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
@@ -35,6 +37,22 @@ export function App() {
           <Route path="/comparar" element={<Comparar />} />
           <Route path="/roomies" element={<Roomies />} />
           <Route path="/mapa-de-precios" element={<MapaDePrecios />} />
+          <Route
+            path="/mensajes"
+            element={
+              <RutaProtegida>
+                <Mensajes />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/mensajes/:id"
+            element={
+              <RutaProtegida>
+                <Conversacion />
+              </RutaProtegida>
+            }
+          />
           <Route
             path="/roomies/mi-perfil"
             element={

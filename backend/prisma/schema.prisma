@@ -89,6 +89,9 @@ model Usuario {
   favoritos         Favorito[]
   resenasEscritas   Resena[]            @relation("ResenasEscritas")
   resenasDeBarrio   ResenaBarrio[]      @relation("ResenasDeBarrio")
+  conversacionesComoEstudiante Conversacion[] @relation("ConversacionesDelEstudiante")
+  conversacionesComoArrendador Conversacion[] @relation("ConversacionesDelArrendador")
+  mensajesEnviados             Mensaje[]      @relation("MensajesEnviados")
   resenasRecibidas  Resena[]            @relation("ResenasRecibidas")
   solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
   reportesHechos    Reporte[]           @relation("ReportesDelAutor")
@@ -249,6 +252,7 @@ model Inmueble {
   resenas        Resena[]
   reportes       Reporte[]
   cambiosDePrecio CambioDePrecio[]
+  conversaciones Conversacion[]
 
   @@index([arrendadorId])
   @@index([activo, precio])
@@ -376,4 +380,50 @@ model ResenaBarrio {
   // el promedio diga lo que le convenga.
   @@unique([autorId, clave])
   @@index([clave])
+}
+
+// Un hilo entre un estudiante y el arrendador de un inmueble concreto.
+//
+// Va atado al inmueble y no solo a las dos personas: un arrendador con seis
+// habitaciones publicadas necesita saber por cual le estan escribiendo, y el
+// estudiante que pregunta por dos no quiere las dos conversaciones revueltas.
+model Conversacion {
+  id       String   @id @default(cuid())
+  creadoEn DateTime @default(now())
+  // Se mueve con cada mensaje, para ordenar la bandeja por lo mas reciente
+  // sin tener que mirar dentro de cada hilo.
+  ultimoEn DateTime @default(now())
+
+  inmuebleId   String
+  estudianteId String
+  arrendadorId String
+
+  inmueble   Inmueble @relation(fields: [inmuebleId], references: [id], onDelete: Cascade)
+  estudiante Usuario  @relation("ConversacionesDelEstudiante", fields: [estudianteId], references: [id], onDelete: Cascade)
+  arrendador Usuario  @relation("ConversacionesDelArrendador", fields: [arrendadorId], references: [id], onDelete: Cascade)
+
+  mensajes Mensaje[]
+
+  // Un solo hilo por estudiante e inmueble. Si no, cada vez que el estudiante
+  // volviera a la ficha empezaria una conversacion nueva y se perderia lo
+  // hablado.
+  @@unique([inmuebleId, estudianteId])
+  @@index([arrendadorId, ultimoEn])
+  @@index([estudianteId, ultimoEn])
+}
+
+model Mensaje {
+  id       String   @id @default(cuid())
+  texto    String
+  creadoEn DateTime @default(now())
+  // Cuando el otro lo abrio. Nulo mientras no lo haya visto.
+  leidoEn  DateTime?
+
+  conversacionId String
+  autorId        String
+
+  conversacion Conversacion @relation(fields: [conversacionId], references: [id], onDelete: Cascade)
+  autor        Usuario      @relation("MensajesEnviados", fields: [autorId], references: [id], onDelete: Cascade)
+
+  @@index([conversacionId, creadoEn])
 }

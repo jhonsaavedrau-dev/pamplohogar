@@ -8,6 +8,7 @@ import { rutasInmuebles } from './routes/inmuebles.js';
 import { rutasFavoritos } from './routes/favoritos.js';
 import { rutasResenas } from './routes/resenas.js';
 import { rutasResenasBarrio } from './routes/resenasBarrio.js';
+import { rutasMensajes } from './routes/mensajes.js';
 import { rutasContacto } from './routes/contacto.js';
 import { rutasSubidas } from './routes/subidas.js';
 import { rutasAdmin } from './routes/admin.js';
@@ -51,6 +52,7 @@ export function crearApp() {
   app.use('/api/favoritos', rutasFavoritos);
   app.use('/api/resenas', rutasResenas);
   app.use('/api/barrios/resenas', rutasResenasBarrio);
+  app.use('/api', rutasMensajes);
   app.use('/api/subidas', rutasSubidas);
   app.use('/api/admin', rutasAdmin);
   app.use('/api/busquedas', rutasBusquedas);
