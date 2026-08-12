@@ -33,6 +33,8 @@ services:
         sync: false
       - key: RESEND_API_KEY
         sync: false
+      - key: CLAVE_AVISOS
+        sync: false
       - key: CORREO_REMITENTE
         sync: false
       - key: CLOUDINARY_CLOUD_NAME

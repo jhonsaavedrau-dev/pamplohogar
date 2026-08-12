@@ -75,8 +75,42 @@ model Usuario {
   reportesAtendidos Reporte[]           @relation("ReportesAtendidos")
   tokens            TokenCorreo[]
   accionesDeAdmin   RegistroAdmin[]
+  busquedas         BusquedaGuardada[]
 
   @@index([rol])
+}
+
+// Una busqueda que el estudiante guardo para que le avisemos.
+//
+// Al empezar el semestre los cuartos buenos y baratos se van en horas. Quien
+// tiene que entrar a revisar a cada rato pierde contra quien conoce a alguien.
+// Esto empareja esa cancha.
+model BusquedaGuardada {
+  id       String  @id @default(cuid())
+  nombre   String
+  avisarPorCorreo Boolean @default(true)
+
+  // Los mismos filtros del buscador. Todos opcionales.
+  q            String?
+  tipo         TipoInmueble?
+  barrio       String?
+  precioMin    Int?
+  precioMax    Int?
+  habitaciones Int?
+  amoblado     Boolean?
+  servicios    String[]      @default([])
+
+  // Desde cuando se buscan novedades. Arranca en el momento de guardar para
+  // no mandar de golpe todo lo que ya existia.
+  revisadaHasta DateTime @default(now())
+  ultimoAvisoEn DateTime?
+  creadoEn      DateTime @default(now())
+
+  usuarioId String
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@index([avisarPorCorreo])
 }
 
 // Deja constancia de lo que hace cada administrador.

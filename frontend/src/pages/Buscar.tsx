@@ -6,6 +6,7 @@ import type { RespuestaListado, TipoInmueble } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO, SERVICIOS_DISPONIBLES } from '../lib/tipos';
 import { TarjetaInmueble } from '../components/TarjetaInmueble';
 import { useRevelarAlEntrar } from '../lib/revelar';
+import { GuardarBusqueda } from '../components/GuardarBusqueda';
 import { EstadoError, EstadoVacio, TarjetaFantasma } from '../components/Estados';
 import { pesos } from '../lib/formato';
 
@@ -341,14 +342,17 @@ export function Buscar() {
 
         {data && (
           <>
-            <p className="mb-5 text-sm text-piedra-600">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm text-piedra-600">
               <strong className="font-semibold text-piedra-900">
                 {data.total === 0
                   ? 'Sin resultados'
                   : `${data.total} ${data.total === 1 ? 'inmueble disponible' : 'inmuebles disponibles'}`}
               </strong>
-              {valor('precioMax') && ` hasta ${pesos(Number(valor('precioMax')))}`}
-            </p>
+                {valor('precioMax') && ` hasta ${pesos(Number(valor('precioMax')))}`}
+              </p>
+              <GuardarBusqueda />
+            </div>
 
             {data.inmuebles.length === 0 ? (
               <EstadoVacio

@@ -12,6 +12,8 @@ const esquemaEnv = z.object({
   CLOUDINARY_API_SECRET: z.string().optional().default(''),
   RESEND_API_KEY: z.string().optional().default(''),
   CORREO_REMITENTE: z.string().optional().default('PamploHogar <onboarding@resend.dev>'),
+  // Clave de la tarea programada que manda los avisos. Vacia significa apagado.
+  CLAVE_AVISOS: z.string().optional().default(''),
 });
 
 const resultado = esquemaEnv.safeParse(process.env);

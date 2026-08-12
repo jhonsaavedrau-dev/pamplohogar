@@ -48,9 +48,14 @@ export function Encabezado() {
             Buscar
           </NavLink>
           {usuario && (
-            <NavLink to="/favoritos" className={claseEnlace}>
-              Favoritos
-            </NavLink>
+            <>
+              <NavLink to="/favoritos" className={claseEnlace}>
+                Favoritos
+              </NavLink>
+              <NavLink to="/busquedas" className={claseEnlace}>
+                Mis búsquedas
+              </NavLink>
+            </>
           )}
           {usuario?.rol === 'ARRENDADOR' && (
             <NavLink to="/mis-inmuebles" className={claseEnlace}>
@@ -107,9 +112,14 @@ export function Encabezado() {
               Buscar vivienda
             </NavLink>
             {usuario && (
-              <NavLink to="/favoritos" className={claseEnlace} onClick={cerrar}>
-                Mis favoritos
-              </NavLink>
+              <>
+                <NavLink to="/favoritos" className={claseEnlace} onClick={cerrar}>
+                  Mis favoritos
+                </NavLink>
+                <NavLink to="/busquedas" className={claseEnlace} onClick={cerrar}>
+                  Mis búsquedas
+                </NavLink>
+              </>
             )}
             {usuario?.rol === 'ARRENDADOR' && (
               <>

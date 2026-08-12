@@ -113,6 +113,59 @@ export function correoDeRecuperacion(para: string, nombre: string, enlace: strin
   };
 }
 
+interface InmuebleDelAviso {
+  titulo: string;
+  precio: number;
+  barrio: string;
+  enlace: string;
+}
+
+const pesos = (valor: number): string =>
+  new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  }).format(valor);
+
+export function correoDeNovedades(
+  para: string,
+  nombre: string,
+  nombreBusqueda: string,
+  inmuebles: InmuebleDelAviso[],
+  enlaceBusqueda: string,
+): Mensaje {
+  const lista = inmuebles
+    .map(
+      (i) =>
+        `<a href="${i.enlace}" style="display:block;margin:0 0 12px;padding:14px;border:1px solid #e4e0d9;border-radius:12px;text-decoration:none">` +
+        `<span style="display:block;font-size:18px;font-weight:800;color:#b25317">${pesos(i.precio)}` +
+        `<span style="font-size:13px;font-weight:400;color:#655e52"> al mes</span></span>` +
+        `<span style="display:block;margin-top:4px;font-size:15px;font-weight:600;color:#332e28">${i.titulo}</span>` +
+        `<span style="display:block;margin-top:2px;font-size:13px;color:#655e52">${i.barrio}</span>` +
+        `</a>`,
+    )
+    .join('');
+
+  const cuantos =
+    inmuebles.length === 1
+      ? 'Apareció un inmueble nuevo'
+      : `Aparecieron ${inmuebles.length} inmuebles nuevos`;
+
+  return {
+    para,
+    asunto: `${cuantos} para "${nombreBusqueda}"`,
+    titulo: `${nombre}, ${cuantos.toLowerCase()}`,
+    parrafos: [
+      `Esto es lo que salió desde la última vez, para tu búsqueda guardada <strong>${nombreBusqueda}</strong>.`,
+      lista,
+      'Los buenos se van rápido: si alguno te sirve, escríbele hoy mismo.',
+    ],
+    textoBoton: 'Ver todo lo que encaja',
+    enlace: enlaceBusqueda,
+    pie: 'Puedes dejar de recibir estos avisos desde la pantalla de búsquedas guardadas, sin perder la búsqueda.',
+  };
+}
+
 export function correoDeVerificacion(para: string, nombre: string, enlace: string): Mensaje {
   return {
     para,

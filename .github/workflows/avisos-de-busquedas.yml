@@ -1,0 +1,50 @@
+name: Avisos de busquedas guardadas
+
+# Revisa una vez al dia si aparecio algo que encaje con lo que cada estudiante
+# guardo, y le manda un correo. Al empezar el semestre los cuartos buenos y
+# baratos se van en horas, y quien tiene que entrar a revisar a cada rato
+# pierde contra quien conoce a alguien.
+#
+# Se dispara a las 13:00 UTC, que en Colombia son las 8 de la manana.
+
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  avisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Despertar el servidor
+        run: |
+          curl -s -m 90 https://pamplohogar-api.onrender.com/api/salud || true
+          sleep 5
+
+      - name: Enviar los avisos
+        env:
+          CLAVE_AVISOS: ${{ secrets.CLAVE_AVISOS }}
+        run: |
+          if [ -z "$CLAVE_AVISOS" ]; then
+            echo "Falta el secreto CLAVE_AVISOS en el repositorio."
+            echo "Sin el, esta tarea no puede pedirle al servidor que mande los correos."
+            exit 1
+          fi
+
+          respuesta=$(curl -s -w "\n%{http_code}" -m 300 -X POST \
+            -H "Authorization: Bearer $CLAVE_AVISOS" \
+            https://pamplohogar-api.onrender.com/api/avisos/enviar)
+
+          cuerpo=$(echo "$respuesta" | head -n -1)
+          codigo=$(echo "$respuesta" | tail -n 1)
+
+          echo "Respuesta: $cuerpo"
+
+          if [ "$codigo" != "200" ]; then
+            echo "El servidor respondio $codigo."
+            exit 1
+          fi

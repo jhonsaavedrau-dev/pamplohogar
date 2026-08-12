@@ -10,6 +10,7 @@ import { Favoritos } from './pages/Favoritos';
 import { MisInmuebles } from './pages/MisInmuebles';
 import { FormularioInmueble } from './pages/FormularioInmueble';
 import { Recuperar } from './pages/Recuperar';
+import { BusquedasGuardadas } from './pages/BusquedasGuardadas';
 import { CambiarClave } from './pages/CambiarClave';
 import { ConfirmarCorreo } from './pages/ConfirmarCorreo';
 import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
@@ -40,6 +41,14 @@ export function App() {
             element={
               <RutaProtegida>
                 <Favoritos />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/busquedas"
+            element={
+              <RutaProtegida>
+                <BusquedasGuardadas />
               </RutaProtegida>
             }
           />

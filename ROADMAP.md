@@ -6,9 +6,9 @@ completo y guardado en un computador.
 
 ## Siguiente paso inmediato
 
-- [ ] **Publicar en internet.** Subir el repositorio a GitHub, desplegar el servidor en Render y la
-      pagina en Vercel, y correr las migraciones en produccion. Los archivos de configuracion
-      (`render.yaml` y `frontend/vercel.json`) ya estan listos.
+- [x] ~~**Publicar en internet.**~~ Hecho el 11 de agosto de 2026. La pagina vive en
+      pamplohogar.vercel.app y el servidor en pamplohogar-api.onrender.com. Cada cambio subido a
+      GitHub se despliega solo.
 
 ## Corto plazo
 
@@ -38,18 +38,20 @@ completo y guardado en un computador.
 - [x] ~~**Editar el orden de las fotos** y elegir cual es la portada.~~ Hecho con botones de subir,
       bajar y hacer portada, en vez de arrastrar: arrastrar es incomodo en celular y la plataforma
       se usa sobre todo desde el telefono.
-- [ ] **Borrar de Cloudinary las fotos que se quitan.** Hoy se quitan del inmueble pero el archivo
-      sigue ocupando espacio en la cuenta.
+
 - [ ] **Limitar los intentos por cuenta y no solo por conexion.** Hoy solo se cuentan los intentos
       fallidos, asi que un salon entero entrando desde el wifi de la universidad no se bloquea
       entre si. Pero si alguien ataca desde esa misma red, los demas quedan frenados quince
       minutos. Contar los fallos por correo, ademas de por conexion, quita ese efecto colateral.
+- [x] ~~**Tildes y enes en toda la interfaz.**~~ Hecho: 49 archivos repasados con una regla que
+      solo toca frases, nunca rutas ni nombres de variables.
 
 ## Mediano plazo
 
 - [ ] **Chat interno en tiempo real** entre estudiante y arrendador, para no depender de WhatsApp.
-- [ ] **Notificaciones** por correo cuando aparece un inmueble que encaja con lo que el estudiante
-      busca.
+- [x] ~~**Notificaciones** por correo cuando aparece un inmueble que encaja.~~ Hecho: el estudiante
+      guarda su busqueda desde el buscador y una tarea diaria le avisa. Solo cuentan los inmuebles
+      publicados despues de guardar, y nunca los suyos propios.
 - [x] ~~**Comparador** de hasta tres inmuebles lado a lado.~~ Hecho: se marcan desde el listado y se
       ven en una tabla que resalta el mas barato, el mas cercano y el mejor calificado. La seleccion
       vive en el navegador, no en la cuenta.
