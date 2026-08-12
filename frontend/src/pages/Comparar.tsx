@@ -27,7 +27,7 @@ export function Comparar() {
         <h1 className="sr-only">Comparar inmuebles</h1>
         <EstadoVacio
           titulo="No has elegido nada para comparar"
-          descripcion="Marca la casilla Comparar en los inmuebles que te interesen y vuelve aqui para verlos lado a lado."
+          descripcion="Marca la casilla Comparar en los inmuebles que te interesen y vuelve aquí para verlos lado a lado."
           accion={
             <Link to="/" className="boton-primario mt-2">
               Buscar vivienda
@@ -53,7 +53,7 @@ export function Comparar() {
       <div className="contenedor-app py-10">
         <h1 className="sr-only">Comparar inmuebles</h1>
         <EstadoVacio
-          titulo="Esos inmuebles ya no estan"
+          titulo="Esos inmuebles ya no están"
           descripcion="Puede que los hayan retirado mientras los comparabas."
           accion={
             <button type="button" onClick={limpiar} className="boton-primario mt-2">
@@ -99,8 +99,8 @@ export function Comparar() {
         <div className="mb-4">
           <Aviso tipo="error">
             {fallidos === 1
-              ? 'Uno de los inmuebles que elegiste ya no esta disponible y no aparece en la tabla.'
-              : `${fallidos} de los inmuebles que elegiste ya no estan disponibles y no aparecen en la tabla.`}
+              ? 'Uno de los inmuebles que elegiste ya no está disponible y no aparece en la tabla.'
+              : `${fallidos} de los inmuebles que elegiste ya no están disponibles y no aparecen en la tabla.`}
           </Aviso>
         </div>
       )}
@@ -214,7 +214,7 @@ export function Comparar() {
 
             <tr className="border-t border-piedra-200">
               <th scope="row" className="p-2 text-left font-semibold text-piedra-600">
-                Banos
+                Baños
               </th>
               {inmuebles.map((i) => (
                 <td key={i.id} className="p-2 text-piedra-800">

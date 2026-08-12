@@ -39,7 +39,7 @@ export function Recuperar() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="titular">Olvidaste tu contrasena?</h1>
+      <h1 className="titular">Olvidaste tu contraseña?</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Escribe el correo con el que te registraste y te mandamos un enlace para cambiarla.
       </p>
@@ -49,7 +49,7 @@ export function Recuperar() {
 
         <div>
           <label className="etiqueta" htmlFor="email-recuperar">
-            Correo electronico
+            Correo electrónico
           </label>
           <input
             id="email-recuperar"

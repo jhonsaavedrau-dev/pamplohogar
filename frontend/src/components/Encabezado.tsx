@@ -123,7 +123,7 @@ export function Encabezado() {
             )}
             {usuario?.rol === 'ADMIN' && (
               <NavLink to="/admin" className={claseEnlace} onClick={cerrar}>
-                Panel de administracion
+                Panel de administración
               </NavLink>
             )}
 
@@ -131,10 +131,10 @@ export function Encabezado() {
               {usuario ? (
                 <>
                   <p className="px-4 text-sm text-piedra-600">
-                    Sesion de <strong className="text-piedra-900">{usuario.nombre}</strong>
+                    Sesión de <strong className="text-piedra-900">{usuario.nombre}</strong>
                   </p>
                   <button type="button" onClick={cerrarSesion} className="boton-suave w-full">
-                    Cerrar sesion
+                    Cerrar sesión
                   </button>
                 </>
               ) : (

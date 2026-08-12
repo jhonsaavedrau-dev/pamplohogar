@@ -34,7 +34,7 @@ function armarHtml(m: Mensaje): string {
         <a href="${m.enlace}" style="display:inline-block;background:#d2691e;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px">${m.textoBoton}</a>
       </p>
       <p style="margin:0 0 8px;font-size:13px;color:#6b655b">
-        Si el boton no funciona, copia y pega esta direccion en tu navegador:
+        Si el boton no funciona, copia y pega esta dirección en tu navegador:
       </p>
       <p style="margin:0 0 24px;font-size:13px;color:#1f6fb2;word-break:break-all">${m.enlace}</p>
       <hr style="border:none;border-top:1px solid #e4e0d9;margin:24px 0" />
@@ -60,7 +60,7 @@ function armarTexto(m: Mensaje): string {
 export async function enviarCorreo(m: Mensaje): Promise<boolean> {
   if (!correoConfigurado) {
     process.stderr.write(
-      '[PamploHogar] Se intento enviar un correo pero falta RESEND_API_KEY en la configuracion.\n',
+      '[PamploHogar] Se intento enviar un correo pero falta RESEND_API_KEY en la configuración.\n',
     );
     return false;
   }
@@ -101,15 +101,15 @@ export async function enviarCorreo(m: Mensaje): Promise<boolean> {
 export function correoDeRecuperacion(para: string, nombre: string, enlace: string): Mensaje {
   return {
     para,
-    asunto: 'Recupera tu contrasena de PamploHogar',
+    asunto: 'Recupera tu contraseña de PamploHogar',
     titulo: `Hola ${nombre}, vamos a recuperar tu cuenta`,
     parrafos: [
-      'Pediste cambiar la contrasena de tu cuenta. Pulsa el boton y elige una nueva.',
+      'Pediste cambiar la contraseña de tu cuenta. Pulsa el boton y elige una nueva.',
       'Este enlace sirve una sola vez y vence en una hora.',
     ],
-    textoBoton: 'Cambiar mi contrasena',
+    textoBoton: 'Cambiar mi contraseña',
     enlace,
-    pie: 'Si no fuiste tu, ignora este correo: tu contrasena sigue igual y nadie entro a tu cuenta.',
+    pie: 'Si no fuiste tu, ignora este correo: tu contraseña sigue igual y nadie entro a tu cuenta.',
   };
 }
 

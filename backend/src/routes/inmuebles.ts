@@ -190,7 +190,7 @@ rutasInmuebles.get(
     if (!inmueble) throw noEncontrado('Ese inmueble no existe o fue retirado.');
 
     const esDueno = req.usuario?.sub === inmueble.arrendadorId;
-    if (!inmueble.activo && !esDueno) throw noEncontrado('Ese inmueble ya no esta disponible.');
+    if (!inmueble.activo && !esDueno) throw noEncontrado('Ese inmueble ya no está disponible.');
 
     const calificaciones = await promediosPorArrendador([inmueble.arrendadorId]);
 

@@ -52,7 +52,7 @@ export function HistorialDePrecios({ cambios, precioActual }: Props) {
       </ol>
 
       <p className="mt-2 text-xs text-piedra-600">
-        Mostramos esto para que puedas negociar con informacion y no de memoria.
+        Mostramos esto para que puedas negociar con información y no de memoria.
       </p>
     </section>
   );

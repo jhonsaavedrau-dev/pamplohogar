@@ -18,7 +18,7 @@ const resultado = esquemaEnv.safeParse(process.env);
 
 if (!resultado.success) {
   const detalles = resultado.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n');
-  throw new Error(`Configuracion invalida en el archivo .env:\n${detalles}`);
+  throw new Error(`Configuración invalida en el archivo .env:\n${detalles}`);
 }
 
 export const env = resultado.data;

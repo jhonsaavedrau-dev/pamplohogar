@@ -14,8 +14,8 @@ export const esquemaRegistro = z.object({
   email: z.string().trim().toLowerCase().email('Escribe un correo valido.'),
   password: z
     .string()
-    .min(8, 'La contrasena debe tener al menos 8 caracteres.')
-    .max(72, 'La contrasena es demasiado larga.'),
+    .min(8, 'La contraseña debe tener al menos 8 caracteres.')
+    .max(72, 'La contraseña es demasiado larga.'),
   telefono: telefonoColombiano.optional(),
   rol: z.enum(['ESTUDIANTE', 'ARRENDADOR'], {
     errorMap: () => ({ message: 'Elige si eres estudiante o arrendador.' }),
@@ -24,7 +24,7 @@ export const esquemaRegistro = z.object({
 
 export const esquemaLogin = z.object({
   email: z.string().trim().toLowerCase().email('Escribe un correo valido.'),
-  password: z.string().min(1, 'Escribe tu contrasena.'),
+  password: z.string().min(1, 'Escribe tu contraseña.'),
 });
 
 export const esquemaActualizarPerfil = z.object({
@@ -37,15 +37,15 @@ export const esquemaPedirRecuperacion = z.object({
 });
 
 export const esquemaRestablecerClave = z.object({
-  token: z.string().min(1, 'Falta el codigo del enlace.'),
+  token: z.string().min(1, 'Falta el código del enlace.'),
   password: z
     .string()
-    .min(8, 'La contrasena debe tener al menos 8 caracteres.')
-    .max(72, 'La contrasena es demasiado larga.'),
+    .min(8, 'La contraseña debe tener al menos 8 caracteres.')
+    .max(72, 'La contraseña es demasiado larga.'),
 });
 
 export const esquemaConfirmarCorreo = z.object({
-  token: z.string().min(1, 'Falta el codigo del enlace.'),
+  token: z.string().min(1, 'Falta el código del enlace.'),
 });
 
 export type DatosRegistro = z.infer<typeof esquemaRegistro>;

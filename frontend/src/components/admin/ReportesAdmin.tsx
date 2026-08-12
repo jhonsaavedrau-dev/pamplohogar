@@ -107,10 +107,10 @@ export function ReportesAdmin() {
       {data &&
         (data.reportes.length === 0 ? (
           <EstadoVacio
-            titulo={estado === 'PENDIENTE' ? 'No hay nada pendiente' : 'Nada por aqui'}
+            titulo={estado === 'PENDIENTE' ? 'No hay nada pendiente' : 'Nada por aquí'}
             descripcion={
               estado === 'PENDIENTE'
-                ? 'Cuando un estudiante reporte una publicacion, aparece aqui para que la revises.'
+                ? 'Cuando un estudiante reporte una publicación, aparece aquí para que la revises.'
                 : 'Cambia el filtro para ver reportes en otro estado.'
             }
           />
@@ -133,7 +133,7 @@ export function ReportesAdmin() {
                   </span>
                   {!r.inmueble.activo && (
                     <span className="rounded-full bg-piedra-800 px-3 py-1 text-xs font-bold text-white">
-                      Ya esta oculto
+                      Ya está oculto
                     </span>
                   )}
                   <span className="text-xs text-piedra-400">{fechaCorta(r.creadoEn)}</span>
@@ -177,7 +177,7 @@ export function ReportesAdmin() {
                           disabled={ocultarInmueble.isPending}
                           onClick={() => ocultarInmueble.mutate(r.inmueble.id)}
                         >
-                          Retirar publicacion
+                          Retirar publicación
                         </button>
                       )}
                       <button

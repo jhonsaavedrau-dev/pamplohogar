@@ -18,7 +18,7 @@ export const SERVICIOS = [
 export const TIPOS = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'] as const;
 
 const esquemaFoto = z.object({
-  url: z.string().url('La foto no tiene una direccion valida.'),
+  url: z.string().url('La foto no tiene una dirección valida.'),
   publicId: z.string().min(1),
 });
 
@@ -31,23 +31,23 @@ export const esquemaCrearInmueble = z.object({
   descripcion: z
     .string()
     .trim()
-    .min(30, 'Cuenta un poco mas del inmueble, minimo 30 caracteres.')
-    .max(2000, 'La descripcion es demasiado larga.'),
+    .min(30, 'Cuenta un poco mas del inmueble, mínimo 30 caracteres.')
+    .max(2000, 'La descripción es demasiado larga.'),
   tipo: z.enum(TIPOS, { errorMap: () => ({ message: 'Elige el tipo de inmueble.' }) }),
   precio: z
-    .number({ invalid_type_error: 'El precio debe ser un numero.' })
-    .int('El precio debe ser un numero entero.')
-    .min(50000, 'El precio minimo es 50.000 pesos.')
-    .max(10000000, 'El precio maximo es 10.000.000 de pesos.'),
+    .number({ invalid_type_error: 'El precio debe ser un número.' })
+    .int('El precio debe ser un número entero.')
+    .min(50000, 'El precio mínimo es 50.000 pesos.')
+    .max(10000000, 'El precio máximo es 10.000.000 de pesos.'),
   barrio: z.string().trim().min(3, 'Escribe el barrio.').max(60),
-  direccion: z.string().trim().min(5, 'Escribe la direccion.').max(160),
+  direccion: z.string().trim().min(5, 'Escribe la dirección.').max(160),
   lat: z.number().min(-90).max(90),
   lng: z.number().min(-180).max(180),
-  habitaciones: z.number().int().min(1, 'Minimo 1 habitacion.').max(20),
-  banos: z.number().int().min(1, 'Minimo 1 bano.').max(20),
+  habitaciones: z.number().int().min(1, 'Mínimo 1 habitación.').max(20),
+  banos: z.number().int().min(1, 'Mínimo 1 baño.').max(20),
   servicios: z.array(z.enum(SERVICIOS)).max(SERVICIOS.length).default([]),
   amoblado: z.boolean().default(false),
-  fotos: z.array(esquemaFoto).max(10, 'Maximo 10 fotos por inmueble.').default([]),
+  fotos: z.array(esquemaFoto).max(10, 'Máximo 10 fotos por inmueble.').default([]),
 });
 
 export const esquemaActualizarInmueble = esquemaCrearInmueble.partial().extend({

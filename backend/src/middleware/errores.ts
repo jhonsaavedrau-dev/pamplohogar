@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import { ErrorApi } from '../lib/errores.js';
 
 export function rutaNoEncontrada(_req: Request, res: Response): void {
-  res.status(404).json({ mensaje: 'Esta direccion no existe en la API de PamploHogar.' });
+  res.status(404).json({ mensaje: 'Esta dirección no existe en la API de PamploHogar.' });
 }
 
 /** Traduce cualquier error a una respuesta en espanol. El detalle tecnico solo va al log. */
@@ -43,6 +43,6 @@ export function manejadorDeErrores(
     `[PamploHogar] Error no controlado: ${error instanceof Error ? error.stack ?? error.message : String(error)}\n`,
   );
   res.status(500).json({
-    mensaje: 'Algo fallo de nuestro lado. Intenta de nuevo en un momento.',
+    mensaje: 'Algo falló de nuestro lado. Intenta de nuevo en un momento.',
   });
 }

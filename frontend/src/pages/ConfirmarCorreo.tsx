@@ -23,7 +23,7 @@ export function ConfirmarCorreo() {
 
     if (token === '') {
       setEstado('fallo');
-      setMensaje('Este enlace esta incompleto. Abrelo tal cual te llego al correo.');
+      setMensaje('Este enlace está incompleto. Abrelo tal cual te llego al correo.');
       return;
     }
 

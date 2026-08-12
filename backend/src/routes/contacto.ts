@@ -24,7 +24,7 @@ rutasContacto.post(
       where: { id: req.params.id },
       include: { arrendador: { select: { id: true, nombre: true, telefono: true } } },
     });
-    if (!inmueble || !inmueble.activo) throw noEncontrado('Ese inmueble ya no esta disponible.');
+    if (!inmueble || !inmueble.activo) throw noEncontrado('Ese inmueble ya no está disponible.');
 
     if (inmueble.arrendadorId === req.usuario!.sub) {
       throw solicitudInvalida('Este inmueble es tuyo, no necesitas contactarte.');
@@ -48,7 +48,7 @@ rutasContacto.post(
 
     const mensaje =
       `Hola ${inmueble.arrendador.nombre}, soy ${solicitante?.nombre ?? 'un estudiante'}. ` +
-      `Vi tu publicacion "${inmueble.titulo}" en PamploHogar y me interesa. ` +
+      `Vi tu publicación "${inmueble.titulo}" en PamploHogar y me interesa. ` +
       `Sigue disponible?`;
 
     res.json({

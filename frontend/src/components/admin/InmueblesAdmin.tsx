@@ -125,7 +125,7 @@ export function InmueblesAdmin() {
 
           {data.inmuebles.length === 0 ? (
             <EstadoVacio
-              titulo="Nada por aqui"
+              titulo="Nada por aquí"
               descripcion="Con esa busqueda y ese filtro no hay inmuebles. Prueba cambiando alguno."
             />
           ) : (

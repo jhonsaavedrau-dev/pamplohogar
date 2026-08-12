@@ -61,7 +61,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
         }}
         className="text-sm font-semibold text-piedra-600 underline underline-offset-2 hover:text-terracota-600"
       >
-        {yaReportado ? 'Ya reportaste esta publicacion' : 'Reportar esta publicacion'}
+        {yaReportado ? 'Ya reportaste esta publicación' : 'Reportar esta publicación'}
       </button>
     );
   }
@@ -70,7 +70,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
     <div className="tarjeta space-y-4 p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-bold text-piedra-900">Reportar esta publicacion</h3>
+          <h3 className="font-bold text-piedra-900">Reportar esta publicación</h3>
           <p className="mt-1 text-sm text-piedra-600">
             Solo lo ve el equipo de PamploHogar. El arrendador no sabe quien lo reporto.
           </p>
@@ -89,7 +89,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
 
       {yaReportado && !enviar.isSuccess && (
         <Aviso tipo="exito">
-          Ya nos avisaste sobre esta publicacion. Si envias otro, reemplaza al anterior.
+          Ya nos avisaste sobre esta publicación. Si envias otro, reemplaza al anterior.
         </Aviso>
       )}
 
@@ -124,7 +124,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
           className="campo min-h-24 py-3"
           rows={3}
           maxLength={1000}
-          placeholder="Entre mas concreto seas, mas rapido podemos actuar."
+          placeholder="Entre mas concreto seas, mas rápido podemos actuar."
           value={detalle}
           onChange={(e) => setDetalle(e.target.value)}
         />

@@ -3,10 +3,10 @@ import { z } from 'zod';
 export const esquemaCrearResena = z.object({
   inmuebleId: z.string().min(1, 'Falta indicar el inmueble.'),
   calificacion: z
-    .number({ invalid_type_error: 'Elige cuantas estrellas le das.' })
+    .number({ invalid_type_error: 'Elige cuántas estrellas le das.' })
     .int()
-    .min(1, 'Minimo una estrella.')
-    .max(5, 'Maximo cinco estrellas.'),
+    .min(1, 'Mínimo una estrella.')
+    .max(5, 'Máximo cinco estrellas.'),
   comentario: z
     .string()
     .trim()

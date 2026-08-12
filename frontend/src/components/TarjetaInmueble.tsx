@@ -147,10 +147,10 @@ export function TarjetaInmueble({
 
           <div className="mt-3 flex flex-wrap gap-1.5">
             <span className="chip">
-              {inmueble.habitaciones} {inmueble.habitaciones === 1 ? 'habitacion' : 'habitaciones'}
+              {inmueble.habitaciones} {inmueble.habitaciones === 1 ? 'habitación' : 'habitaciones'}
             </span>
             <span className="chip">
-              {inmueble.banos} {inmueble.banos === 1 ? 'bano' : 'banos'}
+              {inmueble.banos} {inmueble.banos === 1 ? 'baño' : 'baños'}
             </span>
             {inmueble.amoblado && <span className="chip">Amoblado</span>}
           </div>

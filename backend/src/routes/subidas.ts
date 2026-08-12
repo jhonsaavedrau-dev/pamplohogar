@@ -55,7 +55,7 @@ rutasSubidas.post(
   asincrono(async (req, res) => {
     if (!cloudinaryConfigurado) {
       throw solicitudInvalida(
-        'La subida de fotos no esta configurada en el servidor. Avisa al administrador.',
+        'La subida de fotos no está configurada en el servidor. Avisa al administrador.',
       );
     }
 

@@ -13,19 +13,19 @@ describe('armarEnlaceWhatsapp', () => {
     expect(enlace).not.toContain('5757');
   });
 
-  it('limpia espacios, guiones y parentesis del numero', () => {
+  it('limpia espacios, guiones y parentesis del número', () => {
     const enlace = armarEnlaceWhatsapp('(314) 567-89 01', 'Hola');
     expect(enlace).toContain('https://wa.me/573145678901');
   });
 
-  it('codifica el mensaje para que no rompa la direccion', () => {
+  it('codifica el mensaje para que no rompa la dirección', () => {
     const enlace = armarEnlaceWhatsapp('3145678901', 'Hola, sigue disponible? Gracias & saludos');
     expect(enlace).toContain('Hola%2C%20sigue%20disponible%3F');
     expect(enlace).toContain('%26');
     expect(enlace).not.toMatch(/\stext=/);
   });
 
-  it('deja el mensaje despues del parametro text', () => {
+  it('deja el mensaje después del parametro text', () => {
     const enlace = armarEnlaceWhatsapp('3145678901', 'Prueba');
     expect(enlace).toBe('https://wa.me/573145678901?text=Prueba');
   });

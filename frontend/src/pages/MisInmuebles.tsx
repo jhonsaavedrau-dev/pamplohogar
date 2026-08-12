@@ -54,8 +54,8 @@ export function MisInmuebles() {
       {data &&
         (data.inmuebles.length === 0 ? (
           <EstadoVacio
-            titulo="Aun no has publicado nada"
-            descripcion="Publica tu primera habitacion o apartamento. Toma menos de cinco minutos y los estudiantes te encuentran de una."
+            titulo="Aún no has publicado nada"
+            descripcion="Publica tu primera habitación o apartamento. Toma menos de cinco minutos y los estudiantes te encuentran de una."
             accion={
               <Link to="/publicar" className="boton-primario mt-2">
                 Publicar mi primer inmueble

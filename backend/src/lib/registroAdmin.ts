@@ -17,7 +17,7 @@ export function anotarAccion(
     .create({ data: { adminId, accion, descripcion: descripcion.slice(0, 300) } })
     .catch((error: unknown) => {
       process.stderr.write(
-        `[PamploHogar] No se pudo anotar la accion ${accion}: ${
+        `[PamploHogar] No se pudo anotar la acción ${accion}: ${
           error instanceof Error ? error.message : String(error)
         }\n`,
       );
@@ -30,7 +30,7 @@ export const ETIQUETAS_ACCION: Record<AccionAdmin, string> = {
   ELIMINO_INMUEBLE: 'Elimino un inmueble',
   ELIMINO_USUARIO: 'Elimino una cuenta',
   CAMBIO_ROL: 'Cambio el rol de alguien',
-  ELIMINO_RESENA: 'Retiro una resena',
+  ELIMINO_RESENA: 'Retiro una reseña',
   ATENDIO_REPORTE: 'Atendio un reporte',
   DESCARTO_REPORTE: 'Descarto un reporte',
 };

@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   if (!usuario) {
     process.stderr.write(
       `No existe ninguna cuenta con el correo ${email}.\n` +
-        'Registrate primero en la pagina y despues vuelve a correr este comando.\n\n',
+        'Registrate primero en la página y después vuelve a correr este comando.\n\n',
     );
     process.exitCode = 1;
     return;
@@ -40,7 +40,7 @@ async function main(): Promise<void> {
 
   process.stdout.write(
     `Listo. ${usuario.nombre} (${email}) ahora es administrador.\n` +
-      'Cierra sesion y vuelve a entrar en la pagina para que tome efecto.\n\n',
+      'Cierra sesión y vuelve a entrar en la página para que tome efecto.\n\n',
   );
 }
 

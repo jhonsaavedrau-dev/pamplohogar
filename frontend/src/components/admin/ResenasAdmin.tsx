@@ -18,17 +18,17 @@ export function ResenasAdmin() {
   const eliminar = useMutation({
     mutationFn: (id: string) => pedir(`/api/resenas/${id}`, { metodo: 'DELETE' }),
     onSuccess: () => {
-      setMensaje('Resena retirada.');
+      setMensaje('Reseña retirada.');
       void clienteQuery.invalidateQueries({ queryKey: ['admin'] });
     },
     onError: (e) => setMensaje(e instanceof Error ? e.message : 'No pudimos retirarla.'),
   });
 
-  if (isLoading) return <Cargando texto="Cargando resenas..." />;
+  if (isLoading) return <Cargando texto="Cargando reseñas..." />;
   if (isError || !data) {
     return (
       <EstadoError
-        mensaje={error instanceof Error ? error.message : 'No pudimos cargar las resenas.'}
+        mensaje={error instanceof Error ? error.message : 'No pudimos cargar las reseñas.'}
         alReintentar={() => void refetch()}
       />
     );
@@ -44,8 +44,8 @@ export function ResenasAdmin() {
 
       {data.resenas.length === 0 ? (
         <EstadoVacio
-          titulo="Todavia no hay resenas"
-          descripcion="Cuando los estudiantes empiecen a calificar arrendadores, apareceran aqui para moderarlas."
+          titulo="Todavia no hay reseñas"
+          descripcion="Cuando los estudiantes empiecen a calificar arrendadores, apareceran aquí para moderarlas."
         />
       ) : (
         <ul className="space-y-3">
@@ -69,7 +69,7 @@ export function ResenasAdmin() {
                   className="boton-suave shrink-0 text-sm text-terracota-700"
                   disabled={eliminar.isPending}
                   onClick={() => {
-                    if (window.confirm('Retirar esta resena? No se puede deshacer.')) {
+                    if (window.confirm('Retirar esta reseña? No se puede deshacer.')) {
                       eliminar.mutate(r.id);
                     }
                   }}

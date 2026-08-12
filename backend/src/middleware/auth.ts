@@ -47,7 +47,7 @@ export function requiereSesion(req: Request, _res: Response, next: NextFunction)
   cargarUsuario(req)
     .then((usuario) => {
       if (!usuario) {
-        next(noAutorizado('Tu sesion vencio o la cuenta ya no existe. Vuelve a iniciar sesion.'));
+        next(noAutorizado('Tu sesión venció o la cuenta ya no existe. Vuelve a iniciar sesión.'));
         return;
       }
       req.usuario = usuario;
@@ -71,7 +71,7 @@ export function requiereRol(...roles: RolUsuario[]) {
   return (req: Request, _res: Response, next: NextFunction): void => {
     if (!req.usuario) return next(noAutorizado());
     if (!roles.includes(req.usuario.rol)) {
-      return next(prohibido('Tu tipo de cuenta no puede hacer esta accion.'));
+      return next(prohibido('Tu tipo de cuenta no puede hacer esta acción.'));
     }
     next();
   };

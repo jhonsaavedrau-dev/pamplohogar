@@ -11,7 +11,7 @@ export const MOTIVOS = [
 
 export const esquemaCrearReporte = z.object({
   motivo: z.enum(MOTIVOS, {
-    errorMap: () => ({ message: 'Elige por que estas reportando esta publicacion.' }),
+    errorMap: () => ({ message: 'Elige por que estas reportando esta publicación.' }),
   }),
   detalle: z
     .string()

@@ -90,17 +90,17 @@ export const MOTIVOS_REPORTE: { valor: MotivoReporte; etiqueta: string; ayuda: s
   {
     valor: 'PRECIO_ABUSIVO',
     etiqueta: 'Me cobraron mas de lo publicado',
-    ayuda: 'El precio real no es el que aparece aqui',
+    ayuda: 'El precio real no es el que aparece aquí',
   },
   {
     valor: 'INFORMACION_FALSA',
-    etiqueta: 'La publicacion no dice la verdad',
+    etiqueta: 'La publicación no dice la verdad',
     ayuda: 'Las fotos, el tamano o los servicios no coinciden',
   },
   {
     valor: 'NO_EXISTE',
     etiqueta: 'El inmueble no existe',
-    ayuda: 'Fui a la direccion y no hay nada',
+    ayuda: 'Fui a la dirección y no hay nada',
   },
   {
     valor: 'NO_RESPONDE',
@@ -187,7 +187,7 @@ export interface ResenaAdmin {
 }
 
 export const ETIQUETAS_TIPO: Record<TipoInmueble, string> = {
-  HABITACION: 'Habitacion',
+  HABITACION: 'Habitación',
   APARTAESTUDIO: 'Apartaestudio',
   APARTAMENTO: 'Apartamento',
   CASA: 'Casa',
@@ -200,7 +200,7 @@ export const ETIQUETAS_SERVICIO: Record<string, string> = {
   gas: 'Gas',
   cocina: 'Cocina',
   lavadora: 'Lavadora',
-  banoPrivado: 'Bano privado',
+  banoPrivado: 'Baño privado',
   parqueadero: 'Parqueadero',
   vigilancia: 'Vigilancia',
   mascotas: 'Acepta mascotas',

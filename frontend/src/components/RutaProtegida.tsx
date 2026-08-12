@@ -13,7 +13,7 @@ export function RutaProtegida({ children, roles }: Props) {
   const { usuario, cargando } = useSesion();
   const ubicacion = useLocation();
 
-  if (cargando) return <Cargando texto="Revisando tu sesion..." />;
+  if (cargando) return <Cargando texto="Revisando tu sesión..." />;
 
   if (!usuario) {
     return <Navigate to="/entrar" state={{ desde: ubicacion.pathname }} replace />;

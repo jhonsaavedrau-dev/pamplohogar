@@ -27,7 +27,7 @@ const ETIQUETAS: Record<AccionAdmin, string> = {
   ELIMINO_INMUEBLE: 'Elimino un inmueble',
   ELIMINO_USUARIO: 'Elimino una cuenta',
   CAMBIO_ROL: 'Cambio un rol',
-  ELIMINO_RESENA: 'Retiro una resena',
+  ELIMINO_RESENA: 'Retiro una reseña',
   ATENDIO_REPORTE: 'Atendio un reporte',
   DESCARTO_REPORTE: 'Descarto un reporte',
 };
@@ -71,7 +71,7 @@ export function RegistroAdmin() {
     return (
       <EstadoVacio
         titulo="Todavia no hay nada anotado"
-        descripcion="Cuando un administrador retire una publicacion, elimine una cuenta o atienda un reporte, queda aqui con su nombre y la fecha."
+        descripcion="Cuando un administrador retire una publicación, elimine una cuenta o atienda un reporte, queda aquí con su nombre y la fecha."
       />
     );
   }

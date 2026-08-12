@@ -12,7 +12,7 @@ const SECCIONES = [
   { clave: 'reportes', etiqueta: 'Reportes' },
   { clave: 'inmuebles', etiqueta: 'Inmuebles' },
   { clave: 'usuarios', etiqueta: 'Usuarios' },
-  { clave: 'resenas', etiqueta: 'Resenas' },
+  { clave: 'resenas', etiqueta: 'Reseñas' },
   { clave: 'registro', etiqueta: 'Registro' },
 ] as const;
 
@@ -26,13 +26,13 @@ export function Admin() {
     <div className="contenedor-app py-8">
       <header className="mb-6">
         <span className="rounded-full bg-terracota-100 px-3 py-1 text-xs font-bold tracking-wide text-terracota-700 uppercase">
-          Panel de administracion
+          Panel de administración
         </span>
         <h1 className="titular mt-3">
           Hola, {usuario?.nombre.split(' ')[0]}
         </h1>
         <p className="mt-1 text-sm text-piedra-600">
-          Desde aqui puedes ver como va la plataforma y retirar lo que no deberia estar publicado.
+          Desde aquí puedes ver como va la plataforma y retirar lo que no deberia estar publicado.
         </p>
       </header>
 

@@ -60,7 +60,7 @@ rutasAuth.post(
     const datos = esquemaRegistro.parse(req.body);
 
     const existente = await prisma.usuario.findUnique({ where: { email: datos.email } });
-    if (existente) throw conflicto('Ya hay una cuenta con ese correo. Inicia sesion.');
+    if (existente) throw conflicto('Ya hay una cuenta con ese correo. Inicia sesión.');
 
     const passwordHash = await bcrypt.hash(datos.password, 10);
 
@@ -105,10 +105,10 @@ rutasAuth.post(
     const datos = esquemaLogin.parse(req.body);
 
     const usuario = await prisma.usuario.findUnique({ where: { email: datos.email } });
-    if (!usuario) throw noAutorizado('Correo o contrasena incorrectos.');
+    if (!usuario) throw noAutorizado('Correo o contraseña incorrectos.');
 
     const coincide = await bcrypt.compare(datos.password, usuario.passwordHash);
-    if (!coincide) throw noAutorizado('Correo o contrasena incorrectos.');
+    if (!coincide) throw noAutorizado('Correo o contraseña incorrectos.');
 
     const token = firmarToken({ sub: usuario.id, rol: usuario.rol });
     res.json({ token, usuario: aUsuarioPublico(usuario) });

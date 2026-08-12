@@ -89,9 +89,9 @@ rutasResenas.delete(
   requiereSesion,
   asincrono(async (req, res) => {
     const resena = await prisma.resena.findUnique({ where: { id: req.params.id } });
-    if (!resena) throw noEncontrado('Esa resena no existe.');
+    if (!resena) throw noEncontrado('Esa reseña no existe.');
     if (resena.autorId !== req.usuario!.sub && req.usuario!.rol !== 'ADMIN') {
-      throw solicitudInvalida('Solo puedes borrar tus propias resenas.');
+      throw solicitudInvalida('Solo puedes borrar tus propias reseñas.');
     }
     await prisma.resena.delete({ where: { id: req.params.id } });
 
@@ -103,6 +103,6 @@ rutasResenas.delete(
       );
     }
 
-    res.json({ mensaje: 'Resena eliminada.' });
+    res.json({ mensaje: 'Reseña eliminada.' });
   }),
 );

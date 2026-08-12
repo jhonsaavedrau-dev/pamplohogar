@@ -88,7 +88,7 @@ export function Resumen() {
             pie={
               data.precios.inusuales > 0
                 ? 'Muy lejos del precio normal'
-                : 'Ningun precio se sale de lo normal'
+                : 'Ningún precio se sale de lo normal'
             }
             alerta={data.precios.inusuales > 0}
           />
@@ -103,7 +103,7 @@ export function Resumen() {
             valor={String(data.actividad.solicitudes)}
             pie="Veces que un estudiante pidio el celular"
           />
-          <Dato etiqueta="Resenas escritas" valor={String(data.actividad.resenas)} />
+          <Dato etiqueta="Reseñas escritas" valor={String(data.actividad.resenas)} />
           <Dato
             etiqueta="Precio tipico"
             valor={pesos(data.precios.mediana)}

@@ -159,12 +159,12 @@ export function FormularioInmueble() {
   const validar = (): string | null => {
     if (form.titulo.trim().length < 10) return 'El titulo debe tener al menos 10 caracteres.';
     if (form.descripcion.trim().length < 30)
-      return 'Cuenta un poco mas del inmueble, minimo 30 caracteres.';
+      return 'Cuenta un poco mas del inmueble, mínimo 30 caracteres.';
     const precio = Number(form.precio);
     if (!Number.isFinite(precio) || precio < 50000)
-      return 'Escribe un precio valido, minimo 50.000 pesos.';
+      return 'Escribe un precio valido, mínimo 50.000 pesos.';
     if (form.barrio.trim().length < 3) return 'Escribe el barrio.';
-    if (form.direccion.trim().length < 5) return 'Escribe la direccion.';
+    if (form.direccion.trim().length < 5) return 'Escribe la dirección.';
     return null;
   };
 
@@ -224,7 +224,7 @@ export function FormularioInmueble() {
         {editando ? 'Editar inmueble' : 'Publicar inmueble'}
       </h1>
       <p className="mt-1 mb-6 text-sm text-piedra-600">
-        Entre mas claro y honesto seas, mas rapido te escriben los estudiantes.
+        Entre mas claro y honesto seas, mas rápido te escriben los estudiantes.
       </p>
 
       <form
@@ -239,13 +239,13 @@ export function FormularioInmueble() {
 
         <div>
           <label className="etiqueta" htmlFor="titulo">
-            Titulo de la publicacion
+            Titulo de la publicación
           </label>
           <input
             id="titulo"
             className="campo"
             maxLength={120}
-            placeholder="Habitacion amoblada a 5 minutos de la Unipamplona"
+            placeholder="Habitación amoblada a 5 minutos de la Unipamplona"
             value={form.titulo}
             onChange={(e) => cambiar('titulo', e.target.value)}
           />
@@ -399,7 +399,7 @@ export function FormularioInmueble() {
         </div>
 
         <div>
-          <p className="etiqueta">Ubicacion en el mapa</p>
+          <p className="etiqueta">Ubicación en el mapa</p>
           <p className="mb-2 text-xs text-piedra-600">
             Toca el mapa o arrastra la casita hasta donde queda el inmueble.
           </p>
@@ -411,9 +411,9 @@ export function FormularioInmueble() {
         </div>
 
         <div>
-          <p className="etiqueta">Fotos (maximo 10)</p>
+          <p className="etiqueta">Fotos (máximo 10)</p>
           <label className="boton-suave w-full cursor-pointer">
-            {subiendo ? 'Subiendo fotos...' : 'Elegir fotos del telefono'}
+            {subiendo ? 'Subiendo fotos...' : 'Elegir fotos del teléfono'}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"

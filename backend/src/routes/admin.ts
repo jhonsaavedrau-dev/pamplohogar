@@ -216,7 +216,7 @@ rutasAdmin.patch(
     const usuario = await prisma.usuario.findUnique({ where: { id: req.params.id } });
     if (!usuario) throw noEncontrado('Ese usuario no existe.');
     if (usuario.rol === 'ADMIN') {
-      throw prohibido('No puedes quitarle el rol a otro administrador desde aqui.');
+      throw prohibido('No puedes quitarle el rol a otro administrador desde aquí.');
     }
 
     const actualizado = await prisma.usuario.update({
@@ -246,7 +246,7 @@ rutasAdmin.delete(
     const usuario = await prisma.usuario.findUnique({ where: { id: req.params.id } });
     if (!usuario) throw noEncontrado('Ese usuario no existe.');
     if (usuario.rol === 'ADMIN') {
-      throw prohibido('No puedes eliminar a otro administrador desde aqui.');
+      throw prohibido('No puedes eliminar a otro administrador desde aquí.');
     }
 
     const cuantos = await prisma.inmueble.count({ where: { arrendadorId: usuario.id } });

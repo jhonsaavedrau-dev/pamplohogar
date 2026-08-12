@@ -40,8 +40,8 @@ const ARRENDADORES = [
 ];
 
 const ESTUDIANTES = [
-  { nombre: 'Andres Felipe Rojas', email: 'andres.rojas@ejemplo.com', telefono: '3211234567' },
-  { nombre: 'Laura Sofia Contreras', email: 'laura.contreras@ejemplo.com', telefono: '3159876543' },
+  { nombre: 'Andrés Felipe Rojas', email: 'andres.rojas@ejemplo.com', telefono: '3211234567' },
+  { nombre: 'Laura Sofía Contreras', email: 'laura.contreras@ejemplo.com', telefono: '3159876543' },
   { nombre: 'Kevin Duarte', email: 'kevin.duarte@ejemplo.com', telefono: '3024567890' },
 ];
 
@@ -49,9 +49,9 @@ const INMUEBLES: SemillaInmueble[][] = [
   // Inmuebles de Marta Villamizar
   [
     {
-      titulo: 'Habitacion amoblada a diez minutos de la Unipamplona',
+      titulo: 'Habitación amoblada a diez minutos de la Unipamplona',
       descripcion:
-        'Habitacion independiente en casa de familia, con cama sencilla, escritorio, closet y ventana grande. El bano es compartido con otra estudiante. Incluye wifi, agua y luz. La casa es tranquila, ideal para estudiar. Se pide respeto con los horarios de descanso despues de las diez de la noche.',
+        'Habitación independiente en casa de familia, con cama sencilla, escritorio, closet y ventana grande. El baño es compartido con otra estudiante. Incluye wifi, agua y luz. La casa es tranquila, ideal para estudiar. Se pide respeto con los horarios de descanso después de las diez de la noche.',
       tipo: 'HABITACION',
       precio: 320000,
       barrio: 'El Buque',
@@ -67,7 +67,7 @@ const INMUEBLES: SemillaInmueble[][] = [
     {
       titulo: 'Apartaestudio nuevo en el Centro con cocina integral',
       descripcion:
-        'Apartaestudio recien remodelado a dos cuadras del parque principal. Tiene cocina integral, bano privado, closet empotrado y buena iluminacion natural. El edificio cuenta con porteria durante el dia. Perfecto para una persona o pareja de estudiantes. No incluye servicios publicos.',
+        'Apartaestudio recién remodelado a dos cuadras del parque principal. Tiene cocina integral, baño privado, closet empotrado y buena iluminación natural. El edificio cuenta con portería durante el día. Perfecto para una persona o pareja de estudiantes. No incluye servicios públicos.',
       tipo: 'APARTAESTUDIO',
       precio: 620000,
       barrio: 'Centro',
@@ -85,9 +85,9 @@ const INMUEBLES: SemillaInmueble[][] = [
       ],
     },
     {
-      titulo: 'Habitacion economica cerca del hospital San Juan de Dios',
+      titulo: 'Habitación económica cerca del hospital San Juan de Dios',
       descripcion:
-        'Habitacion sencilla con cama, mesa de noche y closet pequeño. Bano compartido entre tres habitaciones. Se comparte cocina y zona de lavado. Incluye agua y luz. Buena opcion para estudiantes de primeros semestres que buscan algo economico y central.',
+        'Habitación sencilla con cama, mesa de noche y closet pequeño. Baño compartido entre tres habitaciones. Se comparte cocina y zona de lavado. Incluye agua y luz. Buena opción para estudiantes de primeros semestres que buscan algo económico y central.',
       tipo: 'HABITACION',
       precio: 250000,
       barrio: 'Santa Marta',
@@ -103,7 +103,7 @@ const INMUEBLES: SemillaInmueble[][] = [
     {
       titulo: 'Apartamento de dos habitaciones para compartir entre estudiantes',
       descripcion:
-        'Apartamento en segundo piso con dos habitaciones amplias, sala comedor, cocina y bano. Ideal para dos o tres estudiantes que quieran compartir gastos. Zona de ropas independiente con lavadora. El barrio es seguro y hay tienda y papeleria a media cuadra.',
+        'Apartamento en segundo piso con dos habitaciones amplias, sala comedor, cocina y baño. Ideal para dos o tres estudiantes que quieran compartir gastos. Zona de ropas independiente con lavadora. El barrio es seguro y hay tienda y papelería a media cuadra.',
       tipo: 'APARTAMENTO',
       precio: 850000,
       barrio: 'Cristo Rey',
@@ -125,9 +125,9 @@ const INMUEBLES: SemillaInmueble[][] = [
   // Inmuebles de Hernando Cristancho
   [
     {
-      titulo: 'Habitacion con bano privado frente a la ciudadela universitaria',
+      titulo: 'Habitación con baño privado frente a la ciudadela universitaria',
       descripcion:
-        'Habitacion con bano privado, cama doble, escritorio grande y buen wifi. Queda cruzando la calle de la ciudadela, no necesitas transporte. Incluye todos los servicios y limpieza de zonas comunes una vez por semana. Se arrienda por semestre.',
+        'Habitación con baño privado, cama doble, escritorio grande y buen wifi. Queda cruzando la calle de la ciudadela, no necesitas transporte. Incluye todos los servicios y limpieza de zonas comunes una vez por semana. Se arrienda por semestre.',
       tipo: 'HABITACION',
       precio: 450000,
       barrio: 'El Escorial',
@@ -147,7 +147,7 @@ const INMUEBLES: SemillaInmueble[][] = [
     {
       titulo: 'Apartaestudio amoblado con parqueadero en Juan XXIII',
       descripcion:
-        'Apartaestudio completamente amoblado: cama, nevera, estufa, mesa de estudio y television. Tiene parqueadero para moto incluido en el precio. El sector es tranquilo y hay ruta de buseta cada quince minutos hacia la universidad. Contrato minimo de seis meses.',
+        'Apartaestudio completamente amoblado: cama, nevera, estufa, mesa de estudio y televisión. Tiene parqueadero para moto incluido en el precio. El sector es tranquilo y hay ruta de buseta cada quince minutos hacia la universidad. Contrato mínimo de seis meses.',
       tipo: 'APARTAESTUDIO',
       precio: 700000,
       barrio: 'Juan XXIII',
@@ -163,7 +163,7 @@ const INMUEBLES: SemillaInmueble[][] = [
     {
       titulo: 'Casa completa para grupo de estudiantes en La Feria',
       descripcion:
-        'Casa de tres habitaciones con patio, sala, comedor, cocina amplia y dos banos. Pensada para un grupo de tres a cinco estudiantes que quieran vivir juntos y repartir el arriendo. Acepta mascotas pequeñas. Se entrega sin muebles pero con cocina y calentador instalados.',
+        'Casa de tres habitaciones con patio, sala, comedor, cocina amplia y dos baños. Pensada para un grupo de tres a cinco estudiantes que quieran vivir juntos y repartir el arriendo. Acepta mascotas pequeñas. Se entrega sin muebles pero con cocina y calentador instalados.',
       tipo: 'CASA',
       precio: 1250000,
       barrio: 'La Feria',
@@ -181,9 +181,9 @@ const INMUEBLES: SemillaInmueble[][] = [
   // Inmuebles de Gloria Peñaranda
   [
     {
-      titulo: 'Habitacion para chica en casa de familia, sector Ursua',
+      titulo: 'Habitación para chica en casa de familia, sector Ursua',
       descripcion:
-        'Habitacion en casa de familia donde vive una señora sola. Se arrienda unicamente a estudiante mujer. Incluye desayuno de lunes a viernes, wifi y todos los servicios. Ambiente familiar y muy seguro, ideal para quien viene de otra ciudad por primera vez.',
+        'Habitación en casa de familia donde vive una señora sola. Se arrienda únicamente a estudiante mujer. Incluye desayuno de lunes a viernes, wifi y todos los servicios. Ambiente familiar y muy seguro, ideal para quien viene de otra ciudad por primera vez.',
       tipo: 'HABITACION',
       precio: 380000,
       barrio: 'Ursua',
@@ -199,7 +199,7 @@ const INMUEBLES: SemillaInmueble[][] = [
     {
       titulo: 'Apartamento amoblado de dos alcobas en San Francisco',
       descripcion:
-        'Apartamento amoblado con dos alcobas, sala comedor, cocina integral y bano social. Cuenta con calentador de agua, wifi de fibra optica y television. Queda a diez minutos caminando del centro y a quince de la universidad. Se pide deposito de un mes.',
+        'Apartamento amoblado con dos alcobas, sala comedor, cocina integral y baño social. Cuenta con calentador de agua, wifi de fibra optica y televisión. Queda a diez minutos caminando del centro y a quince de la universidad. Se pide deposito de un mes.',
       tipo: 'APARTAMENTO',
       precio: 1100000,
       barrio: 'San Francisco',
@@ -217,9 +217,9 @@ const INMUEBLES: SemillaInmueble[][] = [
       ],
     },
     {
-      titulo: 'Habitacion doble para compartir entre dos estudiantes',
+      titulo: 'Habitación doble para compartir entre dos estudiantes',
       descripcion:
-        'Habitacion grande con dos camas sencillas, dos closets y dos escritorios, pensada para que la compartan dos personas y el arriendo salga mas barato por cabeza. Bano compartido con otra habitacion. Incluye wifi y servicios. Cocina de uso comun.',
+        'Habitación grande con dos camas sencillas, dos closets y dos escritorios, pensada para que la compartan dos personas y el arriendo salga mas barato por cabeza. Baño compartido con otra habitación. Incluye wifi y servicios. Cocina de uso común.',
       tipo: 'HABITACION',
       precio: 300000,
       barrio: 'Chichira',
@@ -248,14 +248,14 @@ const RESENAS = [
     indiceArrendador: 0,
     calificacion: 4,
     comentario:
-      'Buena arrendadora, atenta y cumplida con los arreglos. Lo unico es que el wifi a veces se cae en las noches, pero lo soluciono cuando le avise.',
+      'Buena arrendadora, atenta y cumplida con los arreglos. Lo único es que el wifi a veces se cae en las noches, pero lo soluciono cuando le avise.',
   },
   {
     indiceEstudiante: 2,
     indiceArrendador: 1,
     calificacion: 5,
     comentario:
-      'Don Hernando me entrego la habitacion tal cual estaba en las fotos. Queda al frente de la ciudadela asi que me ahorro el pasaje todos los dias. Excelente.',
+      'Don Hernando me entrego la habitación tal cual estaba en las fotos. Queda al frente de la ciudadela así que me ahorro el pasaje todos los días. Excelente.',
   },
   {
     indiceEstudiante: 0,
@@ -381,7 +381,7 @@ async function main(): Promise<void> {
     }
   }
 
-  process.stdout.write('Creando resenas...\n');
+  process.stdout.write('Creando reseñas...\n');
 
   for (const resena of RESENAS) {
     const arrendador = arrendadores[resena.indiceArrendador];
@@ -403,8 +403,8 @@ async function main(): Promise<void> {
 
   process.stdout.write(
     `\nListo. ${total} inmuebles, ${arrendadores.length} arrendadores, ${estudiantes.length} estudiantes, ` +
-      `${RESENAS.length} resenas y ${totalCambios} cambios de precio.\n` +
-      `Cuentas de prueba (todas con la contrasena pamplona2026):\n` +
+      `${RESENAS.length} reseñas y ${totalCambios} cambios de precio.\n` +
+      `Cuentas de prueba (todas con la contraseña pamplona2026):\n` +
       `  Arrendador: ${ARRENDADORES[0].email}\n` +
       `  Estudiante: ${ESTUDIANTES[0].email}\n`,
   );

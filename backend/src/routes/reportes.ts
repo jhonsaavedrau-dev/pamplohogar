@@ -46,7 +46,7 @@ rutasReportes.post(
     });
 
     res.status(201).json({
-      mensaje: 'Gracias por avisarnos. Vamos a revisar esta publicacion.',
+      mensaje: 'Gracias por avisarnos. Vamos a revisar esta publicación.',
     });
   }),
 );

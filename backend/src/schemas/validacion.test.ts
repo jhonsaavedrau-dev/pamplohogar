@@ -4,7 +4,7 @@ import { esquemaBusqueda, esquemaCrearInmueble } from './inmueble.js';
 import { esquemaCrearResena } from './resena.js';
 
 const registroValido = {
-  nombre: 'Andres Felipe Rojas',
+  nombre: 'Andrés Felipe Rojas',
   email: 'Andres.Rojas@Ejemplo.com',
   password: 'clave12345',
   rol: 'ESTUDIANTE' as const,
@@ -16,7 +16,7 @@ describe('esquemaRegistro', () => {
     expect(r.email).toBe('andres.rojas@ejemplo.com');
   });
 
-  it('rechaza contrasenas de menos de ocho caracteres', () => {
+  it('rechaza contraseñas de menos de ocho caracteres', () => {
     const r = esquemaRegistro.safeParse({ ...registroValido, password: 'corta' });
     expect(r.success).toBe(false);
   });
@@ -53,15 +53,15 @@ describe('esquemaRegistro', () => {
 });
 
 describe('esquemaLogin', () => {
-  it('exige correo y contrasena', () => {
+  it('exige correo y contraseña', () => {
     expect(esquemaLogin.safeParse({ email: 'a@b.com', password: '' }).success).toBe(false);
     expect(esquemaLogin.safeParse({ email: 'a@b.com', password: 'x' }).success).toBe(true);
   });
 });
 
 const inmuebleValido = {
-  titulo: 'Habitacion amoblada cerca de la universidad',
-  descripcion: 'Descripcion suficientemente larga para pasar la validacion del servidor.',
+  titulo: 'Habitación amoblada cerca de la universidad',
+  descripcion: 'Descripción suficientemente larga para pasar la validacion del servidor.',
   tipo: 'HABITACION' as const,
   precio: 400000,
   barrio: 'Centro',
@@ -102,7 +102,7 @@ describe('esquemaCrearInmueble', () => {
     );
   });
 
-  it('rechaza servicios que no estan en el catalogo', () => {
+  it('rechaza servicios que no están en el catalogo', () => {
     expect(
       esquemaCrearInmueble.safeParse({ ...inmuebleValido, servicios: ['piscina-olimpica'] }).success,
     ).toBe(false);
@@ -122,7 +122,7 @@ describe('esquemaCrearInmueble', () => {
 });
 
 describe('esquemaBusqueda', () => {
-  it('convierte los filtros de texto a numeros', () => {
+  it('convierte los filtros de texto a números', () => {
     const f = esquemaBusqueda.parse({ precioMin: '200000', precioMax: '800000' });
     expect(f.precioMin).toBe(200000);
     expect(f.precioMax).toBe(800000);
@@ -152,7 +152,7 @@ describe('esquemaBusqueda', () => {
     expect(esquemaBusqueda.parse({ amoblado: 'false' }).amoblado).toBe(false);
   });
 
-  it('cae en la pagina uno si le mandan basura', () => {
+  it('cae en la página uno si le mandan basura', () => {
     expect(esquemaBusqueda.parse({ pagina: 'abc' }).pagina).toBe(1);
     expect(esquemaBusqueda.parse({ pagina: '-5' }).pagina).toBe(1);
     expect(esquemaBusqueda.parse({ pagina: '3' }).pagina).toBe(3);
@@ -166,7 +166,7 @@ describe('esquemaCrearResena', () => {
     comentario: 'Muy buena experiencia con este arrendador.',
   };
 
-  it('acepta una resena completa', () => {
+  it('acepta una reseña completa', () => {
     expect(esquemaCrearResena.safeParse(base).success).toBe(true);
   });
 

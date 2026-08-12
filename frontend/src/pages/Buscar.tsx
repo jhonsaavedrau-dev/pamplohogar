@@ -267,7 +267,7 @@ export function Buscar() {
 
               <div>
                 <label className="etiqueta" htmlFor="filtro-habitaciones">
-                  Habitaciones (minimo)
+                  Habitaciones (mínimo)
                 </label>
                 <input
                   id="filtro-habitaciones"
@@ -353,7 +353,7 @@ export function Buscar() {
             {data.inmuebles.length === 0 ? (
               <EstadoVacio
                 titulo="No encontramos nada con esos filtros"
-                descripcion="Prueba subiendo el precio maximo, quitando algun servicio o buscando en otro barrio."
+                descripcion="Prueba subiendo el precio máximo, quitando algún servicio o buscando en otro barrio."
                 accion={
                   hayFiltros ? (
                     <button type="button" onClick={limpiar} className="boton-primario mt-2">

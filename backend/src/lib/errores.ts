@@ -9,7 +9,7 @@ export class ErrorApi extends Error {
   }
 }
 
-export const noAutorizado = (mensaje = 'Debes iniciar sesion para hacer esto.') =>
+export const noAutorizado = (mensaje = 'Debes iniciar sesión para hacer esto.') =>
   new ErrorApi(401, mensaje);
 
 export const prohibido = (mensaje = 'No tienes permiso para hacer esto.') =>

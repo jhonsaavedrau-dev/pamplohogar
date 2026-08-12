@@ -74,7 +74,7 @@ rutasRecuperacion.post(
 
     const respuestaNeutral = {
       mensaje:
-        'Si ese correo tiene una cuenta, ya le enviamos el enlace para cambiar la contrasena. Revisa tambien la carpeta de spam.',
+        'Si ese correo tiene una cuenta, ya le enviamos el enlace para cambiar la contraseña. Revisa también la carpeta de spam.',
     };
 
     if (!correoConfigurado) {
@@ -108,7 +108,7 @@ rutasRecuperacion.post(
     const token = await validarToken(datos.token, 'RECUPERAR_CLAVE');
     if (!token) {
       throw solicitudInvalida(
-        'Ese enlace ya no sirve: vencio o ya lo usaste. Pide uno nuevo desde la pantalla de entrar.',
+        'Ese enlace ya no sirve: venció o ya lo usaste. Pide uno nuevo desde la pantalla de entrar.',
       );
     }
 
@@ -122,7 +122,7 @@ rutasRecuperacion.post(
       }),
     ]);
 
-    res.json({ mensaje: 'Listo, tu contrasena quedo cambiada. Ya puedes entrar.' });
+    res.json({ mensaje: 'Listo, tu contraseña quedó cambiada. Ya puedes entrar.' });
   }),
 );
 
@@ -155,7 +155,7 @@ rutasRecuperacion.post(
       throw solicitudInvalida('No pudimos enviar el correo. Intenta de nuevo en unos minutos.');
     }
 
-    res.json({ mensaje: `Te enviamos un correo a ${usuario.email}. Revisa tambien el spam.` });
+    res.json({ mensaje: `Te enviamos un correo a ${usuario.email}. Revisa también el spam.` });
   }),
 );
 
@@ -169,7 +169,7 @@ rutasRecuperacion.post(
     const token = await validarToken(codigo, 'VERIFICAR_CORREO');
     if (!token) {
       throw solicitudInvalida(
-        'Ese enlace ya no sirve: vencio o ya lo usaste. Entra a tu cuenta y pide uno nuevo.',
+        'Ese enlace ya no sirve: venció o ya lo usaste. Entra a tu cuenta y pide uno nuevo.',
       );
     }
 

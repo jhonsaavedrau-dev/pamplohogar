@@ -70,7 +70,7 @@ export function Registro() {
         {errorServidor && <Aviso tipo="error">{errorServidor}</Aviso>}
 
         <fieldset>
-          <legend className="etiqueta">Que vas a hacer aqui?</legend>
+          <legend className="etiqueta">Que vas a hacer aquí?</legend>
           <div className="grid grid-cols-2 gap-3">
             {(
               [
@@ -114,7 +114,7 @@ export function Registro() {
 
         <div>
           <label className="etiqueta" htmlFor="email-registro">
-            Correo electronico
+            Correo electrónico
           </label>
           <input
             id="email-registro"

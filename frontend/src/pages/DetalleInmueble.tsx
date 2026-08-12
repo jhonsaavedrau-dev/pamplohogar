@@ -60,12 +60,12 @@ export function DetalleInmueble() {
         cuerpo: { inmuebleId: id, calificacion, comentario },
       }),
     onSuccess: () => {
-      setMensajeResena('Gracias, tu resena quedo publicada.');
+      setMensajeResena('Gracias, tu reseña quedó publicada.');
       setComentario('');
       void clienteQuery.invalidateQueries({ queryKey: ['inmueble', id] });
     },
     onError: (e) => {
-      setMensajeResena(e instanceof Error ? e.message : 'No pudimos guardar tu resena.');
+      setMensajeResena(e instanceof Error ? e.message : 'No pudimos guardar tu reseña.');
     },
   });
 
@@ -126,11 +126,11 @@ export function DetalleInmueble() {
           <dl className="grid grid-cols-3 gap-3 rounded-2xl border border-piedra-200 bg-white p-4">
             {[
               {
-                etiqueta: inmueble.habitaciones === 1 ? 'Habitacion' : 'Habitaciones',
+                etiqueta: inmueble.habitaciones === 1 ? 'Habitación' : 'Habitaciones',
                 valor: String(inmueble.habitaciones),
               },
               {
-                etiqueta: inmueble.banos === 1 ? 'Bano' : 'Banos',
+                etiqueta: inmueble.banos === 1 ? 'Baño' : 'Baños',
                 valor: String(inmueble.banos),
               },
               { etiqueta: 'Muebles', valor: inmueble.amoblado ? 'Incluidos' : 'No incluye' },
@@ -200,7 +200,7 @@ export function DetalleInmueble() {
 
             {resenas.length === 0 ? (
               <p className="rounded-xl bg-piedra-100 px-4 py-6 text-center text-sm text-piedra-600">
-                Todavia nadie ha calificado a este arrendador. Si viviste aqui, tu opinion le sirve
+                Todavia nadie ha calificado a este arrendador. Si viviste aquí, tu opinion le sirve
                 al siguiente estudiante.
               </p>
             ) : (
@@ -238,7 +238,7 @@ export function DetalleInmueble() {
                   disabled={enviarResena.isPending || comentario.trim().length < 15}
                   onClick={() => enviarResena.mutate()}
                 >
-                  {enviarResena.isPending ? 'Enviando...' : 'Publicar resena'}
+                  {enviarResena.isPending ? 'Enviando...' : 'Publicar reseña'}
                 </button>
               </div>
             )}
@@ -263,7 +263,7 @@ export function DetalleInmueble() {
             {esDueno ? (
               <div className="space-y-2">
                 <Link to={`/inmueble/${inmueble.id}/editar`} className="boton-confianza w-full">
-                  Editar publicacion
+                  Editar publicación
                 </Link>
                 <button
                   type="button"
@@ -275,7 +275,7 @@ export function DetalleInmueble() {
                     }
                   }}
                 >
-                  {eliminar.isPending ? 'Eliminando...' : 'Eliminar publicacion'}
+                  {eliminar.isPending ? 'Eliminando...' : 'Eliminar publicación'}
                 </button>
               </div>
             ) : contacto ? (
@@ -314,7 +314,7 @@ export function DetalleInmueble() {
                   {pedirContacto.isPending ? 'Un momento...' : 'Contactar al arrendador'}
                 </button>
                 <p className="text-center text-xs text-piedra-600">
-                  Mostramos el numero solo cuando pulsas el boton, para proteger al arrendador del
+                  Mostramos el número solo cuando pulsas el boton, para proteger al arrendador del
                   spam.
                 </p>
               </>

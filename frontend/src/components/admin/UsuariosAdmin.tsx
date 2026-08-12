@@ -154,7 +154,7 @@ export function UsuariosAdmin() {
                         <p className="mt-1 text-xs text-piedra-600">
                           Desde {fechaCorta(u.creadoEn)} · {u.inmuebles}{' '}
                           {u.inmuebles === 1 ? 'inmueble' : 'inmuebles'} · {u.resenas}{' '}
-                          {u.resenas === 1 ? 'resena' : 'resenas'}
+                          {u.resenas === 1 ? 'reseña' : 'reseñas'}
                         </p>
                       </div>
 
@@ -180,7 +180,7 @@ export function UsuariosAdmin() {
                             onClick={() => {
                               if (
                                 window.confirm(
-                                  `Eliminar la cuenta de ${u.nombre}? Se borran tambien sus ${u.inmuebles} inmuebles. No se puede deshacer.`,
+                                  `Eliminar la cuenta de ${u.nombre}? Se borran también sus ${u.inmuebles} inmuebles. No se puede deshacer.`,
                                 )
                               ) {
                                 eliminar.mutate(u.id);
@@ -225,8 +225,8 @@ export function UsuariosAdmin() {
       )}
 
       <p className="rounded-xl bg-piedra-100 px-4 py-3 text-xs text-piedra-600">
-        Nombrar administradores no se puede hacer desde aqui, a proposito. Se hace desde el
-        proyecto con el comando <code className="font-mono">npm run hacer-admin</code>. Asi, aunque
+        Nombrar administradores no se puede hacer desde aquí, a propósito. Se hace desde el
+        proyecto con el comando <code className="font-mono">npm run hacer-admin</code>. Así, aunque
         alguien entrara a una cuenta de administrador, no podria crear mas.
       </p>
     </div>

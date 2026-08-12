@@ -13,7 +13,7 @@ const esquema = z
   })
   .refine((d) => d.password === d.confirmacion, {
     path: ['confirmacion'],
-    message: 'Las dos contrasenas no son iguales.',
+    message: 'Las dos contraseñas no son iguales.',
   });
 
 type Datos = z.infer<typeof esquema>;
@@ -42,7 +42,7 @@ export function CambiarClave() {
       setListo(true);
       window.setTimeout(() => navegar('/entrar', { replace: true }), 2500);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'No pudimos cambiar tu contrasena.');
+      setError(e instanceof Error ? e.message : 'No pudimos cambiar tu contraseña.');
     }
   });
 
@@ -50,7 +50,7 @@ export function CambiarClave() {
     return (
       <div className="contenedor-app max-w-md py-10">
         <EstadoVacio
-          titulo="Este enlace esta incompleto"
+          titulo="Este enlace está incompleto"
           descripcion="Abre el enlace tal cual te llego al correo, sin cortarlo. Si no funciona, pide uno nuevo."
           accion={
             <Link to="/recuperar" className="boton-primario mt-2">
@@ -64,22 +64,22 @@ export function CambiarClave() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="titular">Elige tu nueva contrasena</h1>
+      <h1 className="titular">Elige tu nueva contraseña</h1>
       <p className="mt-2 text-sm text-piedra-600">
-        Que sea facil de recordar para ti y dificil de adivinar para los demas.
+        Que sea fácil de recordar para ti y difícil de adivinar para los demas.
       </p>
 
       <form onSubmit={enviar} className="tarjeta mt-6 space-y-4 p-5" noValidate>
         {error && <Aviso tipo="error">{error}</Aviso>}
         {listo && (
           <Aviso tipo="exito">
-            Listo, tu contrasena quedo cambiada. Te llevamos a la pantalla de entrar.
+            Listo, tu contraseña quedó cambiada. Te llevamos a la pantalla de entrar.
           </Aviso>
         )}
 
         <div>
           <label className="etiqueta" htmlFor="clave-nueva">
-            Contrasena nueva
+            Contraseña nueva
           </label>
           <input
             id="clave-nueva"
@@ -110,7 +110,7 @@ export function CambiarClave() {
         </div>
 
         <button type="submit" className="boton-primario w-full" disabled={isSubmitting || listo}>
-          {isSubmitting ? 'Guardando...' : 'Guardar contrasena'}
+          {isSubmitting ? 'Guardando...' : 'Guardar contraseña'}
         </button>
       </form>
     </div>
