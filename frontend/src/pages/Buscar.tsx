@@ -294,7 +294,7 @@ export function Buscar() {
                       type="button"
                       onClick={() => alternarServicio(servicio)}
                       aria-pressed={activo}
-                      className={`min-h-10 rounded-full border px-4 text-sm font-medium transition-colors ${
+                      className={`min-h-11 rounded-full border px-4 text-sm font-medium transition-colors ${
                         activo
                           ? 'border-terracota-500 bg-terracota-500 text-white'
                           : 'border-piedra-200 bg-white text-piedra-800'
@@ -307,10 +307,10 @@ export function Buscar() {
               </div>
             </div>
 
-            <label className="flex items-center gap-3 text-base font-medium text-piedra-800">
+            <label className="flex min-h-11 items-center gap-3 text-base font-medium text-piedra-800">
               <input
                 type="checkbox"
-                className="h-5 w-5 rounded border-piedra-200 text-terracota-500 focus:ring-terracota-500"
+                className="h-6 w-6 shrink-0 rounded border-piedra-200 text-terracota-500 focus:ring-terracota-500"
                 checked={valor('amoblado') === 'true'}
                 onChange={(e) => actualizar('amoblado', e.target.checked ? 'true' : '')}
               />

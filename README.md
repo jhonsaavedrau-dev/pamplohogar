@@ -20,6 +20,8 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Busqueda con filtros** por texto, tipo, precio, barrio, numero de habitaciones, servicios y si
   esta amoblado. Se puede ordenar por precio, por fecha o por cercania a la Universidad de Pamplona.
 - **Detalle del inmueble** con carrusel de fotos, mapa y la distancia real hasta la universidad.
+  Los mapas tienen vista de calles y vista satelite, porque para alguien que no conoce Pamplona ver
+  los techos y los arboles de verdad dice mas que un plano.
 - **Contacto protegido.** El celular del arrendador esta oculto hasta que el estudiante pulsa
   "Contactar". Ahi se genera un enlace de WhatsApp con el mensaje ya escrito y la solicitud queda
   registrada para que el arrendador sepa quien le escribio.

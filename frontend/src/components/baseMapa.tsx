@@ -1,0 +1,154 @@
+import { useEffect, useState } from 'react';
+import { TileLayer, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+/*
+  Lo que comparten los tres mapas de la pagina.
+
+  El fondo ya no es el de OpenStreetMap crudo, que se ve viejo y con las calles
+  demasiado marcadas. Se usa Voyager de CARTO, que es el mismo mapa de
+  OpenStreetMap pero dibujado con colores suaves, y ademas se piden las
+  baldosas al doble de resolucion para que no se vean borrosas en el celular.
+
+  Y hay vista satelite, porque para alguien que no conoce Pamplona ver los
+  techos y los arboles de verdad dice mucho mas que un plano de calles.
+*/
+
+export type VistaDelMapa = 'mapa' | 'satelite';
+
+const CAPAS: Record<VistaDelMapa, { url: string; credito: string; maxZoom: number }> = {
+  mapa: {
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    credito:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    maxZoom: 20,
+  },
+  satelite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    credito: 'Imágenes &copy; Esri, Maxar, Earthstar Geographics',
+    maxZoom: 19,
+  },
+};
+
+export function CapaDelMapa({ vista }: { vista: VistaDelMapa }) {
+  const capa = CAPAS[vista];
+  return (
+    <TileLayer
+      // La clave obliga a Leaflet a cambiar la capa entera al cambiar de vista.
+      key={vista}
+      url={capa.url}
+      attribution={capa.credito}
+      maxZoom={capa.maxZoom}
+      // Pide las baldosas al doble de resolucion en pantallas que lo aprovechan.
+      detectRetina
+    />
+  );
+}
+
+/** El botoncito para pasar de plano a satelite. */
+export function BotonDeVista({
+  vista,
+  alCambiar,
+}: {
+  vista: VistaDelMapa;
+  alCambiar: (v: VistaDelMapa) => void;
+}) {
+  return (
+    <div className="pointer-events-auto absolute top-3 right-3 z-[500] flex overflow-hidden rounded-xl border border-piedra-200 bg-white shadow-[var(--shadow-suave)]">
+      {(['mapa', 'satelite'] as VistaDelMapa[]).map((v) => (
+        <button
+          key={v}
+          type="button"
+          onClick={() => alCambiar(v)}
+          className={`min-h-11 px-3.5 text-sm font-semibold transition-colors ${
+            v === vista ? 'bg-terracota-600 text-white' : 'bg-white text-piedra-700'
+          }`}
+        >
+          {v === 'mapa' ? 'Mapa' : 'Satélite'}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * En el celular, arrastrar el mapa se roba el desplazamiento de la pagina.
+ *
+ * Uno intenta seguir bajando, el dedo cae encima del mapa y en vez de bajar se
+ * mueve el mapa. Por eso el mapa empieza quieto y solo se activa cuando la
+ * persona lo toca a proposito. En computador no hace falta: ahi se baja con la
+ * rueda y la rueda ya esta desactivada sobre el mapa.
+ */
+export function useMapaQuietoHastaQueLoToquen(activo: boolean) {
+  const mapa = useMap();
+  const [despierto, setDespierto] = useState(!activo);
+
+  useEffect(() => {
+    if (!activo) return;
+    if (despierto) {
+      mapa.dragging.enable();
+      mapa.touchZoom.enable();
+    } else {
+      mapa.dragging.disable();
+      mapa.touchZoom.disable();
+    }
+  }, [mapa, activo, despierto]);
+
+  return { despierto, despertar: () => setDespierto(true) };
+}
+
+export function CapaQuieta({ alDespertar }: { alDespertar: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={alDespertar}
+      className="absolute inset-0 z-[400] grid place-items-center bg-piedra-900/10 text-sm font-semibold"
+    >
+      <span className="rounded-full bg-white/95 px-4 py-2 text-piedra-800 shadow-[var(--shadow-suave)]">
+        Toca para mover el mapa
+      </span>
+    </button>
+  );
+}
+
+/** Si el aparato es de tocar, para saber si hace falta lo de arriba. */
+export const esDeTocar = (): boolean =>
+  typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+
+/**
+ * Marcador con forma de gota y sombra.
+ *
+ * Se dibuja a mano porque los iconos que trae Leaflet se buscan por ruta
+ * relativa y eso se rompe al empaquetar la pagina.
+ */
+export const gota = (color: string, tamano = 44): L.DivIcon =>
+  L.divIcon({
+    className: '',
+    html: `<svg viewBox="0 0 40 52" width="${tamano}" height="${tamano * 1.3}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="s" x="-50%" y="-30%" width="200%" height="180%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#241F1A" flood-opacity="0.35"/>
+        </filter>
+      </defs>
+      <path filter="url(#s)" fill="${color}" stroke="#FFFFFF" stroke-width="2.5"
+        d="M20 2C11.2 2 4 9.2 4 18c0 11.4 14.3 29.3 14.9 30a1.4 1.4 0 0 0 2.2 0C21.7 47.3 36 29.4 36 18 36 9.2 28.8 2 20 2Z"/>
+      <circle cx="20" cy="18" r="6" fill="#FFFFFF"/>
+    </svg>`,
+    iconSize: [tamano, tamano * 1.3],
+    iconAnchor: [tamano / 2, tamano * 1.3],
+    popupAnchor: [0, -tamano * 1.2],
+  });
+
+/** Etiqueta con el precio, para el mapa de precios. */
+export const etiquetaDePrecio = (texto: string, color: string): L.DivIcon =>
+  L.divIcon({
+    className: '',
+    html: `<span style="
+      display:inline-block; white-space:nowrap; transform:translate(-50%,-50%);
+      background:${color}; color:#fff; font-weight:700; font-size:12px;
+      padding:5px 9px; border-radius:999px; border:2px solid #fff;
+      box-shadow:0 2px 6px rgba(36,31,26,.35);">${texto}</span>`,
+    iconSize: [0, 0],
+    iconAnchor: [0, 0],
+  });

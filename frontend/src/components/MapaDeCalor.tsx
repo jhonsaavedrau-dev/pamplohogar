@@ -1,8 +1,17 @@
-import { CircleMarker, MapContainer, Popup, TileLayer, Tooltip } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { useState } from 'react';
+import { CircleMarker, MapContainer, Marker, Popup, Tooltip, ZoomControl } from 'react-leaflet';
 import { Link } from 'react-router-dom';
 import { pesos } from '../lib/formato';
 import { CENTRO_PAMPLONA } from './coordenadas';
+import {
+  BotonDeVista,
+  CapaDelMapa,
+  CapaQuieta,
+  esDeTocar,
+  etiquetaDePrecio,
+  useMapaQuietoHastaQueLoToquen,
+} from './baseMapa';
+import type { VistaDelMapa } from './baseMapa';
 import type { MapaDePrecios, NivelDePrecio } from '../lib/tipos';
 
 /**
@@ -20,21 +29,32 @@ const COLORES: Record<NivelDePrecio, string> = {
  * El circulo crece con cuantos inmuebles hay en la zona, no con el precio.
  * Asi se ve de un vistazo donde hay de verdad de donde escoger.
  */
-const radioDeZona = (inmuebles: number): number => 22 + Math.min(inmuebles, 12) * 3;
+const radioDeZona = (inmuebles: number): number => 26 + Math.min(inmuebles, 12) * 4;
+
+/** En miles, que es como se habla de arriendos: "trescientos veinte". */
+const enMiles = (valor: number): string => `$${Math.round(valor / 1000)}k`;
+
+function ControlDeGestos({ enCelular }: { enCelular: boolean }) {
+  const { despierto, despertar } = useMapaQuietoHastaQueLoToquen(enCelular);
+  if (despierto) return null;
+  return <CapaQuieta alDespertar={despertar} />;
+}
 
 export function MapaDeCalor({ datos }: { datos: MapaDePrecios }) {
+  const [vista, setVista] = useState<VistaDelMapa>('mapa');
+  const [enCelular] = useState(esDeTocar);
+
   return (
-    <div className="h-[26rem] overflow-hidden rounded-2xl border border-piedra-200">
+    <div className="relative h-[28rem] overflow-hidden rounded-2xl border border-piedra-200">
       <MapContainer
         center={[CENTRO_PAMPLONA.lat, CENTRO_PAMPLONA.lng]}
         zoom={14}
         scrollWheelZoom={false}
+        zoomControl={false}
         style={{ height: '100%', width: '100%' }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <CapaDelMapa vista={vista} />
+        <ZoomControl position="bottomleft" />
 
         {datos.zonas.map((z) => (
           <CircleMarker
@@ -44,7 +64,7 @@ export function MapaDeCalor({ datos }: { datos: MapaDePrecios }) {
             pathOptions={{
               color: COLORES[z.nivel],
               fillColor: COLORES[z.nivel],
-              fillOpacity: 0.18,
+              fillOpacity: 0.2,
               weight: 2,
             }}
           >
@@ -67,17 +87,16 @@ export function MapaDeCalor({ datos }: { datos: MapaDePrecios }) {
           </CircleMarker>
         ))}
 
+        {/*
+          Cada publicacion lleva su precio escrito encima. Antes eran puntos de
+          colores y habia que ir tocando uno por uno para saber cuanto valia
+          cada cosa: el mapa se veia bonito y no respondia la pregunta.
+        */}
         {datos.puntos.map((p) => (
-          <CircleMarker
+          <Marker
             key={p.id}
-            center={[p.lat, p.lng]}
-            radius={6}
-            pathOptions={{
-              color: '#ffffff',
-              fillColor: COLORES[p.nivel],
-              fillOpacity: 1,
-              weight: 2,
-            }}
+            position={[p.lat, p.lng]}
+            icon={etiquetaDePrecio(enMiles(p.precio), COLORES[p.nivel])}
           >
             <Popup>
               <strong>{p.titulo}</strong>
@@ -86,9 +105,13 @@ export function MapaDeCalor({ datos }: { datos: MapaDePrecios }) {
               <br />
               <Link to={`/inmueble/${p.id}`}>Ver la publicación</Link>
             </Popup>
-          </CircleMarker>
+          </Marker>
         ))}
+
+        <ControlDeGestos enCelular={enCelular} />
       </MapContainer>
+
+      <BotonDeVista vista={vista} alCambiar={setVista} />
     </div>
   );
 }

@@ -282,7 +282,7 @@ export function MiPerfilRoomie() {
             >
               <input
                 type="checkbox"
-                className="h-5 w-5 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+                className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
                 checked={form[o.campo]}
                 onChange={(e) => cambiar(o.campo, e.target.checked)}
               />
@@ -291,10 +291,10 @@ export function MiPerfilRoomie() {
           ))}
         </div>
 
-        <label className="flex items-center gap-3 rounded-xl bg-piedra-100 p-3 text-base font-medium text-piedra-800">
+        <label className="flex min-h-11 items-center gap-3 rounded-xl bg-piedra-100 p-3 text-base font-medium text-piedra-800">
           <input
             type="checkbox"
-            className="h-5 w-5 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+            className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
             checked={form.activo}
             onChange={(e) => cambiar('activo', e.target.checked)}
           />

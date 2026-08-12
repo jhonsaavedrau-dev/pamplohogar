@@ -1,21 +1,23 @@
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { useState } from 'react';
+import { MapContainer, Marker, Popup, ZoomControl } from 'react-leaflet';
+import {
+  BotonDeVista,
+  CapaDelMapa,
+  CapaQuieta,
+  esDeTocar,
+  gota,
+  useMapaQuietoHastaQueLoToquen,
+} from './baseMapa';
+import type { VistaDelMapa } from './baseMapa';
 
-/**
- * Leaflet busca sus iconos por ruta relativa y eso se rompe al empaquetar.
- * Definimos un marcador propio en SVG para no depender de esos archivos.
- */
-const iconoCasa = L.divIcon({
-  className: '',
-  html: `<svg viewBox="0 0 64 64" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M32 6 6 27v29a3 3 0 0 0 3 3h46a3 3 0 0 0 3-3V27L32 6Z" fill="#D2691E" stroke="#FFF7F0" stroke-width="3"/>
-      <circle cx="32" cy="36" r="6" fill="#FFF7F0"/>
-    </svg>`,
-  iconSize: [38, 38],
-  iconAnchor: [19, 36],
-  popupAnchor: [0, -34],
-});
+const iconoCasa = gota('#D2691E');
+
+/** Va dentro del mapa porque necesita hablar con el, no puede ir fuera. */
+function ControlDeGestos({ enCelular }: { enCelular: boolean }) {
+  const { despierto, despertar } = useMapaQuietoHastaQueLoToquen(enCelular);
+  if (despierto) return null;
+  return <CapaQuieta alDespertar={despertar} />;
+}
 
 interface Props {
   lat: number;
@@ -25,18 +27,21 @@ interface Props {
 }
 
 export function Mapa({ lat, lng, titulo, direccion }: Props) {
+  const [vista, setVista] = useState<VistaDelMapa>('mapa');
+  const [enCelular] = useState(esDeTocar);
+
   return (
-    <div className="h-72 overflow-hidden rounded-2xl border border-piedra-200">
+    <div className="relative h-80 overflow-hidden rounded-2xl border border-piedra-200">
       <MapContainer
         center={[lat, lng]}
-        zoom={16}
+        zoom={17}
         scrollWheelZoom={false}
+        zoomControl={false}
         style={{ height: '100%', width: '100%' }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <CapaDelMapa vista={vista} />
+        {/* Abajo a la izquierda, donde el pulgar llega sin tapar el inmueble. */}
+        <ZoomControl position="bottomleft" />
         <Marker position={[lat, lng]} icon={iconoCasa}>
           <Popup>
             <strong>{titulo}</strong>
@@ -44,7 +49,10 @@ export function Mapa({ lat, lng, titulo, direccion }: Props) {
             {direccion}
           </Popup>
         </Marker>
+        <ControlDeGestos enCelular={enCelular} />
       </MapContainer>
+
+      <BotonDeVista vista={vista} alCambiar={setVista} />
     </div>
   );
 }

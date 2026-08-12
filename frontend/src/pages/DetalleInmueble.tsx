@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { pedir } from '../lib/api';
 import { useSesion } from '../lib/sesion';
+import { useComparador } from '../lib/comparador';
 import type { RespuestaContacto, RespuestaDetalle } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO } from '../lib/tipos';
 import { distancia, fechaCorta, pesos } from '../lib/formato';
@@ -18,6 +19,8 @@ import { BotonReportar } from '../components/BotonReportar';
 export function DetalleInmueble() {
   const { id = '' } = useParams();
   const { usuario } = useSesion();
+  const { ids: idsComparador } = useComparador();
+  const hayComparador = idsComparador.length > 0;
   const navegar = useNavigate();
   const clienteQuery = useQueryClient();
 
@@ -112,7 +115,7 @@ export function DetalleInmueble() {
 
   return (
     <div className="contenedor-app py-6 pb-28 lg:pb-10">
-      <Link to="/" className="mb-4 inline-block text-sm font-semibold text-confianza-600">
+      <Link to="/" className="tocable mb-2 text-sm font-semibold text-confianza-600">
         &larr; Volver a la busqueda
       </Link>
 
@@ -389,7 +392,14 @@ export function DetalleInmueble() {
       </div>
 
       {!esDueno && (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur lg:hidden">
+        <div
+          className={`fixed inset-x-0 z-20 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur lg:hidden ${
+            // Si la barra del comparador esta abajo, esta se sube para no
+            // quedar tapada. Dos barras flotantes en el mismo sitio se comen
+            // la una a la otra y el boton de contactar deja de existir.
+            hayComparador ? 'bottom-[5.25rem]' : 'bottom-0'
+          }`}
+        >
           <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="truncate text-lg font-extrabold text-terracota-600">

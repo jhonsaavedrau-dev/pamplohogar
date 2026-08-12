@@ -10,22 +10,29 @@ export function BarraComparador() {
   if (ubicacion.pathname === '/comparar') return null;
 
   return (
+    <>
+      {/*
+        Un hueco del mismo alto que la barra. Sin esto la barra flotante tapa
+        el ultimo boton de la pagina y uno cree que no existe.
+      */}
+      <div aria-hidden="true" className="h-24" />
     <div className="sin-imprimir fixed inset-x-0 bottom-0 z-30 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur">
       <div className="contenedor-app flex items-center gap-3">
         <p className="flex-1 text-sm text-piedra-800">
           <strong>{ids.length}</strong> de {MAXIMO_COMPARABLES} para comparar
         </p>
-        <button type="button" onClick={limpiar} className="boton-suave text-sm">
+        <button type="button" onClick={limpiar} className="boton-suave min-h-11 text-sm">
           Quitar todos
         </button>
         <Link
           to="/comparar"
-          className={`boton-confianza text-sm ${ids.length < 2 ? 'pointer-events-none opacity-55' : ''}`}
+          className={`boton-confianza min-h-11 text-sm ${ids.length < 2 ? 'pointer-events-none opacity-55' : ''}`}
           aria-disabled={ids.length < 2}
         >
           {ids.length < 2 ? 'Elige otro' : 'Comparar'}
         </Link>
       </div>
     </div>
+    </>
   );
 }

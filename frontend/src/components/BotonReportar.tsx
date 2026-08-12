@@ -59,7 +59,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
           setMensaje('');
           setAbierto(true);
         }}
-        className="text-sm font-semibold text-piedra-600 underline underline-offset-2 hover:text-terracota-600"
+        className="tocable text-sm font-semibold text-piedra-600 underline underline-offset-2 hover:text-terracota-600"
       >
         {yaReportado ? 'Ya reportaste esta publicación' : 'Reportar esta publicación'}
       </button>

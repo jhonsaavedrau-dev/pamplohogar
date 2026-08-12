@@ -145,10 +145,10 @@ export function GuardarBusqueda() {
         />
       </div>
 
-      <label className="flex items-center gap-3 text-sm font-medium text-piedra-800">
+      <label className="flex min-h-11 items-center gap-3 text-sm font-medium text-piedra-800">
         <input
           type="checkbox"
-          className="h-5 w-5 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+          className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
           checked={avisar}
           onChange={(e) => setAvisar(e.target.checked)}
         />

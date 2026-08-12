@@ -117,19 +117,19 @@ export function Roomies() {
           </div>
 
           <div className="flex flex-col justify-end gap-2">
-            <label className="flex items-center gap-2.5 text-sm font-medium text-piedra-800">
+            <label className="flex min-h-11 items-center gap-2.5 text-sm font-medium text-piedra-800">
               <input
                 type="checkbox"
-                className="h-[18px] w-[18px] rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+                className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
                 checked={valor('sinFumadores') === 'true'}
                 onChange={(e) => actualizar('sinFumadores', e.target.checked ? 'true' : '')}
               />
               Solo no fumadores
             </label>
-            <label className="flex items-center gap-2.5 text-sm font-medium text-piedra-800">
+            <label className="flex min-h-11 items-center gap-2.5 text-sm font-medium text-piedra-800">
               <input
                 type="checkbox"
-                className="h-[18px] w-[18px] rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+                className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
                 checked={valor('aceptaMascotas') === 'true'}
                 onChange={(e) => actualizar('aceptaMascotas', e.target.checked ? 'true' : '')}
               />

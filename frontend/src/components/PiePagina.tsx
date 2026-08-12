@@ -14,29 +14,29 @@ export function PiePagina() {
             </p>
           </div>
 
-          <nav className="flex gap-12 text-sm">
+          <nav className="flex flex-wrap gap-x-12 gap-y-6 text-sm">
             <div>
               <p className="mb-3 text-xs font-bold tracking-wide text-piedra-600 uppercase">
                 Estudiantes
               </p>
-              <ul className="space-y-2">
+              <ul className="space-y-1">
                 <li>
-                  <Link to="/" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/" className="tocable text-piedra-700 hover:text-terracota-600">
                     Buscar vivienda
                   </Link>
                 </li>
                 <li>
-                  <Link to="/comparar" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/comparar" className="tocable text-piedra-700 hover:text-terracota-600">
                     Comparar
                   </Link>
                 </li>
                 <li>
-                  <Link to="/roomies" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/roomies" className="tocable text-piedra-700 hover:text-terracota-600">
                     Buscar roomie
                   </Link>
                 </li>
                 <li>
-                  <Link to="/favoritos" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/favoritos" className="tocable text-piedra-700 hover:text-terracota-600">
                     Mis favoritos
                   </Link>
                 </li>
@@ -47,14 +47,14 @@ export function PiePagina() {
               <p className="mb-3 text-xs font-bold tracking-wide text-piedra-600 uppercase">
                 Arrendadores
               </p>
-              <ul className="space-y-2">
+              <ul className="space-y-1">
                 <li>
-                  <Link to="/registro" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/registro" className="tocable text-piedra-700 hover:text-terracota-600">
                     Publicar inmueble
                   </Link>
                 </li>
                 <li>
-                  <Link to="/mis-inmuebles" className="text-piedra-700 hover:text-terracota-600">
+                  <Link to="/mis-inmuebles" className="tocable text-piedra-700 hover:text-terracota-600">
                     Mis inmuebles
                   </Link>
                 </li>

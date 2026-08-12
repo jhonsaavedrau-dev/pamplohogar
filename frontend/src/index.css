@@ -127,6 +127,16 @@
     @apply rounded-2xl border border-piedra-200 bg-white shadow-[var(--shadow-suave)];
   }
 
+  /*
+    Lo que se toca con el dedo necesita al menos 44 puntos de alto. Un enlace
+    de 17 puntos se lee bien en el computador y en el celular uno le da tres
+    veces al de al lado. Va como clase para no ir midiendo pantalla por
+    pantalla cada vez que se agrega algo.
+  */
+  .tocable {
+    @apply inline-flex min-h-11 items-center;
+  }
+
   .chip {
     @apply inline-flex items-center gap-1 rounded-full bg-piedra-100 px-2.5 py-1 text-xs font-medium text-piedra-700;
   }

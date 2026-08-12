@@ -168,13 +168,13 @@ export function TarjetaInmueble({
       {comparable && (
         <div className="border-t border-piedra-100 px-4 py-2.5">
           <label
-            className={`flex cursor-pointer items-center gap-2.5 text-sm font-medium ${
+            className={`flex min-h-11 cursor-pointer items-center gap-2.5 text-sm font-medium ${
               !marcado && estaLleno ? 'cursor-not-allowed text-piedra-400' : 'text-piedra-700'
             }`}
           >
             <input
               type="checkbox"
-              className="h-[18px] w-[18px] rounded border-piedra-300 text-confianza-500 focus:ring-confianza-500"
+              className="h-6 w-6 shrink-0 rounded border-piedra-300 text-confianza-500 focus:ring-confianza-500"
               checked={marcado}
               disabled={!marcado && estaLleno}
               onChange={() => alternar(inmueble.id)}

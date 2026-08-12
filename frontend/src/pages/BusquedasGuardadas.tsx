@@ -165,10 +165,10 @@ export function BusquedasGuardadas() {
                     </div>
 
                     <div className="flex shrink-0 flex-col gap-2 sm:items-end">
-                      <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-piedra-700">
+                      <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm font-medium text-piedra-700">
                         <input
                           type="checkbox"
-                          className="h-[18px] w-[18px] rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
+                          className="h-6 w-6 shrink-0 rounded border-piedra-300 text-terracota-500 focus:ring-terracota-500"
                           checked={b.avisarPorCorreo}
                           disabled={alternarAviso.isPending}
                           onChange={(e) =>

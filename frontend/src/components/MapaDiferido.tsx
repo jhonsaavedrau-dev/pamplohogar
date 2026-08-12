@@ -28,7 +28,7 @@ interface PropsMapa {
 
 export function MapaDiferido(props: PropsMapa) {
   return (
-    <Suspense fallback={<Marcador alto="h-72" />}>
+    <Suspense fallback={<Marcador alto="h-80" />}>
       <Mapa {...props} />
     </Suspense>
   );
@@ -42,7 +42,7 @@ interface PropsSelector {
 
 export function MapaSelectorDiferido(props: PropsSelector) {
   return (
-    <Suspense fallback={<Marcador alto="h-64" />}>
+    <Suspense fallback={<Marcador alto="h-72" />}>
       <MapaSelector {...props} />
     </Suspense>
   );
