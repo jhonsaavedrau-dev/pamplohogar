@@ -26,6 +26,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Ficha en PDF** de cada inmueble, para mostrarsela a los papas o mandarla por fuera de la
   plataforma. Incluye la comparacion con lo normal del barrio, y a proposito no incluye el celular
   del arrendador.
+- **Se instala en el celular y sirve sin senal.** Se agrega a la pantalla de inicio como una
+  aplicacion, y lo que ya se abrio se puede volver a mirar sin conexion, con un aviso arriba para
+  que se entienda que son datos de antes. Publicar y enviar mensajes siempre exigen conexion.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
 - **Comparador** de hasta tres inmuebles lado a lado, resaltando cual es el mas barato, el mas
   cercano a la universidad y el de mejor arrendador.
@@ -153,6 +156,10 @@ administradores ni dejarte por fuera.
 
 ```bash
 cd backend && npm test
+```
+
+```bash
+cd frontend && npm test
 ```
 
 Son 68 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y

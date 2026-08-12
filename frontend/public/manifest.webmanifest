@@ -1,0 +1,21 @@
+{
+  "name": "PamploHogar",
+  "short_name": "PamploHogar",
+  "description": "Vivienda para estudiantes en Pamplona, Norte de Santander.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "es-CO",
+  "dir": "ltr",
+  "background_color": "#FFF7F0",
+  "theme_color": "#D2691E",
+  "icons": [
+    {
+      "src": "/marca.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -86,7 +86,11 @@ completo y guardado en un computador.
       tipo de inmueble porque una habitacion y una casa no compiten por el mismo estudiante. Una
       zona solo se pinta con tres publicaciones o mas; mientras tanto se muestran las publicaciones
       sueltas como puntos, que es un dato cierto y no un promedio inventado.
-- [ ] **Aplicacion instalable que funcione sin internet** para consultar lo ya visto.
+- [x] ~~**Aplicacion instalable que funcione sin internet** para consultar lo ya visto.~~ Hecho el 12
+      de agosto de 2026: se puede agregar a la pantalla de inicio del celular y lo que ya se abrio
+      se vuelve a ver sin senal, con un aviso arriba para que se entienda por que. Escrito a mano en
+      cuarenta lineas, sin libreria. Falta comprobarlo en un celular de verdad: el navegador de
+      pruebas no deja registrarlo.
 - [ ] **Autenticacion en dos pasos** para las cuentas de arrendador.
 
 ## Decisiones tecnicas aplazadas

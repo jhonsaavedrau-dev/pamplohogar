@@ -14,6 +14,7 @@ import { BusquedasGuardadas } from './pages/BusquedasGuardadas';
 import { CambiarClave } from './pages/CambiarClave';
 import { ConfirmarCorreo } from './pages/ConfirmarCorreo';
 import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
+import { AvisoSinConexion } from './components/AvisoSinConexion';
 import { Comparar } from './pages/Comparar';
 import { Roomies } from './pages/Roomies';
 import { MapaDePrecios } from './pages/MapaDePrecios';
@@ -29,6 +30,7 @@ export function App() {
   return (
     <div className="flex min-h-dvh flex-col">
       <Encabezado />
+      <AvisoSinConexion />
       <AvisoCorreoSinConfirmar />
 
       <main className="flex-1">
