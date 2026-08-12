@@ -109,13 +109,13 @@ export function Buscar() {
           </p>
 
           <h1 className="max-w-3xl text-[2.4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-piedra-900 sm:text-[3.75rem]">
-            Encuentra donde vivir
-            <span className="block text-terracota-600">sin depender del voz a voz</span>
+            Encuentra dónde vivir en Pamplona{' '}
+            <span className="block text-terracota-600">sin conocer a nadie</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600 sm:text-lg">
-            Habitaciones, apartaestudios y apartamentos de arrendadores de la ciudad. Con el precio
-            de frente, la ubicacion en el mapa y lo que opinan otros estudiantes.
+            Ves el precio antes de escribir, a cuántos minutos queda de la U y qué dicen los
+            estudiantes que vivieron ahí antes que tú.
           </p>
 
           <div className="mt-8 max-w-2xl rounded-2xl border border-piedra-200/80 bg-white p-2 shadow-[var(--shadow-elevada)]">
@@ -123,7 +123,7 @@ export function Buscar() {
               <input
                 type="search"
                 className="campo flex-1 border-transparent bg-transparent text-[1.05rem] focus:ring-0"
-                placeholder="Busca por barrio, zona o palabra clave"
+                placeholder="Busca por barrio: Centro, El Buque, Cristo Rey..."
                 value={valor('q')}
                 onChange={(e) => actualizar('q', e.target.value)}
                 aria-label="Buscar vivienda"
@@ -146,9 +146,9 @@ export function Buscar() {
 
           <ul className="mt-8 grid gap-x-8 gap-y-3 text-sm text-piedra-600 sm:grid-cols-3">
             {[
-              'Precios a la vista, sin sorpresas',
-              'El celular del arrendador queda protegido',
-              'Resenas de quienes ya vivieron ahi',
+              'El precio que ves es el que pagas',
+              'Escribes por WhatsApp cuando tú decidas',
+              'Reseñas de quienes ya vivieron ahí',
             ].map((texto) => (
               <li key={texto} className="flex items-start gap-2">
                 <svg
