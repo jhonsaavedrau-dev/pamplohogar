@@ -16,6 +16,12 @@ export function fechaCorta(iso: string): string {
   }).format(new Date(iso));
 }
 
+/** Solo la medida, para cuando la frase ya dice de donde. */
+export function soloDistancia(km: number): string {
+  if (km < 1) return `${Math.round(km * 1000)} metros`;
+  return `${km.toFixed(1)} kilómetros`;
+}
+
 export function distancia(km: number): string {
   if (km < 1) return `${Math.round(km * 1000)} m de la Unipamplona`;
   return `${km.toFixed(1)} km de la Unipamplona`;

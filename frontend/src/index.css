@@ -207,3 +207,45 @@
 .leaflet-container .leaflet-control-attribution {
   @apply text-[10px];
 }
+
+/*
+  Como sale la hoja al imprimir o al guardar como PDF.
+
+  Se marca con `sin-imprimir` lo que no debe salir en papel: el menu, el pie,
+  la barra del comparador y los botones de la propia pantalla.
+
+  Primero se intento el truco de apagar todo con `body *` y volver a encender
+  solo la hoja. En esta pagina no funcionaba: la regla no llegaba a aplicarse
+  y el menu se seguia imprimiendo. No se averiguo por que. Marcar cada cosa
+  es mas aburrido, pero se comprueba de un vistazo y no falla.
+
+  El PDF lo hace el navegador, que ya sabe, en vez de una libreria en el
+  servidor gratuito.
+*/
+@media print {
+  body {
+    background: white;
+  }
+
+  .sin-imprimir {
+    display: none !important;
+  }
+
+  .hoja {
+    border: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Que no parta una seccion por la mitad entre dos hojas. */
+  .hoja section,
+  .hoja img {
+    break-inside: avoid;
+  }
+
+  /* Los enlaces en papel se leen como texto, el subrayado solo estorba. */
+  .hoja a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}

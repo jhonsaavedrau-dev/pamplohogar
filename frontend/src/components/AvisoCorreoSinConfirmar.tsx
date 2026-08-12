@@ -28,7 +28,7 @@ export function AvisoCorreoSinConfirmar() {
   };
 
   return (
-    <div className="border-b border-terracota-200 bg-terracota-50">
+    <div className="sin-imprimir border-b border-terracota-200 bg-terracota-50">
       <div className="contenedor-app flex flex-wrap items-center gap-3 py-3">
         <p className="flex-1 text-sm text-piedra-800">
           {mensaje !== '' ? (

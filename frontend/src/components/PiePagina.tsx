@@ -3,7 +3,7 @@ import { Marca } from './Marca';
 
 export function PiePagina() {
   return (
-    <footer className="mt-20 border-t border-piedra-200 bg-white">
+    <footer className="sin-imprimir mt-20 border-t border-piedra-200 bg-white">
       <div className="contenedor-app py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">

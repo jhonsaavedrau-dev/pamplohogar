@@ -19,6 +19,7 @@ import { Roomies } from './pages/Roomies';
 import { MapaDePrecios } from './pages/MapaDePrecios';
 import { Mensajes } from './pages/Mensajes';
 import { Conversacion } from './pages/Conversacion';
+import { FichaInmueble } from './pages/FichaInmueble';
 import { MiPerfilRoomie } from './pages/MiPerfilRoomie';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
@@ -34,6 +35,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Buscar />} />
           <Route path="/inmueble/:id" element={<DetalleInmueble />} />
+          <Route path="/inmueble/:id/ficha" element={<FichaInmueble />} />
           <Route path="/comparar" element={<Comparar />} />
           <Route path="/roomies" element={<Roomies />} />
           <Route path="/mapa-de-precios" element={<MapaDePrecios />} />

@@ -369,6 +369,10 @@ export function DetalleInmueble() {
                 {esFavorito ? '★ Guardado en favoritos' : '☆ Guardar en favoritos'}
               </button>
             )}
+
+            <Link to={`/inmueble/${inmueble.id}/ficha`} className="boton-suave w-full">
+              Guardar ficha en PDF
+            </Link>
           </div>
 
           <p className="px-2 text-xs text-piedra-600">

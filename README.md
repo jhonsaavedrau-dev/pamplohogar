@@ -23,6 +23,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Chat dentro de la pagina.** El estudiante escribe al arrendador sin dar su numero, y queda por
   escrito lo que acordaron. Un hilo por publicacion, para que un arrendador con seis habitaciones
   sepa por cual le estan preguntando. Nadie mas puede leerlos, ni el administrador.
+- **Ficha en PDF** de cada inmueble, para mostrarsela a los papas o mandarla por fuera de la
+  plataforma. Incluye la comparacion con lo normal del barrio, y a proposito no incluye el celular
+  del arrendador.
 - **Favoritos** para guardar lo que interesa y revisarlo despues.
 - **Comparador** de hasta tres inmuebles lado a lado, resaltando cual es el mas barato, el mas
   cercano a la universidad y el de mejor arrendador.

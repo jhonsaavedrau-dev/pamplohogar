@@ -65,7 +65,11 @@ completo y guardado en un computador.
       con los inmuebles.
 - [x] ~~**Historial de precios**~~ Hecho: cada cambio de precio queda registrado y el estudiante ve
       en el detalle cuanto subio o bajo desde que se publico, con la fecha de cada cambio.
-- [ ] **Ficha en PDF** del inmueble, para compartirla por fuera de la plataforma.
+- [x] ~~**Ficha en PDF** del inmueble, para compartirla por fuera de la plataforma.~~ Hecho el 12
+      de agosto de 2026: una hoja limpia con la foto, los datos, la comparacion de precio y la
+      direccion de la publicacion. El PDF lo hace el navegador, que ya sabe hacerlo y tambien en el
+      celular, en vez de meterle una libreria al servidor gratuito. El celular del arrendador no
+      sale en la hoja: una hoja se comparte y se deja encima de una mesa.
 - [x] ~~**Resenas del barrio**, no solo del arrendador: ruido, seguridad, transporte.~~ Hecho el 12
       de agosto de 2026: tres notas separadas, todas con el 5 como lo mejor, y sin promedio hasta
       que haya tres opiniones. Solo opinan estudiantes: un arrendador calificando el barrio donde

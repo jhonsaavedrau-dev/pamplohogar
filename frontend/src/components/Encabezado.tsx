@@ -56,7 +56,7 @@ export function Encabezado() {
 
   return (
     <header
-      className={`sticky top-0 z-30 border-b border-piedra-200/70 bg-white/90 backdrop-blur-md transition-shadow duration-300 ease-[var(--ease-suave)] ${
+      className={`sin-imprimir sticky top-0 z-30 border-b border-piedra-200/70 bg-white/90 backdrop-blur-md transition-shadow duration-300 ease-[var(--ease-suave)] ${
         bajado ? 'shadow-[0_4px_16px_-6px_rgba(31,27,23,0.16)]' : 'shadow-none'
       }`}
     >

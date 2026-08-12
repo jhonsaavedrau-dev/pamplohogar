@@ -10,7 +10,7 @@ export function BarraComparador() {
   if (ubicacion.pathname === '/comparar') return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur">
+    <div className="sin-imprimir fixed inset-x-0 bottom-0 z-30 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur">
       <div className="contenedor-app flex items-center gap-3">
         <p className="flex-1 text-sm text-piedra-800">
           <strong>{ids.length}</strong> de {MAXIMO_COMPARABLES} para comparar
