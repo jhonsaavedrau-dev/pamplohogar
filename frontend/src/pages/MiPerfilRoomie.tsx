@@ -73,6 +73,28 @@ export function MiPerfilRoomie() {
   const cambiar = <C extends keyof Formulario>(campo: C, valor: Formulario[C]) =>
     setForm((previo) => ({ ...previo, [campo]: valor }));
 
+  /**
+   * Que le falta al formulario, dicho como se lo dirias a alguien.
+   *
+   * Antes el boton simplemente se apagaba cuando la descripcion era corta. La
+   * persona llenaba todo, bajaba, apretaba y no pasaba nada, sin ninguna pista
+   * de por que. Un boton apagado que no se explica es peor que un error.
+   */
+  const queFalta = (): string[] => {
+    const faltantes: string[] = [];
+    const presupuesto = Math.round(Number(form.presupuestoMax) || 0);
+    if (presupuesto < 50000) faltantes.push('decir cuánto puedes poner al mes');
+    const largo = form.descripcion.trim().length;
+    if (largo < 40) {
+      faltantes.push(
+        largo === 0
+          ? 'contar algo de ti'
+          : `contar un poco más de ti, te faltan ${40 - largo} caracteres`,
+      );
+    }
+    return faltantes;
+  };
+
   const guardar = useMutation({
     mutationFn: () =>
       pedir('/api/roomies/mio', {
@@ -137,6 +159,16 @@ export function MiPerfilRoomie() {
         className="tarjeta space-y-5 p-5"
         onSubmit={(e) => {
           e.preventDefault();
+          const faltan = queFalta();
+          if (faltan.length > 0) {
+            setMensaje('');
+            setError(`Falta ${faltan.join(' y ')}.`);
+            // Los avisos van al principio del formulario y el boton al final:
+            // sin esto la persona aprieta, no ve nada y cree que se dano.
+            document.querySelector('form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+          setError('');
           guardar.mutate();
         }}
         noValidate
@@ -177,7 +209,17 @@ export function MiPerfilRoomie() {
             value={form.descripcion}
             onChange={(e) => cambiar('descripcion', e.target.value)}
           />
-          <p className="mt-1 text-xs text-piedra-600">{form.descripcion.trim().length} de 40 mínimo</p>
+          <p
+            className={`mt-1 text-sm ${
+              form.descripcion.trim().length < 40
+                ? 'font-semibold text-terracota-700'
+                : 'text-piedra-600'
+            }`}
+          >
+            {form.descripcion.trim().length < 40
+              ? `Te faltan ${40 - form.descripcion.trim().length} caracteres`
+              : `${form.descripcion.trim().length} caracteres, ya está bien`}
+          </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -304,7 +346,7 @@ export function MiPerfilRoomie() {
         <button
           type="submit"
           className="boton-primario w-full"
-          disabled={guardar.isPending || form.descripcion.trim().length < 40}
+          disabled={guardar.isPending}
         >
           {guardar.isPending ? 'Guardando...' : data?.perfil ? 'Guardar cambios' : 'Publicar perfil'}
         </button>

@@ -253,11 +253,26 @@ export function DetalleInmueble() {
                   value={comentario}
                   onChange={(e) => setComentario(e.target.value)}
                 />
+                {/*
+                  Antes el boton se apagaba y no decia por que. Ahora se puede
+                  apretar siempre y el que avisa es el mensaje.
+                */}
+                {comentario.trim().length > 0 && comentario.trim().length < 15 && (
+                  <p className="text-sm font-semibold text-terracota-700">
+                    Te faltan {15 - comentario.trim().length} caracteres
+                  </p>
+                )}
                 <button
                   type="button"
                   className="boton-confianza w-full"
-                  disabled={enviarResena.isPending || comentario.trim().length < 15}
-                  onClick={() => enviarResena.mutate()}
+                  disabled={enviarResena.isPending}
+                  onClick={() => {
+                    if (comentario.trim().length < 15) {
+                      setMensajeResena('Cuenta un poco más: al menos 15 caracteres.');
+                      return;
+                    }
+                    enviarResena.mutate();
+                  }}
                 >
                   {enviarResena.isPending ? 'Enviando...' : 'Publicar reseña'}
                 </button>

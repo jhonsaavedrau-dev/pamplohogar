@@ -128,14 +128,33 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
           value={detalle}
           onChange={(e) => setDetalle(e.target.value)}
         />
-        <p className="mt-1 text-xs text-piedra-600">{detalle.trim().length} de 20 minimo</p>
+        <p
+          className={`mt-1 text-sm ${
+            detalle.trim().length < 20 ? 'font-semibold text-terracota-700' : 'text-piedra-600'
+          }`}
+        >
+          {detalle.trim().length < 20
+            ? `Te faltan ${20 - detalle.trim().length} caracteres`
+            : 'Ya está bien'}
+        </p>
       </div>
 
       <button
         type="button"
         className="boton-primario w-full"
-        disabled={enviar.isPending || motivo === '' || detalle.trim().length < 20}
-        onClick={() => enviar.mutate()}
+        disabled={enviar.isPending}
+        onClick={() => {
+          // Se dice que falta en vez de dejar el boton apagado sin explicacion.
+          if (motivo === '') {
+            setMensaje('Elige primero qué pasó.');
+            return;
+          }
+          if (detalle.trim().length < 20) {
+            setMensaje('Cuéntanos un poco más: al menos 20 caracteres.');
+            return;
+          }
+          enviar.mutate();
+        }}
       >
         {enviar.isPending ? 'Enviando...' : 'Enviar reporte'}
       </button>
