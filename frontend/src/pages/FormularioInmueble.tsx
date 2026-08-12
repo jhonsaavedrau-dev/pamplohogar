@@ -7,6 +7,7 @@ import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO, SERVICIOS_DISPONIBLES } from '../li
 import { CENTRO_PAMPLONA } from '../components/coordenadas';
 import { MapaSelectorDiferido } from '../components/MapaDiferido';
 import { Aviso, Cargando } from '../components/Estados';
+import { PedirCelular } from '../components/PedirCelular';
 
 const TIPOS: TipoInmueble[] = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'];
 
@@ -236,6 +237,13 @@ export function FormularioInmueble() {
         noValidate
       >
         {mensajeError && <Aviso tipo="error">{mensajeError}</Aviso>}
+
+        {/*
+          El celular ya no se pide al registrarse, asi que se pide aqui, que es
+          cuando de verdad hace falta: sin el, la publicacion sale pero nadie
+          puede contactar a quien la puso.
+        */}
+        <PedirCelular />
 
         <div>
           <label className="etiqueta" htmlFor="titulo">

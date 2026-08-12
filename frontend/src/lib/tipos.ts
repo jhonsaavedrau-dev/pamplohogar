@@ -10,6 +10,8 @@ export interface Usuario {
   telefono: string | null;
   emailVerificado: boolean;
   creadoEn: string;
+  foto: string | null;
+  descripcion: string | null;
 }
 
 export interface Foto {
@@ -23,6 +25,9 @@ export interface ArrendadorResumen {
   nombre: string;
   calificacionPromedio: number;
   totalResenas: number;
+  foto: string | null;
+  descripcion: string | null;
+  correoConfirmado: boolean;
 }
 
 export interface Inmueble {

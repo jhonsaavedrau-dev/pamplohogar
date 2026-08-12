@@ -7,22 +7,14 @@ import { useSesion } from '../lib/sesion';
 import { Aviso } from '../components/Estados';
 import { BotonGoogle } from '../components/BotonGoogle';
 
-const esquema = z
-  .object({
-    nombre: z.string().trim().min(3, 'Escribe tu nombre completo.'),
-    email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
-    telefono: z
-      .string()
-      .trim()
-      .regex(/^3\d{9}$/, 'El celular debe tener 10 digitos y empezar por 3.')
-      .or(z.literal('')),
-    password: z.string().min(8, 'Usa al menos 8 caracteres.'),
-    rol: z.enum(['ESTUDIANTE', 'ARRENDADOR']),
-  })
-  .refine((d) => d.rol !== 'ARRENDADOR' || d.telefono !== '', {
-    path: ['telefono'],
-    message: 'Como arrendador necesitas registrar tu celular para que te contacten.',
-  });
+// El celular ya no se pide aqui. Se pide al publicar, que es cuando de verdad
+// hace falta, y asi la puerta de entrada tiene tres campos en vez de cuatro.
+const esquema = z.object({
+  nombre: z.string().trim().min(3, 'Escribe tu nombre completo.'),
+  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
+  password: z.string().min(8, 'Usa al menos 8 caracteres.'),
+  rol: z.enum(['ESTUDIANTE', 'ARRENDADOR']),
+});
 
 type Datos = z.infer<typeof esquema>;
 
@@ -39,7 +31,7 @@ export function Registro() {
     formState: { errors, isSubmitting },
   } = useForm<Datos>({
     resolver: zodResolver(esquema),
-    defaultValues: { rol: 'ESTUDIANTE', telefono: '' },
+    defaultValues: { rol: 'ESTUDIANTE' },
   });
 
   const rol = watch('rol');
@@ -52,7 +44,6 @@ export function Registro() {
         email: datos.email,
         password: datos.password,
         rol: datos.rol,
-        ...(datos.telefono !== '' ? { telefono: datos.telefono } : {}),
       });
       navegar(usuario.rol === 'ARRENDADOR' ? '/mis-inmuebles' : '/', { replace: true });
     } catch (e) {
@@ -70,13 +61,18 @@ export function Registro() {
       <form onSubmit={enviar} className="tarjeta mt-6 space-y-4 p-5" noValidate>
         {errorServidor && <Aviso tipo="error">{errorServidor}</Aviso>}
 
+        {/*
+          Antes eran dos tarjetas grandes que parecian una decision seria. Son
+          dos pastillas: casi todo el que llega es estudiante, viene marcado
+          asi, y quien arrienda lo cambia de un toque.
+        */}
         <fieldset>
-          <legend className="etiqueta">Que vas a hacer aquí?</legend>
-          <div className="grid grid-cols-2 gap-3">
+          <legend className="etiqueta">Vengo a</legend>
+          <div className="flex gap-2">
             {(
               [
-                { valor: 'ESTUDIANTE', titulo: 'Busco vivienda', pie: 'Soy estudiante' },
-                { valor: 'ARRENDADOR', titulo: 'Ofrezco vivienda', pie: 'Soy arrendador' },
+                { valor: 'ESTUDIANTE', titulo: 'Buscar vivienda' },
+                { valor: 'ARRENDADOR', titulo: 'Publicar vivienda' },
               ] as const
             ).map((opcion) => (
               <button
@@ -84,14 +80,13 @@ export function Registro() {
                 type="button"
                 onClick={() => setValue('rol', opcion.valor, { shouldValidate: true })}
                 aria-pressed={rol === opcion.valor}
-                className={`rounded-xl border-2 p-4 text-left transition-colors ${
+                className={`inline-flex min-h-11 flex-1 items-center justify-center rounded-full border px-4 text-sm font-semibold transition-colors ${
                   rol === opcion.valor
-                    ? 'border-terracota-500 bg-terracota-50'
-                    : 'border-piedra-200 bg-white'
+                    ? 'border-terracota-600 bg-terracota-600 text-white'
+                    : 'border-piedra-200 bg-white text-piedra-700'
                 }`}
               >
-                <span className="block font-bold text-piedra-900">{opcion.titulo}</span>
-                <span className="block text-sm text-piedra-600">{opcion.pie}</span>
+                {opcion.titulo}
               </button>
             ))}
           </div>
@@ -125,29 +120,6 @@ export function Registro() {
             {...register('email')}
           />
           {errors.email && <p className="mt-1 text-sm text-terracota-600">{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <label className="etiqueta" htmlFor="telefono">
-            Celular {rol === 'ARRENDADOR' ? '' : '(opcional)'}
-          </label>
-          <input
-            id="telefono"
-            type="tel"
-            inputMode="numeric"
-            autoComplete="tel"
-            placeholder="3001234567"
-            className="campo"
-            {...register('telefono')}
-          />
-          <p className="mt-1 text-xs text-piedra-600">
-            {rol === 'ARRENDADOR'
-              ? 'Solo se lo mostramos a los estudiantes que pulsan Contactar.'
-              : 'Puedes dejarlo vacio.'}
-          </p>
-          {errors.telefono && (
-            <p className="mt-1 text-sm text-terracota-600">{errors.telefono.message}</p>
-          )}
         </div>
 
         <div>

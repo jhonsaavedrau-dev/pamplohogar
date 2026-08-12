@@ -82,7 +82,7 @@ rutasAuth.post(
       data: {
         nombre: datos.nombre,
         email: datos.email,
-        telefono: datos.telefono ?? null,
+        telefono: datos.telefono || null,
         passwordHash,
         rol: datos.rol,
       },
@@ -281,7 +281,11 @@ rutasAuth.patch(
       where: { id: req.usuario!.sub },
       data: {
         ...(datos.nombre !== undefined ? { nombre: datos.nombre } : {}),
-        ...(datos.telefono !== undefined ? { telefono: datos.telefono } : {}),
+        // Cadena vacia quiere decir quitarlo, no dejarlo en blanco.
+        ...(datos.telefono !== undefined ? { telefono: datos.telefono || null } : {}),
+        ...(datos.descripcion !== undefined ? { descripcion: datos.descripcion || null } : {}),
+        ...(datos.foto !== undefined ? { foto: datos.foto || null } : {}),
+        ...(datos.fotoId !== undefined ? { fotoId: datos.fotoId || null } : {}),
       },
     });
     res.json({ usuario: aUsuarioPublico(usuario) });

@@ -27,13 +27,19 @@ interface FotoSubida {
   publicId: string;
 }
 
-function subirABuffer(buffer: Buffer): Promise<FotoSubida> {
+function subirABuffer(
+  buffer: Buffer,
+  carpeta = 'pamplohogar/inmuebles',
+  transformacion: Record<string, unknown>[] = [
+    { width: 1600, height: 1200, crop: 'limit', quality: 'auto:good' },
+  ],
+): Promise<FotoSubida> {
   return new Promise((resolver, rechazar) => {
     const flujo = cloudinary.uploader.upload_stream(
       {
-        folder: 'pamplohogar/inmuebles',
+        folder: carpeta,
         resource_type: 'image',
-        transformation: [{ width: 1600, height: 1200, crop: 'limit', quality: 'auto:good' }],
+        transformation: transformacion,
       },
       (error, resultado) => {
         if (error || !resultado) {
@@ -66,5 +72,32 @@ rutasSubidas.post(
 
     const fotos = await Promise.all(archivos.map((a) => subirABuffer(a.buffer)));
     res.status(201).json({ fotos });
+  }),
+);
+
+/**
+ * La foto de perfil. Cualquiera con sesion puede subir la suya.
+ *
+ * Se recorta cuadrada y centrada en la cara, y se guarda pequena: una foto de
+ * perfil se ve del tamano de una moneda y no tiene sentido gastarle datos a
+ * nadie con una imagen de dos mil pixeles.
+ */
+rutasSubidas.post(
+  '/foto-de-perfil',
+  requiereSesion,
+  subida.single('foto'),
+  asincrono(async (req, res) => {
+    if (!cloudinaryConfigurado) {
+      throw solicitudInvalida(
+        'La subida de fotos no está configurada en el servidor. Avisa al administrador.',
+      );
+    }
+    if (!req.file) throw solicitudInvalida('No enviaste ninguna foto.');
+
+    const foto = await subirABuffer(req.file.buffer, 'pamplohogar/perfiles', [
+      { width: 400, height: 400, crop: 'fill', gravity: 'face', quality: 'auto:good' },
+    ]);
+
+    res.status(201).json({ foto });
   }),
 );

@@ -81,6 +81,12 @@ model Usuario {
   rol          Rol      @default(ESTUDIANTE)
   emailVerificadoEn DateTime?
 
+  // Perfil: una foto y unas lineas contando quien es. Las dos opcionales, que
+  // obligar a llenar un perfil para poder mirar habitaciones es al reves.
+  foto        String?
+  fotoId      String?
+  descripcion String?
+
   // Intentos de inicio de sesion fallidos seguidos, y hasta cuando esta
   // frenada la cuenta. Van aqui y no en memoria para que sobrevivan a un
   // reinicio del servidor, que en el plan gratuito pasa a cada rato.

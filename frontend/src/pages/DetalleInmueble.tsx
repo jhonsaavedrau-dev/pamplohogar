@@ -7,6 +7,7 @@ import { useComparador } from '../lib/comparador';
 import type { RespuestaContacto, RespuestaDetalle } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO } from '../lib/tipos';
 import { distancia, fechaCorta, pesos } from '../lib/formato';
+import { fotoDeAncho } from '../lib/fotos';
 import { Carrusel } from '../components/Carrusel';
 import { MapaDiferido } from '../components/MapaDiferido';
 import { Estrellas, SelectorEstrellas } from '../components/Estrellas';
@@ -273,11 +274,46 @@ export function DetalleInmueble() {
                 <span className="ml-1 text-sm font-medium text-piedra-500">al mes</span>
               </p>
               <p className="mt-3 text-sm text-piedra-500">Publicado por</p>
-              <p className="font-semibold text-piedra-900">{inmueble.arrendador.nombre}</p>
-              <Estrellas
-                valor={inmueble.arrendador.calificacionPromedio}
-                total={inmueble.arrendador.totalResenas}
-              />
+
+              {/*
+                Con cara y con unas lineas, escribirle a un desconocido cuesta
+                menos. Si no puso nada, se ven las iniciales y ya.
+              */}
+              <div className="mt-1 flex items-start gap-3">
+                {inmueble.arrendador.foto ? (
+                  <img
+                    src={fotoDeAncho(inmueble.arrendador.foto, 120)}
+                    alt=""
+                    loading="lazy"
+                    className="h-12 w-12 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-terracota-100 text-sm font-bold text-terracota-700">
+                    {inmueble.arrendador.nombre
+                      .split(' ')
+                      .slice(0, 2)
+                      .map((p) => p[0]?.toUpperCase() ?? '')
+                      .join('')}
+                  </div>
+                )}
+
+                <div className="min-w-0">
+                  <p className="font-semibold text-piedra-900">{inmueble.arrendador.nombre}</p>
+                  {inmueble.arrendador.correoConfirmado && (
+                    <span className="inline-block rounded-full bg-verificado-50 px-2 py-0.5 text-xs font-semibold text-verificado-700">
+                      Correo confirmado
+                    </span>
+                  )}
+                  <Estrellas
+                    valor={inmueble.arrendador.calificacionPromedio}
+                    total={inmueble.arrendador.totalResenas}
+                  />
+                </div>
+              </div>
+
+              {inmueble.arrendador.descripcion && (
+                <p className="mt-2 text-sm text-piedra-700">{inmueble.arrendador.descripcion}</p>
+              )}
             </div>
 
             {esDueno ? (

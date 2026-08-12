@@ -17,6 +17,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
   un codigo ademas de la contrasena. Entrega ocho codigos de respaldo por si se pierde el telefono
   o el acceso al correo, para que activarla no sea arriesgarse a perder la cuenta. Activar la de
   correo exige recibir un codigo de prueba y escribirlo: si el correo no llega, no se activa nada.
+- **Perfil de usuario** con foto y unas lineas contando quien es cada quien. Los dos opcionales:
+  se puede buscar habitacion sin llenar nada. Para un arrendador, tener cara y una descripcion
+  cambia mucho a quien esta decidiendo si le escribe a un desconocido.
 - **Recuperar la contrasena** con un enlace de un solo uso que vence en una hora, y **confirmar el
   correo** al registrarse.
 - **Publicacion de inmuebles** con hasta diez fotos, ubicacion marcada en el mapa y lista de
@@ -112,6 +115,7 @@ Copia `backend/.env.example` a `backend/.env` y llena los valores:
 | `CLOUDINARY_CLOUD_NAME` | Nombre de tu espacio en Cloudinary                       |
 | `CLOUDINARY_API_KEY`    | Llave publica de Cloudinary                              |
 | `CLOUDINARY_API_SECRET` | Llave secreta de Cloudinary                              |
+| `GOOGLE_CLIENT_ID`      | Para el boton de entrar con Google. Sin el, el boton no aparece |
 | `GOOGLE_CLIENT_ID`      | Para el boton de entrar con Google. Vacio lo apaga       |
 
 El archivo `.env` nunca se sube al repositorio: esta bloqueado desde el primer commit.

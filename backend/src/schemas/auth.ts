@@ -16,7 +16,9 @@ export const esquemaRegistro = z.object({
     .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres.')
     .max(72, 'La contraseña es demasiado larga.'),
-  telefono: telefonoColombiano.optional(),
+  // El celular ya no se pide al registrarse. Solo hace falta para publicar, y
+  // pedirlo antes es una pregunta mas en la puerta de entrada.
+  telefono: z.union([telefonoColombiano, z.literal('')]).optional(),
   rol: z.enum(['ESTUDIANTE', 'ARRENDADOR'], {
     errorMap: () => ({ message: 'Elige si eres estudiante o arrendador.' }),
   }),
@@ -29,7 +31,15 @@ export const esquemaLogin = z.object({
 
 export const esquemaActualizarPerfil = z.object({
   nombre: z.string().trim().min(3, 'Escribe tu nombre completo.').max(80).optional(),
-  telefono: telefonoColombiano.optional(),
+  // Cadena vacia quiere decir "quitalo", que es distinto de "no lo toques".
+  telefono: z.union([telefonoColombiano, z.literal('')]).optional(),
+  descripcion: z
+    .string()
+    .trim()
+    .max(400, 'Cuéntalo en menos de 400 caracteres.')
+    .optional(),
+  foto: z.union([z.string().url('Esa no parece una dirección de foto.'), z.literal('')]).optional(),
+  fotoId: z.string().max(200).optional(),
 });
 
 export const esquemaPedirRecuperacion = z.object({

@@ -7,6 +7,8 @@ export interface UsuarioPublico {
   rol: Usuario['rol'];
   telefono: string | null;
   emailVerificado: boolean;
+  foto: string | null;
+  descripcion: string | null;
   creadoEn: Date;
 }
 
@@ -19,6 +21,8 @@ export function aUsuarioPublico(usuario: Usuario): UsuarioPublico {
     rol: usuario.rol,
     telefono: usuario.telefono,
     emailVerificado: usuario.emailVerificadoEn !== null,
+    foto: usuario.foto,
+    descripcion: usuario.descripcion,
     creadoEn: usuario.creadoEn,
   };
 }

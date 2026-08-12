@@ -4,6 +4,7 @@ import { pedir } from '../lib/api';
 import { useSesion } from '../lib/sesion';
 import { fechaCorta } from '../lib/formato';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
+import { MiPerfil } from '../components/MiPerfil';
 
 type Metodo = 'APP' | 'CORREO';
 
@@ -107,6 +108,8 @@ export function MiCuenta() {
       </div>
 
       {mensaje !== '' && <Aviso tipo={huboError ? 'error' : 'exito'}>{mensaje}</Aviso>}
+
+      <MiPerfil />
 
       <section className="tarjeta space-y-4 p-5">
         <div>

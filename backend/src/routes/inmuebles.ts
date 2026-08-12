@@ -22,7 +22,7 @@ const POR_PAGINA = 12;
 
 const inclusionListado = {
   fotos: { orderBy: { orden: 'asc' } as const },
-  arrendador: { select: { id: true, nombre: true } },
+  arrendador: { select: { id: true, nombre: true, foto: true, descripcion: true, emailVerificadoEn: true } },
 } satisfies Prisma.InmuebleInclude;
 
 type InmuebleConRelaciones = Prisma.InmuebleGetPayload<{ include: typeof inclusionListado }>;
@@ -70,6 +70,9 @@ function formatearInmueble(
     arrendador: {
       id: inmueble.arrendador.id,
       nombre: inmueble.arrendador.nombre,
+      foto: inmueble.arrendador.foto,
+      descripcion: inmueble.arrendador.descripcion,
+      correoConfirmado: inmueble.arrendador.emailVerificadoEn !== null,
       calificacionPromedio: calificacion.promedio,
       totalResenas: calificacion.total,
     },

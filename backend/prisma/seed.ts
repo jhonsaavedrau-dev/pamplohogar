@@ -27,25 +27,46 @@ const ARRENDADORES = [
     nombre: 'Marta Villamizar',
     email: 'marta.villamizar@ejemplo.com',
     telefono: '3145678901',
+    descripcion:
+      'Llevo doce años arrendándole a estudiantes de la Unipamplona. Trato directo, sin intermediarios, y el precio que digo es el que se paga.',
   },
   {
     nombre: 'Hernando Cristancho',
     email: 'hernando.cristancho@ejemplo.com',
     telefono: '3182345670',
+    descripcion:
+      'Vivo en el mismo edificio, así que cualquier cosa que se dañe la arreglo el mismo día. Pido silencio después de las once y nada más.',
   },
   {
     nombre: 'Gloria Peñaranda',
     email: 'gloria.penaranda@ejemplo.com',
     telefono: '3006789012',
+    descripcion:
+      'Arriendo dos habitaciones en mi casa. Me gusta conocer a quien va a vivir aquí antes de entregar llaves, así estamos tranquilos los dos.',
   },
 ];
 
 const ESTUDIANTES = [
-  { nombre: 'Andrés Felipe Rojas', email: 'andres.rojas@ejemplo.com', telefono: '3211234567' },
-  { nombre: 'Laura Sofía Contreras', email: 'laura.contreras@ejemplo.com', telefono: '3159876543' },
-  { nombre: 'Kevin Duarte', email: 'kevin.duarte@ejemplo.com', telefono: '3024567890' },
-  { nombre: 'Valentina Peñaloza', email: 'valentina.penaloza@ejemplo.com', telefono: '3187654321' },
-  { nombre: 'Sebastián Ortega', email: 'sebastian.ortega@ejemplo.com', telefono: '3143216549' },
+  {
+    nombre: 'Andrés Felipe Rojas',
+    email: 'andres.rojas@ejemplo.com',
+    telefono: '3211234567',
+    descripcion: 'Estudio Ingeniería de Sistemas, voy en sexto semestre. Tranquilo y ordenado.',
+  },
+  {
+    nombre: 'Laura Sofía Contreras',
+    email: 'laura.contreras@ejemplo.com',
+    telefono: '3159876543',
+    descripcion: 'Estudio Derecho. Me levanto temprano y estudio en la casa casi todos los días.',
+  },
+  { nombre: 'Kevin Duarte', email: 'kevin.duarte@ejemplo.com', telefono: '3024567890', descripcion: null },
+  {
+    nombre: 'Valentina Peñaloza',
+    email: 'valentina.penaloza@ejemplo.com',
+    telefono: '3187654321',
+    descripcion: 'Segundo semestre de Psicología. Vengo de Cúcuta y no conozco a casi nadie aquí.',
+  },
+  { nombre: 'Sebastián Ortega', email: 'sebastian.ortega@ejemplo.com', telefono: '3143216549', descripcion: null },
 ];
 
 // Opiniones sobre los barrios. Se necesitan al menos tres por barrio para que

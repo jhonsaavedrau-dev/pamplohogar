@@ -40,6 +40,9 @@ function exigir(condicion, mensaje) {
   if (!condicion) throw new Error(mensaje);
 }
 
+import { baseDeLaPrueba } from './baseDeLaPrueba.mjs';
+
+const prisma = baseDeLaPrueba(RAIZ);
 const suf = Math.floor(Math.random() * 999999);
 let tokenArr = '';
 let tokenEst = '';
@@ -350,6 +353,63 @@ await probar('ruta inexistente devuelve mensaje en espanol', async () => {
   exigir(r.estado === 404, `estado ${r.estado}`);
   return r.datos.mensaje;
 });
+
+await probar('el perfil se puede llenar y viaja en el usuario', async () => {
+  const r = await api('/auth/yo', {
+    metodo: 'PATCH',
+    token: tokenArr,
+    cuerpo: {
+      descripcion: 'Llevo diez anos arrendando en El Buque. Trato directo y sin sorpresas.',
+      telefono: '3009998877',
+    },
+  });
+  exigir(r.estado === 200, 'estado ' + r.estado);
+  exigir(r.datos.usuario.descripcion.startsWith('Llevo diez'), 'no guardo la descripcion');
+  return 'con cara y unas lineas, escribirle a un desconocido cuesta menos';
+});
+
+await probar('una descripcion larguisima se rechaza', async () => {
+  const r = await api('/auth/yo', {
+    metodo: 'PATCH',
+    token: tokenArr,
+    cuerpo: { descripcion: 'a'.repeat(401) },
+  });
+  exigir(r.estado === 400, 'estado ' + r.estado);
+});
+
+await probar('el celular se puede quitar dejandolo vacio', async () => {
+  const r = await api('/auth/yo', { metodo: 'PATCH', token: tokenArr, cuerpo: { telefono: '' } });
+  exigir(r.estado === 200, 'estado ' + r.estado);
+  exigir(r.datos.usuario.telefono === null, 'quedo en ' + r.datos.usuario.telefono);
+  return 'vacio quiere decir quitalo, no dejarlo en blanco';
+});
+
+await probar('registrarse ya no exige celular', async () => {
+  const nuevo = 'sin-celular-' + Math.floor(Math.random() * 999999) + '@test.com';
+  const r = await api('/auth/registro', {
+    metodo: 'POST',
+    cuerpo: {
+      nombre: 'Arrendador Sin Celular',
+      email: nuevo,
+      password: 'clave12345',
+      rol: 'ARRENDADOR',
+    },
+  });
+  exigir(r.estado === 201, 'estado ' + r.estado);
+  exigir(r.datos.usuario.telefono === null, 'invento un celular');
+  exigir(r.datos.usuario.foto === null, 'invento una foto');
+  await prisma.usuario.deleteMany({ where: { email: nuevo } });
+  return 'se pide al publicar, que es cuando hace falta';
+});
+
+
+// Este archivo creaba cuentas y no borraba ninguna. Por eso aparecieron
+// cuentas de prueba en la plataforma de verdad.
+await prisma.inmueble.deleteMany({ where: { arrendador: { email: { contains: String(suf) } } } });
+const borradas = await prisma.usuario.deleteMany({ where: { email: { contains: String(suf) } } });
+await prisma.$disconnect();
+console.log(`
+Datos temporales eliminados: ${borradas.count} cuenta(s).`);
 
 console.log(`\n=================================`);
 console.log(`RESULTADO: ${ok} pruebas pasaron, ${fallas} fallaron`);
