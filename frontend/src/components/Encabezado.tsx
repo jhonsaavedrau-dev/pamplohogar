@@ -17,13 +17,13 @@ export function Encabezado() {
   };
 
   const claseEnlace = ({ isActive }: { isActive: boolean }) =>
-    `block rounded-xl px-4 py-3 text-base font-semibold transition-colors ${
-      isActive ? 'bg-terracota-50 text-terracota-700' : 'text-piedra-800 hover:bg-piedra-100'
+    `block rounded-lg px-3.5 py-2 text-[0.95rem] font-semibold transition-colors ${
+      isActive ? 'bg-terracota-50 text-terracota-700' : 'text-piedra-700 hover:bg-piedra-100'
     }`;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-piedra-200 bg-white/95 backdrop-blur">
-      <div className="contenedor-app flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-30 border-b border-piedra-200/80 bg-white/85 backdrop-blur-md">
+      <div className="contenedor-app flex h-[4.5rem] items-center justify-between">
         <Link to="/" onClick={cerrar} aria-label="Ir al inicio de PamploHogar">
           <Marca />
         </Link>
@@ -48,15 +48,22 @@ export function Encabezado() {
             </NavLink>
           )}
           {usuario ? (
-            <button type="button" onClick={cerrarSesion} className="boton-suave ml-2">
+            <button
+              type="button"
+              onClick={cerrarSesion}
+              className="ml-3 min-h-11 rounded-lg px-3.5 text-[0.95rem] font-semibold text-piedra-600 transition-colors hover:bg-piedra-100 hover:text-piedra-900"
+            >
               Salir
             </button>
           ) : (
             <>
-              <Link to="/entrar" className="boton-suave ml-2">
+              <Link
+                to="/entrar"
+                className="ml-3 min-h-11 rounded-lg px-3.5 py-2 text-[0.95rem] font-semibold text-piedra-700 transition-colors hover:bg-piedra-100"
+              >
                 Entrar
               </Link>
-              <Link to="/registro" className="boton-primario">
+              <Link to="/registro" className="boton-primario ml-1 min-h-11 px-4 text-[0.95rem]">
                 Crear cuenta
               </Link>
             </>

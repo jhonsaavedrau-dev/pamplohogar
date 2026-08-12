@@ -26,7 +26,7 @@ export function MisInmuebles() {
     <div className="contenedor-app py-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-piedra-900">Mis inmuebles</h1>
+          <h1 className="titular">Mis inmuebles</h1>
           <p className="mt-1 text-sm text-piedra-600">
             Gestiona lo que tienes publicado en PamploHogar.
           </p>

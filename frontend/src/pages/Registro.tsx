@@ -61,7 +61,7 @@ export function Registro() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="text-2xl font-extrabold text-piedra-900">Crear cuenta</h1>
+      <h1 className="titular">Crear cuenta</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Es gratis. Elige si vas a buscar vivienda o si vas a publicarla.
       </p>

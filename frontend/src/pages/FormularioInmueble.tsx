@@ -220,7 +220,7 @@ export function FormularioInmueble() {
 
   return (
     <div className="contenedor-app max-w-2xl py-8">
-      <h1 className="text-2xl font-extrabold text-piedra-900">
+      <h1 className="titular">
         {editando ? 'Editar inmueble' : 'Publicar inmueble'}
       </h1>
       <p className="mt-1 mb-6 text-sm text-piedra-600">

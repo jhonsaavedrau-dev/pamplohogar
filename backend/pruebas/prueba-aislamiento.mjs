@@ -39,8 +39,13 @@ try {
   const antesProd = await contarEnProduccion();
   revisar('ambas tienen datos', antesLocal > 0 && antesProd > 0, `local ${antesLocal}, internet ${antesProd}`);
 
-  const victima = await prisma.inmueble.findFirst({ orderBy: { creadoEn: 'desc' } });
-  const respaldo = { ...victima };
+  // Se guardan tambien las fotos: sin esto el inmueble volvia pelado y la
+  // prueba decia "restaurado" sin serlo.
+  const victima = await prisma.inmueble.findFirst({
+    orderBy: { creadoEn: 'desc' },
+    include: { fotos: true },
+  });
+  const { fotos, ...respaldo } = victima;
   await prisma.inmueble.delete({ where: { id: victima.id } });
 
   const despuesLocal = await prisma.inmueble.count();
@@ -59,9 +64,24 @@ try {
   );
 
   const { id, creadoEn, actualizadoEn, ...campos } = respaldo;
-  await prisma.inmueble.create({ data: { ...campos, id } });
+  await prisma.inmueble.create({
+    data: {
+      ...campos,
+      id,
+      fotos: {
+        create: fotos.map((f) => ({ url: f.url, publicId: f.publicId, orden: f.orden })),
+      },
+    },
+  });
+
   const restaurado = await prisma.inmueble.count();
+  const fotosRestauradas = await prisma.fotoInmueble.count({ where: { inmuebleId: id } });
   revisar('el inmueble de prueba se restauro', restaurado === antesLocal, `${restaurado} inmuebles`);
+  revisar(
+    'y volvio con sus fotos, no pelado',
+    fotosRestauradas === fotos.length,
+    `${fotosRestauradas} de ${fotos.length} fotos`,
+  );
 } finally {
   await prisma.$disconnect();
 }

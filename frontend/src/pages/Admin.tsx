@@ -28,7 +28,7 @@ export function Admin() {
         <span className="rounded-full bg-terracota-100 px-3 py-1 text-xs font-bold tracking-wide text-terracota-700 uppercase">
           Panel de administracion
         </span>
-        <h1 className="mt-3 text-2xl font-extrabold text-piedra-900">
+        <h1 className="titular mt-3">
           Hola, {usuario?.nombre.split(' ')[0]}
         </h1>
         <p className="mt-1 text-sm text-piedra-600">

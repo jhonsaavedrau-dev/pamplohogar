@@ -22,7 +22,7 @@ function TejasDeFondo() {
   return (
     <svg
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 h-40 w-full text-terracota-400/25"
+      className="pointer-events-none absolute inset-x-0 top-0 h-56 w-full text-terracota-400/20"
     >
       <defs>
         <pattern id="tejas" width="36" height="18" patternUnits="userSpaceOnUse">
@@ -94,29 +94,30 @@ export function Buscar() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-terracota-100 bg-gradient-to-b from-terracota-100 via-terracota-50 to-piedra-50">
+      <section className="relative overflow-hidden border-b border-piedra-200 bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
         <TejasDeFondo />
 
-        <div className="contenedor-app relative py-10 sm:py-16">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-bold tracking-wide text-terracota-700 uppercase">
+        <div className="contenedor-app relative py-12 sm:py-20">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
             Pamplona, Norte de Santander
           </p>
 
-          <h1 className="max-w-2xl text-[2rem] leading-[1.1] font-extrabold tracking-tight text-piedra-900 sm:text-5xl">
+          <h1 className="max-w-3xl text-[2.4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-piedra-900 sm:text-[3.75rem]">
             Encuentra donde vivir
             <span className="block text-terracota-600">sin depender del voz a voz</span>
           </h1>
 
-          <p className="mt-4 max-w-lg text-base text-piedra-600 sm:text-lg">
+          <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600 sm:text-lg">
             Habitaciones, apartaestudios y apartamentos de arrendadores de la ciudad. Con el precio
             de frente, la ubicacion en el mapa y lo que opinan otros estudiantes.
           </p>
 
-          <div className="mt-7 rounded-2xl border border-piedra-200 bg-white p-3 shadow-[0_8px_30px_rgba(210,105,30,0.12)]">
+          <div className="mt-8 max-w-2xl rounded-2xl border border-piedra-200/80 bg-white p-2 shadow-[var(--shadow-elevada)]">
             <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 type="search"
-                className="campo flex-1 border-transparent bg-piedra-50"
+                className="campo flex-1 border-transparent bg-transparent text-[1.05rem] focus:ring-0"
                 placeholder="Busca por barrio, zona o palabra clave"
                 value={valor('q')}
                 onChange={(e) => actualizar('q', e.target.value)}
@@ -125,7 +126,7 @@ export function Buscar() {
               <button
                 type="button"
                 onClick={() => setFiltrosAbiertos((v) => !v)}
-                className="boton-confianza"
+                className="boton-confianza shrink-0"
                 aria-expanded={filtrosAbiertos}
               >
                 {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
@@ -138,16 +139,22 @@ export function Buscar() {
             </div>
           </div>
 
-          <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-piedra-600">
+          <ul className="mt-8 grid gap-x-8 gap-y-3 text-sm text-piedra-600 sm:grid-cols-3">
             {[
               'Precios a la vista, sin sorpresas',
               'El celular del arrendador queda protegido',
-              'Resenas de estudiantes que ya vivieron ahi',
+              'Resenas de quienes ya vivieron ahi',
             ].map((texto) => (
-              <li key={texto} className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="text-terracota-500">
-                  ✓
-                </span>
+              <li key={texto} className="flex items-start gap-2">
+                <svg
+                  viewBox="0 0 20 20"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M8.2 13.6 4.9 10.3l1.3-1.3 2 2 5.6-5.6 1.3 1.4z" />
+                  <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                </svg>
                 {texto}
               </li>
             ))}
@@ -155,7 +162,11 @@ export function Buscar() {
         </div>
       </section>
 
-      <div className="contenedor-app py-6">
+      <div className="contenedor-app py-8">
+        {/* Sin este titulo, quien usa lector de pantalla salta de H1 a H3
+            y pierde de vista que aqui empiezan los resultados. */}
+        <h2 className="sr-only">Inmuebles disponibles</h2>
+
         {filtrosAbiertos && (
           <div className="tarjeta mb-6 space-y-5 p-4 sm:p-5">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -309,7 +320,7 @@ export function Buscar() {
         )}
 
         {isLoading && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <TarjetaFantasma key={i} />
             ))}
@@ -325,10 +336,12 @@ export function Buscar() {
 
         {data && (
           <>
-            <p className="mb-4 text-sm text-piedra-600">
-              {data.total === 0
-                ? 'Sin resultados'
-                : `${data.total} ${data.total === 1 ? 'inmueble disponible' : 'inmuebles disponibles'}`}
+            <p className="mb-5 text-sm text-piedra-600">
+              <strong className="font-semibold text-piedra-900">
+                {data.total === 0
+                  ? 'Sin resultados'
+                  : `${data.total} ${data.total === 1 ? 'inmueble disponible' : 'inmuebles disponibles'}`}
+              </strong>
               {valor('precioMax') && ` hasta ${pesos(Number(valor('precioMax')))}`}
             </p>
 
@@ -349,9 +362,9 @@ export function Buscar() {
                 }
               />
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {data.inmuebles.map((inmueble) => (
-                  <TarjetaInmueble key={inmueble.id} inmueble={inmueble} />
+                  <TarjetaInmueble key={inmueble.id} inmueble={inmueble} favorito />
                 ))}
               </div>
             )}

@@ -50,7 +50,7 @@ export function ConfirmarCorreo() {
       <IconoMarca
         className={`h-16 w-16 ${estado === 'listo' ? 'text-terracota-500' : 'text-piedra-200'}`}
       />
-      <h1 className="text-2xl font-extrabold text-piedra-900">
+      <h1 className="titular">
         {estado === 'listo' ? 'Correo confirmado' : 'No pudimos confirmarlo'}
       </h1>
       <p className="text-piedra-600">{mensaje}</p>

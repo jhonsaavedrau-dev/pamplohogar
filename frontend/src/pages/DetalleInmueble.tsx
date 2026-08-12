@@ -109,42 +109,63 @@ export function DetalleInmueble() {
         <div className="space-y-6">
           <div>
             <span className="chip">{ETIQUETAS_TIPO[inmueble.tipo]}</span>
-            <h1 className="mt-2 text-2xl leading-tight font-extrabold text-piedra-900 sm:text-3xl">
-              {inmueble.titulo}
-            </h1>
-            <p className="mt-1 text-piedra-600">
-              {inmueble.barrio} · {distancia(inmueble.distanciaUniversidadKm)}
+            <h1 className="titular mt-3">{inmueble.titulo}</h1>
+            <p className="mt-2 text-piedra-600">
+              {inmueble.barrio}
+              <span className="mx-1.5 text-piedra-300" aria-hidden="true">
+                ·
+              </span>
+              {distancia(inmueble.distanciaUniversidadKm)}
             </p>
-            <p className="mt-3 text-3xl font-extrabold text-terracota-600">
+            <p className="mt-4 text-[2.25rem] leading-none font-extrabold tracking-tight text-terracota-600">
               {pesos(inmueble.precio)}
-              <span className="text-base font-medium text-piedra-600"> / mes</span>
+              <span className="ml-1 text-base font-medium text-piedra-500">al mes</span>
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <span className="chip">
-              {inmueble.habitaciones} {inmueble.habitaciones === 1 ? 'habitacion' : 'habitaciones'}
-            </span>
-            <span className="chip">
-              {inmueble.banos} {inmueble.banos === 1 ? 'bano' : 'banos'}
-            </span>
-            <span className="chip">{inmueble.amoblado ? 'Amoblado' : 'Sin amoblar'}</span>
-          </div>
+          <dl className="grid grid-cols-3 gap-3 rounded-2xl border border-piedra-200 bg-white p-4">
+            {[
+              {
+                etiqueta: inmueble.habitaciones === 1 ? 'Habitacion' : 'Habitaciones',
+                valor: String(inmueble.habitaciones),
+              },
+              {
+                etiqueta: inmueble.banos === 1 ? 'Bano' : 'Banos',
+                valor: String(inmueble.banos),
+              },
+              { etiqueta: 'Muebles', valor: inmueble.amoblado ? 'Incluidos' : 'No incluye' },
+            ].map((dato) => (
+              <div key={dato.etiqueta} className="text-center">
+                <dt className="text-xs text-piedra-500">{dato.etiqueta}</dt>
+                <dd className="mt-1 font-semibold text-piedra-900">{dato.valor}</dd>
+              </div>
+            ))}
+          </dl>
 
           <section>
-            <h2 className="mb-2 text-lg font-bold text-piedra-900">Sobre este lugar</h2>
-            <p className="leading-relaxed whitespace-pre-line text-piedra-800">
+            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Sobre este lugar</h2>
+            <p className="leading-relaxed whitespace-pre-line text-piedra-700">
               {inmueble.descripcion}
             </p>
           </section>
 
           {inmueble.servicios.length > 0 && (
             <section>
-              <h2 className="mb-2 text-lg font-bold text-piedra-900">Que incluye</h2>
-              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <h2 className="mb-3 text-xl font-semibold text-piedra-900">Que incluye</h2>
+              <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {inmueble.servicios.map((s) => (
-                  <li key={s} className="flex items-center gap-2 text-sm text-piedra-800">
-                    <span className="text-terracota-500">✓</span>
+                  <li
+                    key={s}
+                    className="flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-sm text-piedra-800 ring-1 ring-piedra-200 ring-inset"
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      className="h-4 w-4 shrink-0 text-terracota-500"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M8.2 13.6 4.9 10.3l1.3-1.3 2 2 5.6-5.6 1.3 1.4z" />
+                    </svg>
                     {ETIQUETAS_SERVICIO[s] ?? s}
                   </li>
                 ))}
@@ -155,7 +176,7 @@ export function DetalleInmueble() {
           <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 
           <section>
-            <h2 className="mb-2 text-lg font-bold text-piedra-900">Donde queda</h2>
+            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Donde queda</h2>
             <p className="mb-3 text-sm text-piedra-600">{inmueble.direccion}</p>
             <MapaDiferido
               lat={inmueble.lat}
@@ -225,10 +246,14 @@ export function DetalleInmueble() {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="tarjeta space-y-3 p-5">
-            <div>
-              <p className="text-sm text-piedra-600">Publicado por</p>
-              <p className="font-bold text-piedra-900">{inmueble.arrendador.nombre}</p>
+          <div className="tarjeta space-y-4 p-5 shadow-[var(--shadow-elevada)]">
+            <div className="border-b border-piedra-100 pb-4">
+              <p className="text-2xl leading-none font-extrabold tracking-tight text-piedra-900">
+                {pesos(inmueble.precio)}
+                <span className="ml-1 text-sm font-medium text-piedra-500">al mes</span>
+              </p>
+              <p className="mt-3 text-sm text-piedra-500">Publicado por</p>
+              <p className="font-semibold text-piedra-900">{inmueble.arrendador.nombre}</p>
               <Estrellas
                 valor={inmueble.arrendador.calificacionPromedio}
                 total={inmueble.arrendador.totalResenas}

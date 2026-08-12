@@ -64,7 +64,7 @@ export function CambiarClave() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="text-2xl font-extrabold text-piedra-900">Elige tu nueva contrasena</h1>
+      <h1 className="titular">Elige tu nueva contrasena</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Que sea facil de recordar para ti y dificil de adivinar para los demas.
       </p>

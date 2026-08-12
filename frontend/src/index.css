@@ -1,42 +1,75 @@
 @import 'tailwindcss';
 
+/*
+  Paleta tomada de Pamplona: las fachadas encaladas del centro, las tejas de
+  barro y las montanas que rodean el valle. Terracota manda; el azul se guarda
+  solo para las acciones de confianza y el verde solo para lo verificado.
+*/
 @theme {
-  --color-terracota-50: #fdf5ef;
-  --color-terracota-100: #fae6d5;
-  --color-terracota-200: #f3c9a6;
-  --color-terracota-400: #e08a45;
+  --color-terracota-50: #fdf6f1;
+  --color-terracota-100: #fae8db;
+  --color-terracota-200: #f2ccb0;
+  --color-terracota-300: #e8ac83;
+  --color-terracota-400: #dd8b52;
   --color-terracota-500: #d2691e;
-  --color-terracota-600: #b45516;
-  --color-terracota-700: #8f4211;
+  --color-terracota-600: #b25317;
+  --color-terracota-700: #8c4013;
+  --color-terracota-800: #642d0e;
 
   --color-confianza-50: #eef6fc;
-  --color-confianza-100: #d6e9f7;
+  --color-confianza-100: #d4e8f8;
+  --color-confianza-200: #a9d0f0;
   --color-confianza-500: #1f6fb2;
   --color-confianza-600: #175a93;
   --color-confianza-700: #114675;
 
-  --color-piedra-50: #faf9f7;
-  --color-piedra-100: #f2f0ec;
-  --color-piedra-200: #e4e0d9;
-  --color-piedra-400: #a8a196;
-  --color-piedra-600: #6b655b;
-  --color-piedra-800: #3a352e;
-  --color-piedra-900: #241f1a;
+  --color-verificado-50: #ecf7f1;
+  --color-verificado-100: #cfeade;
+  --color-verificado-600: #1f7a52;
+  --color-verificado-700: #16593c;
 
-  --font-sans:
-    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --color-piedra-50: #faf8f5;
+  --color-piedra-100: #f3f0ea;
+  --color-piedra-200: #e6e1d8;
+  --color-piedra-300: #d3ccbf;
+  --color-piedra-400: #a49c8e;
+  --color-piedra-500: #857d6f;
+  --color-piedra-600: #655e52;
+  --color-piedra-700: #4a443b;
+  --color-piedra-800: #332e28;
+  --color-piedra-900: #1f1b17;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-titulo: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  --shadow-suave: 0 1px 2px rgba(31, 27, 23, 0.05), 0 1px 3px rgba(31, 27, 23, 0.04);
+  --shadow-elevada: 0 4px 6px -2px rgba(31, 27, 23, 0.06), 0 12px 24px -6px rgba(31, 27, 23, 0.12);
+  --shadow-flotante: 0 -2px 12px rgba(31, 27, 23, 0.08);
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-piedra-50 text-piedra-900 font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
   }
 
-  /* Objetivo tactil comodo para el pulgar en toda la aplicacion. */
+  /* Los titulos llevan serif: el centro historico de Pamplona es colonial y
+     eso da calidez y peso sin volverse anticuado. */
+  h1,
+  h2 {
+    font-family: var(--font-titulo);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
   button,
   a[role='button'],
   input[type='submit'] {
@@ -46,33 +79,42 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-confianza-500;
   }
+
+  ::selection {
+    @apply bg-terracota-200 text-terracota-800;
+  }
 }
 
 @layer components {
   .contenedor-app {
-    @apply mx-auto w-full max-w-5xl px-4;
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
   }
 
   .boton-primario,
   .boton-confianza,
   .boton-suave {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-55;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
+  /*
+    El fondo va en terracota-600 y no en el 500 de la marca: blanco sobre el 500
+    da 3.65 de contraste y el minimo legible es 4.5. Con el 600 sube a 5.09.
+    El 500 se sigue usando donde no lleva texto encima.
+  */
   .boton-primario {
-    @apply bg-terracota-500 text-white hover:bg-terracota-600 active:bg-terracota-700;
+    @apply bg-terracota-600 text-white shadow-[0_1px_2px_rgba(140,64,19,0.25)] hover:bg-terracota-700 active:scale-[0.985] active:bg-terracota-800;
   }
 
   .boton-confianza {
-    @apply bg-confianza-500 text-white hover:bg-confianza-600 active:bg-confianza-700;
+    @apply bg-confianza-500 text-white shadow-[0_1px_2px_rgba(17,70,117,0.25)] hover:bg-confianza-600 active:scale-[0.985] active:bg-confianza-700;
   }
 
   .boton-suave {
-    @apply border border-piedra-200 bg-white text-piedra-800 hover:bg-piedra-100;
+    @apply border border-piedra-200 bg-white text-piedra-800 hover:border-piedra-300 hover:bg-piedra-50 active:scale-[0.985];
   }
 
   .campo {
-    @apply min-h-12 w-full rounded-xl border border-piedra-200 bg-white px-4 text-base text-piedra-900 placeholder:text-piedra-400 focus:border-confianza-500 focus:ring-2 focus:ring-confianza-100 focus:outline-none;
+    @apply min-h-12 w-full rounded-xl border border-piedra-200 bg-white px-4 text-base text-piedra-900 transition-colors placeholder:text-piedra-400 focus:border-confianza-500 focus:ring-4 focus:ring-confianza-100 focus:outline-none;
   }
 
   .etiqueta {
@@ -80,11 +122,20 @@
   }
 
   .tarjeta {
-    @apply rounded-2xl border border-piedra-200 bg-white shadow-[0_1px_3px_rgba(36,31,26,0.06)];
+    @apply rounded-2xl border border-piedra-200 bg-white shadow-[var(--shadow-suave)];
   }
 
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full bg-piedra-100 px-3 py-1 text-xs font-medium text-piedra-600;
+    @apply inline-flex items-center gap-1 rounded-full bg-piedra-100 px-2.5 py-1 text-xs font-medium text-piedra-700;
+  }
+
+  .insignia {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold;
+  }
+
+  /* Titular de pantalla: grande, apretado y con serif. */
+  .titular {
+    @apply text-3xl leading-[1.1] font-semibold tracking-tight text-piedra-900 sm:text-4xl;
   }
 }
 
@@ -92,4 +143,8 @@
 .leaflet-container {
   @apply h-full w-full rounded-2xl;
   z-index: 0;
+}
+
+.leaflet-container .leaflet-control-attribution {
+  @apply text-[10px];
 }

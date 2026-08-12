@@ -39,7 +39,7 @@ export function Recuperar() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="text-2xl font-extrabold text-piedra-900">Olvidaste tu contrasena?</h1>
+      <h1 className="titular">Olvidaste tu contrasena?</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Escribe el correo con el que te registraste y te mandamos un enlace para cambiarla.
       </p>

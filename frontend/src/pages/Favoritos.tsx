@@ -13,7 +13,7 @@ export function Favoritos() {
 
   return (
     <div className="contenedor-app py-8">
-      <h1 className="text-2xl font-extrabold text-piedra-900">Mis favoritos</h1>
+      <h1 className="titular">Mis favoritos</h1>
       <p className="mt-1 mb-6 text-sm text-piedra-600">
         Los inmuebles que guardaste para revisarlos con calma.
       </p>

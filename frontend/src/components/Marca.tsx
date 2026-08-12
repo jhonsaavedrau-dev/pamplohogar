@@ -11,11 +11,11 @@ export function IconoMarca({ className = 'h-8 w-8' }: { className?: string }) {
 
 export function Marca({ compacta = false }: { compacta?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2">
-      <IconoMarca className="h-8 w-8 text-terracota-500" />
+    <span className="inline-flex items-center gap-2.5">
+      <IconoMarca className="h-9 w-9 text-terracota-500" />
       {!compacta && (
-        <span className="text-xl font-extrabold tracking-tight text-piedra-900">
-          Pamplo<span className="text-terracota-500">Hogar</span>
+        <span className="font-titulo text-[1.35rem] leading-none font-semibold tracking-tight text-piedra-900">
+          Pamplo<span className="text-terracota-600">Hogar</span>
         </span>
       )}
     </span>

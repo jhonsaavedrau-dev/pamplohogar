@@ -39,7 +39,7 @@ export function Entrar() {
 
   return (
     <div className="contenedor-app max-w-md py-10">
-      <h1 className="text-2xl font-extrabold text-piedra-900">Entrar a PamploHogar</h1>
+      <h1 className="titular">Entrar a PamploHogar</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Inicia sesion para guardar favoritos, contactar arrendadores y publicar inmuebles.
       </p>

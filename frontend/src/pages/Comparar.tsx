@@ -22,6 +22,9 @@ export function Comparar() {
   if (ids.length === 0) {
     return (
       <div className="contenedor-app py-10">
+        {/* El titulo va aunque no haya nada que comparar: toda pantalla
+            necesita uno para que un lector de pantalla sepa donde esta. */}
+        <h1 className="sr-only">Comparar inmuebles</h1>
         <EstadoVacio
           titulo="No has elegido nada para comparar"
           descripcion="Marca la casilla Comparar en los inmuebles que te interesen y vuelve aqui para verlos lado a lado."
@@ -48,6 +51,7 @@ export function Comparar() {
   if (inmuebles.length === 0) {
     return (
       <div className="contenedor-app py-10">
+        <h1 className="sr-only">Comparar inmuebles</h1>
         <EstadoVacio
           titulo="Esos inmuebles ya no estan"
           descripcion="Puede que los hayan retirado mientras los comparabas."
@@ -81,7 +85,7 @@ export function Comparar() {
     <div className="contenedor-app py-8">
       <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-piedra-900">Comparar inmuebles</h1>
+          <h1 className="titular">Comparar inmuebles</h1>
           <p className="mt-1 text-sm text-piedra-600">
             Lo mejor de cada fila aparece resaltado en azul.
           </p>
