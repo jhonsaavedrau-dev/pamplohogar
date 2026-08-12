@@ -31,10 +31,20 @@ const limitadorLogin = rateLimit({
   },
 });
 
-/** Crear cuentas es mucho menos frecuente, pero conviene frenar el registro masivo. */
+/**
+ * Frena el registro masivo automatizado, no a los estudiantes.
+ *
+ * El tope es alto a proposito. Al empezar el semestre puede correrse la voz y
+ * registrarse un salon entero desde el wifi de la universidad, donde todos
+ * salen con la misma direccion. Con un tope bajo, a partir de cierto numero
+ * nadie mas podria crear cuenta, y ni ellos ni nosotros entenderiamos por que.
+ *
+ * Cien por hora sigue cortando a un script que crea miles, que es lo que
+ * de verdad hay que evitar.
+ */
 const limitadorRegistro = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 30,
+  limit: 100,
   skipFailedRequests: true,
   standardHeaders: true,
   legacyHeaders: false,

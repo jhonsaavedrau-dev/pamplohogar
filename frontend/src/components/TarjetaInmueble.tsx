@@ -87,9 +87,26 @@ export function TarjetaInmueble({
               className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-piedra-900/65 to-transparent"
             />
 
-            <span className="absolute top-3 left-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-piedra-800 shadow-[var(--shadow-suave)] backdrop-blur-sm">
-              {ETIQUETAS_TIPO[inmueble.tipo]}
-            </span>
+            {/* Las etiquetas van juntas a la izquierda: a la derecha vive el
+                corazon y si comparten esquina se tapan entre si. Se reserva
+                espacio a la derecha para que no se monten en pantallas angostas. */}
+            <div className="absolute top-3 right-14 left-3 flex flex-wrap items-start gap-1.5">
+              <span className="rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-piedra-800 shadow-[var(--shadow-suave)] backdrop-blur-sm">
+                {ETIQUETAS_TIPO[inmueble.tipo]}
+              </span>
+
+              {esNuevo && (
+                <span className="rounded-full bg-verificado-600 px-2.5 py-1 text-xs font-bold text-white shadow-[var(--shadow-suave)]">
+                  Nuevo
+                </span>
+              )}
+
+              {!inmueble.activo && (
+                <span className="rounded-full bg-piedra-900/85 px-2.5 py-1 text-xs font-bold text-white">
+                  Oculto
+                </span>
+              )}
+            </div>
 
             <span className="absolute bottom-3 left-3 flex items-center gap-1.5 text-xs font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
@@ -97,18 +114,6 @@ export function TarjetaInmueble({
               </svg>
               {distancia(inmueble.distanciaUniversidadKm)}
             </span>
-
-            {esNuevo && (
-              <span className="absolute top-3 right-3 rounded-full bg-verificado-600 px-2.5 py-1 text-xs font-bold text-white shadow-[var(--shadow-suave)]">
-                Nuevo
-              </span>
-            )}
-
-            {!inmueble.activo && (
-              <span className="absolute right-3 bottom-3 rounded-full bg-piedra-900/85 px-2.5 py-1 text-xs font-bold text-white">
-                Oculto
-              </span>
-            )}
           </div>
         </Link>
 

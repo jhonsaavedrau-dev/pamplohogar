@@ -38,13 +38,18 @@ const limitadorEnvio = rateLimit({
 
 /**
  * Canje del enlace: solo cuentan los intentos fallidos.
+ *
  * Cambiar la contrasena con un enlace valido no es un ataque; adivinar
  * enlaces si. Contar los aciertos dejaria por fuera a quien de verdad esta
  * recuperando su cuenta desde una conexion compartida.
+ *
+ * El tope no es lo que hace seguro el enlace: son 32 bytes al azar y no se
+ * adivinan por fuerza bruta ni en millones de anos. Esto solo evita que
+ * alguien nos tenga el servidor ocupado probando.
  */
 const limitadorCanje = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 25,
+  limit: 60,
   skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,

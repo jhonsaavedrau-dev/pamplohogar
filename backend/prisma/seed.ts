@@ -293,6 +293,13 @@ const HISTORIALES = [
 
 const haceDias = (dias: number): Date => new Date(Date.now() - dias * 24 * 60 * 60 * 1000);
 
+/**
+ * Hace cuantos dias se publico cada inmueble, contando en el mismo orden en que
+ * aparecen arriba. Se reparten a proposito: si todos fueran de hoy, la insignia
+ * de recien publicado saldria en los diez y dejaria de significar algo.
+ */
+const DIAS_DESDE_PUBLICACION = [3, 42, 96, 18, 6, 130, 61, 9, 75, 150];
+
 async function main(): Promise<void> {
   process.stdout.write('Limpiando datos anteriores de la semilla...\n');
 
@@ -337,6 +344,7 @@ async function main(): Promise<void> {
         data: {
           ...campos,
           arrendadorId: arrendador.id,
+          creadoEn: haceDias(DIAS_DESDE_PUBLICACION[total] ?? 90),
           fotos: {
             create: fotos.map((id, orden) => ({
               url: foto(id),
