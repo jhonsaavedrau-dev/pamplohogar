@@ -1,7 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <clipPath id="dentroDeLaCasa">
+      <path d="M50 15 84 35.5V70a5 5 0 0 1-5 5H21a5 5 0 0 1-5-5V35.5Z" />
+    </clipPath>
+  </defs>
+
+  <rect x="68" y="12" width="8" height="16" rx="2" fill="#C05621" />
+
+  <g clip-path="url(#dentroDeLaCasa)">
+    <rect x="14" y="12" width="72" height="66" fill="#FDFAF6" />
+    <circle cx="63" cy="38" r="8.5" fill="#E8843C" />
+    <path d="M14 78V60l11-12 9 10 10-12 13 15 12-9 17 16v10Z" fill="#E2CFBA" />
+    <path d="M14 78V66l13-10 12 12 11-8 15 14 21-12v16Z" fill="#D3BCA2" />
+  </g>
+
+  <g clip-path="url(#dentroDeLaCasa)">
+    <path d="M27 30h11v34H27Z" fill="#FDFAF6" />
+    <path d="M27 30c0-7 2.5-11 5.5-11S38 23 38 30Z" fill="#FDFAF6" />
+    <path d="M32.5 12v7M29.5 15h6" stroke="#3B2A20" stroke-width="1.8" stroke-linecap="round" />
+    <path d="M32.5 36c1.8 0 3 1.4 3 3.2V45h-6v-5.8c0-1.8 1.2-3.2 3-3.2Z" fill="#3B2A20" />
+    <path d="M22 64V47h6v17Z" fill="#F2E7D8" />
+
+    <path d="M44 60 56 50l12 10Z" fill="#A8461A" />
+    <path d="M47 60h18v15H47Z" fill="#FDFAF6" />
+    <path d="M52.5 64h7v7h-7Z" fill="#3B2A20" />
+  </g>
+
   <path
-    fill="#B25317"
-    fill-rule="evenodd"
-    d="M24 3.2 1.9 20.8a2.4 2.4 0 0 0-.9 1.9V40a5 5 0 0 0 5 5h36a5 5 0 0 0 5-5V22.7c0-.75-.34-1.45-.9-1.9L24 3.2Zm-6.6 41.8V34.2a6.6 6.6 0 0 1 13.2 0V45h-13.2Z"
+    d="M50 15 84 35.5V70a5 5 0 0 1-5 5H21a5 5 0 0 1-5-5V35.5Z"
+    fill="none"
+    stroke="#C05621"
+    stroke-width="6.5"
+    stroke-linejoin="round"
+  />
+
+  <path
+    d="M79 74c6.5 0 11-4.2 11-10.5-6.5 0-11 4.2-11 10.5Z"
+    fill="#C05621"
+  />
+  <path
+    d="M79 74c-3.5-5.4-2.2-11.3 3.2-14.6C85.7 64.8 84.4 70.7 79 74Z"
+    fill="#D2691E"
   />
 </svg>

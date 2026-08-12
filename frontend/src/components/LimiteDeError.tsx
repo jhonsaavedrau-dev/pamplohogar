@@ -34,7 +34,7 @@ export class LimiteDeError extends Component<Props, Estado> {
 
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center gap-4 px-6 text-center">
-        <IconoMarca className="h-16 w-16 text-terracota-500" />
+        <IconoMarca className="h-16 w-16" />
         <h1 className="titular">Se nos cayo la pagina</h1>
         <p className="max-w-sm text-piedra-600">
           Algo fallo de nuestro lado. Recarga la pagina y si vuelve a pasar, escribenos para

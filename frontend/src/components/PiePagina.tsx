@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { IconoMarca } from './Marca';
+import { Marca } from './Marca';
 
 export function PiePagina() {
   return (
@@ -7,12 +7,7 @@ export function PiePagina() {
       <div className="contenedor-app py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2.5">
-              <IconoMarca className="h-9 w-9 text-terracota-500" />
-              <span className="font-titulo text-[1.35rem] leading-none font-semibold text-piedra-900">
-                Pamplo<span className="text-terracota-600">Hogar</span>
-              </span>
-            </div>
+            <Marca conLema />
             <p className="mt-3 text-sm leading-relaxed text-piedra-600">
               Vivienda estudiantil en Pamplona, Norte de Santander. Para que encontrar donde vivir
               no dependa de a quien conozcas.

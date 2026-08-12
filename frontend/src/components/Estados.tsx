@@ -4,7 +4,7 @@ import { IconoMarca } from './Marca';
 export function Cargando({ texto = 'Cargando...' }: { texto?: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-16 text-piedra-600">
-      <IconoMarca className="h-10 w-10 animate-pulse text-terracota-200" />
+      <IconoMarca className="h-10 w-10 animate-pulse opacity-70" />
       <p className="text-sm">{texto}</p>
     </div>
   );
@@ -32,7 +32,7 @@ interface PropsVacio {
 export function EstadoVacio({ titulo, descripcion, accion }: PropsVacio) {
   return (
     <div className="tarjeta flex flex-col items-center gap-3 px-6 py-14 text-center">
-      <IconoMarca className="h-12 w-12 text-piedra-200" />
+      <IconoMarca className="h-12 w-12 opacity-35 grayscale" />
       <h3 className="text-lg font-bold text-piedra-900">{titulo}</h3>
       <p className="max-w-sm text-sm text-piedra-600">{descripcion}</p>
       {accion}
