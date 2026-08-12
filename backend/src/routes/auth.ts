@@ -2,7 +2,7 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
-import { firmarToken } from '../lib/jwt.js';
+import { firmarPasoIntermedio, firmarToken } from '../lib/jwt.js';
 import { aUsuarioPublico } from '../lib/usuarioPublico.js';
 import { conflicto, demasiadosIntentos, noAutorizado, noEncontrado } from '../lib/errores.js';
 import { anotarFallo, limpiarFallos, revisarFreno } from '../lib/intentosDeEntrada.js';
@@ -128,6 +128,17 @@ rutasAuth.post(
     if (!coincide) {
       await anotarFallo(usuario.id, usuario.intentosFallidos);
       throw noAutorizado('Correo o contraseña incorrectos.');
+    }
+
+    // Con verificacion en dos pasos, la contrasena correcta todavia no abre
+    // nada: solo da un pase de cinco minutos para escribir el codigo. El
+    // contador de fallos se limpia hasta que termine de entrar, no antes.
+    if (usuario.dobleFactorActivadoEn !== null) {
+      res.json({
+        requiereCodigo: true,
+        paseIntermedio: firmarPasoIntermedio(usuario.id),
+      });
+      return;
     }
 
     if (usuario.intentosFallidos > 0 || usuario.bloqueadoHasta !== null) {

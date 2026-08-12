@@ -21,6 +21,7 @@ import { MapaDePrecios } from './pages/MapaDePrecios';
 import { Mensajes } from './pages/Mensajes';
 import { Conversacion } from './pages/Conversacion';
 import { FichaInmueble } from './pages/FichaInmueble';
+import { MiCuenta } from './pages/MiCuenta';
 import { MiPerfilRoomie } from './pages/MiPerfilRoomie';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
@@ -62,6 +63,14 @@ export function App() {
             element={
               <RutaProtegida>
                 <MiPerfilRoomie />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="/mi-cuenta"
+            element={
+              <RutaProtegida>
+                <MiCuenta />
               </RutaProtegida>
             }
           />

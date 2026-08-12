@@ -82,6 +82,15 @@ model Usuario {
   // reinicio del servidor, que en el plan gratuito pasa a cada rato.
   intentosFallidos Int       @default(0)
   bloqueadoHasta   DateTime?
+
+  // Verificacion en dos pasos con app de autenticacion.
+  // La clave se guarda apenas se prepara, pero no vale hasta que la persona
+  // escriba un codigo bueno: si no, quedaria a medio activar y sin poder entrar.
+  dobleFactorClave      String?
+  dobleFactorActivadoEn DateTime?
+  // El ultimo intervalo de treinta segundos que ya se uso, para que un codigo
+  // visto por encima del hombro no sirva dos veces.
+  dobleFactorUltimoPaso Int?
   creadoEn     DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 
@@ -92,6 +101,7 @@ model Usuario {
   conversacionesComoEstudiante Conversacion[] @relation("ConversacionesDelEstudiante")
   conversacionesComoArrendador Conversacion[] @relation("ConversacionesDelArrendador")
   mensajesEnviados             Mensaje[]      @relation("MensajesEnviados")
+  codigosDeRespaldo            CodigoRespaldo[]
   resenasRecibidas  Resena[]            @relation("ResenasRecibidas")
   solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
   reportesHechos    Reporte[]           @relation("ReportesDelAutor")
@@ -426,4 +436,21 @@ model Mensaje {
   autor        Usuario      @relation("MensajesEnviados", fields: [autorId], references: [id], onDelete: Cascade)
 
   @@index([conversacionId, creadoEn])
+}
+
+// Codigos de un solo uso por si pierde el celular.
+//
+// Sin esto, cambiar de telefono seria perder la cuenta para siempre, y ese
+// miedo hace que la gente no active la verificacion. Se guardan en resumen,
+// nunca en claro: quien lea la base no puede entrar con ellos.
+model CodigoRespaldo {
+  id       String    @id @default(cuid())
+  hash     String
+  creadoEn DateTime  @default(now())
+  usadoEn  DateTime?
+
+  usuarioId String
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
 }

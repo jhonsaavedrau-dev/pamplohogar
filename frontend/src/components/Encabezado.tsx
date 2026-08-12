@@ -100,6 +100,10 @@ export function Encabezado() {
             </NavLink>
           )}
           {usuario ? (
+            <>
+              <NavLink to="/mi-cuenta" className={claseEnlace}>
+                Mi cuenta
+              </NavLink>
             <button
               type="button"
               onClick={cerrarSesion}
@@ -107,6 +111,7 @@ export function Encabezado() {
             >
               Salir
             </button>
+            </>
           ) : (
             <>
               <Link
@@ -154,6 +159,9 @@ export function Encabezado() {
                 <NavLink to="/mensajes" className={claseEnlace} onClick={cerrar}>
                   Mis mensajes
                   <PuntoSinLeer cuantos={sinLeer} />
+                </NavLink>
+                <NavLink to="/mi-cuenta" className={claseEnlace} onClick={cerrar}>
+                  Mi cuenta
                 </NavLink>
                 <NavLink to="/favoritos" className={claseEnlace} onClick={cerrar}>
                   Mis favoritos

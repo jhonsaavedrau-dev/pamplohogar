@@ -10,6 +10,9 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 
 - **Dos tipos de cuenta.** El estudiante busca, filtra, guarda favoritos, contacta y resena. El
   arrendador publica y gestiona sus inmuebles.
+- **Verificacion en dos pasos**, opcional, con app de autenticacion. Pide un codigo del celular
+  ademas de la contrasena. Entrega ocho codigos de respaldo por si se pierde el telefono, para que
+  activarla no sea arriesgarse a perder la cuenta.
 - **Recuperar la contrasena** con un enlace de un solo uso que vence en una hora, y **confirmar el
   correo** al registrarse.
 - **Publicacion de inmuebles** con hasta diez fotos, ubicacion marcada en el mapa y lista de
@@ -162,9 +165,10 @@ cd backend && npm test
 cd frontend && npm test
 ```
 
-Son 68 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
+Son 86 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
 verificacion de sesiones, las reglas de validacion de cada formulario, el armado del enlace de
-WhatsApp, la referencia de precio del barrio la forma de agrupar barrios escritos distinto y el freno de intentos de entrada.
+WhatsApp, la referencia de precio del barrio la forma de agrupar barrios escritos distinto, el freno de intentos de entrada y los codigos de
+verificacion en dos pasos.
 
 Con el servidor encendido se pueden correr ademas las pruebas de la plataforma completa:
 
@@ -201,6 +205,9 @@ como argumento para probar el servidor de internet en vez del local.
 - Cada endpoint revisa que el usuario tenga permiso sobre ese recurso, no solo que haya iniciado
   sesion. Nadie puede editar ni borrar inmuebles ajenos.
 - El celular del arrendador no viaja en las respuestas publicas.
+- La verificacion en dos pasos guarda los codigos de respaldo en resumen, nunca legibles, y no
+  deja usar dos veces el mismo codigo de la app. El pase intermedio entre la contrasena y el codigo
+  dura cinco minutos y no sirve como sesion.
 - Las rutas de registro e inicio de sesion tienen limite de intentos, por conexion y ademas por
   cuenta. Diez fallos seguidos en una cuenta la frenan quince minutos sin afectar a nadie mas, y
   cambiar la contrasena por correo levanta el freno.

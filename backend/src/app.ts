@@ -9,6 +9,7 @@ import { rutasFavoritos } from './routes/favoritos.js';
 import { rutasResenas } from './routes/resenas.js';
 import { rutasResenasBarrio } from './routes/resenasBarrio.js';
 import { rutasMensajes } from './routes/mensajes.js';
+import { rutasDobleFactor } from './routes/dobleFactor.js';
 import { rutasContacto } from './routes/contacto.js';
 import { rutasSubidas } from './routes/subidas.js';
 import { rutasAdmin } from './routes/admin.js';
@@ -48,6 +49,7 @@ export function crearApp() {
 
   app.use('/api/auth', rutasAuth);
   app.use('/api/auth', rutasRecuperacion);
+  app.use('/api/auth', rutasDobleFactor);
   app.use('/api/inmuebles', rutasInmuebles);
   app.use('/api/favoritos', rutasFavoritos);
   app.use('/api/resenas', rutasResenas);

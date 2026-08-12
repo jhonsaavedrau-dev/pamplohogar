@@ -14,10 +14,15 @@ const esquema = z.object({
 type Datos = z.infer<typeof esquema>;
 
 export function Entrar() {
-  const { entrar } = useSesion();
+  const { entrar, terminarConCodigo } = useSesion();
   const navegar = useNavigate();
   const ubicacion = useLocation();
   const [errorServidor, setErrorServidor] = useState('');
+  // Cuando la cuenta tiene verificacion en dos pasos, aqui queda el pase que
+  // permite terminar de entrar escribiendo el codigo.
+  const [paseIntermedio, setPaseIntermedio] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [enviandoCodigo, setEnviandoCodigo] = useState(false);
 
   const {
     register,
@@ -30,12 +35,93 @@ export function Entrar() {
   const enviar = handleSubmit(async (datos) => {
     setErrorServidor('');
     try {
-      await entrar(datos.email, datos.password);
+      const resultado = await entrar(datos.email, datos.password);
+      if (!resultado.listo) {
+        setPaseIntermedio(resultado.paseIntermedio);
+        return;
+      }
       navegar(destino, { replace: true });
     } catch (e) {
       setErrorServidor(e instanceof Error ? e.message : 'No pudimos iniciar tu sesión.');
     }
   });
+
+  const enviarCodigo = async () => {
+    setErrorServidor('');
+    setEnviandoCodigo(true);
+    try {
+      await terminarConCodigo(paseIntermedio, codigo);
+      navegar(destino, { replace: true });
+    } catch (e) {
+      setErrorServidor(e instanceof Error ? e.message : 'No pudimos comprobar el código.');
+    } finally {
+      setEnviandoCodigo(false);
+    }
+  };
+
+  if (paseIntermedio !== '') {
+    return (
+      <div className="contenedor-app max-w-md py-10">
+        <h1 className="titular">Escribe tu código</h1>
+        <p className="mt-2 text-sm text-piedra-600">
+          Tu cuenta tiene verificación en dos pasos. Abre tu app de autenticación y escribe el
+          código de seis dígitos que te muestre.
+        </p>
+
+        <form
+          className="tarjeta mt-6 space-y-4 p-5"
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (codigo.trim().length >= 6 && !enviandoCodigo) void enviarCodigo();
+          }}
+        >
+          {errorServidor && <Aviso tipo="error">{errorServidor}</Aviso>}
+
+          <div>
+            <label className="etiqueta" htmlFor="codigo">
+              Código
+            </label>
+            <input
+              id="codigo"
+              className="campo text-center text-2xl tracking-[0.4em]"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              autoFocus
+              placeholder="000000"
+              maxLength={20}
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="boton-primario w-full"
+            disabled={enviandoCodigo || codigo.trim().length < 6}
+          >
+            {enviandoCodigo ? 'Comprobando...' : 'Entrar'}
+          </button>
+
+          <p className="text-sm text-piedra-600">
+            Si perdiste el celular, escribe aquí uno de los códigos de respaldo que guardaste.
+          </p>
+
+          <button
+            type="button"
+            className="text-sm font-semibold text-confianza-600"
+            onClick={() => {
+              setPaseIntermedio('');
+              setCodigo('');
+              setErrorServidor('');
+            }}
+          >
+            Volver
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="contenedor-app max-w-md py-10">

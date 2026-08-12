@@ -91,7 +91,11 @@ completo y guardado en un computador.
       se vuelve a ver sin senal, con un aviso arriba para que se entienda por que. Escrito a mano en
       cuarenta lineas, sin libreria. Falta comprobarlo en un celular de verdad: el navegador de
       pruebas no deja registrarlo.
-- [ ] **Autenticacion en dos pasos** para las cuentas de arrendador.
+- [x] ~~**Autenticacion en dos pasos** para las cuentas de arrendador.~~ Hecho el 12 de agosto de
+      2026, y para cualquier cuenta, no solo de arrendador. Va con app de autenticacion y no con
+      codigo por correo: mientras no haya dominio, un correo solo llega al dueno de la plataforma y
+      un arrendador de verdad quedaria encerrado fuera de su cuenta. Con la app funciona hoy mismo.
+      Escrito a mano siguiendo la RFC 6238, comprobado contra los ejemplos oficiales del estandar.
 
 ## Decisiones tecnicas aplazadas
 
