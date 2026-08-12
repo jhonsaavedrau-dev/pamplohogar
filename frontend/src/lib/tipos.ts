@@ -68,12 +68,21 @@ export interface CambioDePrecio {
   creadoEn: string;
 }
 
+export interface ReferenciaDePrecio {
+  mediana: number;
+  muestras: number;
+  ambito: 'barrio' | 'ciudad';
+  diferenciaPorcentaje: number;
+  veredicto: 'porEncima' | 'porDebajo' | 'enLoNormal';
+}
+
 export interface RespuestaDetalle {
   inmueble: Inmueble;
   esFavorito: boolean;
   esDueno: boolean;
   resenas: Resena[];
   cambiosDePrecio: CambioDePrecio[];
+  referenciaDePrecio: ReferenciaDePrecio | null;
 }
 
 export type MotivoReporte =

@@ -7,6 +7,7 @@ import { noEncontrado, prohibido } from '../lib/errores.js';
 import { distanciaAUniversidad } from '../lib/geo.js';
 import { borrarFotos } from '../lib/cloudinary.js';
 import { anotarAccion } from '../lib/registroAdmin.js';
+import { referenciaDePrecio } from '../lib/referenciaPrecio.js';
 import {
   esquemaActualizarInmueble,
   esquemaBusqueda,
@@ -201,6 +202,13 @@ rutasInmuebles.get(
       take: 20,
     });
 
+    const referencia = await referenciaDePrecio(
+      inmueble.id,
+      inmueble.tipo,
+      inmueble.barrio,
+      inmueble.precio,
+    );
+
     const cambiosDePrecio = await prisma.cambioDePrecio.findMany({
       where: { inmuebleId: inmueble.id },
       orderBy: { creadoEn: 'asc' },
@@ -220,6 +228,7 @@ rutasInmuebles.get(
       esFavorito,
       esDueno,
       cambiosDePrecio,
+      referenciaDePrecio: referencia,
       resenas: resenas.map((r) => ({
         id: r.id,
         calificacion: r.calificacion,

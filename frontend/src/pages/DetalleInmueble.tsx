@@ -11,6 +11,7 @@ import { MapaDiferido } from '../components/MapaDiferido';
 import { Estrellas, SelectorEstrellas } from '../components/Estrellas';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
 import { HistorialDePrecios } from '../components/HistorialDePrecios';
+import { ComparadoConElBarrio } from '../components/ComparadoConElBarrio';
 import { BotonReportar } from '../components/BotonReportar';
 
 export function DetalleInmueble() {
@@ -95,7 +96,7 @@ export function DetalleInmueble() {
     );
   }
 
-  const { inmueble, esFavorito, esDueno, resenas, cambiosDePrecio } = data;
+  const { inmueble, esFavorito, esDueno, resenas, cambiosDePrecio, referenciaDePrecio } = data;
 
   return (
     <div className="contenedor-app py-6 pb-28 lg:pb-10">
@@ -172,6 +173,8 @@ export function DetalleInmueble() {
               </ul>
             </section>
           )}
+
+          <ComparadoConElBarrio referencia={referenciaDePrecio} barrio={inmueble.barrio} />
 
           <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 
