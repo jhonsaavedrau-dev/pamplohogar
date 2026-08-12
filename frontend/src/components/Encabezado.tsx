@@ -47,6 +47,9 @@ export function Encabezado() {
           <NavLink to="/" className={claseEnlace} end>
             Buscar
           </NavLink>
+          <NavLink to="/roomies" className={claseEnlace}>
+            Roomies
+          </NavLink>
           {usuario && (
             <>
               <NavLink to="/favoritos" className={claseEnlace}>
@@ -110,6 +113,9 @@ export function Encabezado() {
           <nav className="contenedor-app space-y-1 py-3">
             <NavLink to="/" className={claseEnlace} onClick={cerrar} end>
               Buscar vivienda
+            </NavLink>
+            <NavLink to="/roomies" className={claseEnlace} onClick={cerrar}>
+              Buscar roomie
             </NavLink>
             {usuario && (
               <>

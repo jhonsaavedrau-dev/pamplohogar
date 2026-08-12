@@ -55,7 +55,9 @@ completo y guardado en un computador.
 - [x] ~~**Comparador** de hasta tres inmuebles lado a lado.~~ Hecho: se marcan desde el listado y se
       ven en una tabla que resalta el mas barato, el mas cercano y el mejor calificado. La seleccion
       vive en el navegador, no en la cuenta.
-- [ ] **Buscador de roomies** para estudiantes que quieren compartir arriendo y repartir gastos.
+- [x] ~~**Buscador de roomies.**~~ Hecho: perfil con presupuesto, zona, carrera y como es cada
+      quien para convivir. El celular sale solo al pulsar escribirle y queda constancia, igual que
+      con los inmuebles.
 - [x] ~~**Historial de precios**~~ Hecho: cada cambio de precio queda registrado y el estudiante ve
       en el detalle cuanto subio o bajo desde que se publico, con la fecha de cada cambio.
 - [ ] **Ficha en PDF** del inmueble, para compartirla por fuera de la plataforma.

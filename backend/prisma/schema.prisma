@@ -44,6 +44,18 @@ enum TipoToken {
   VERIFICAR_CORREO
 }
 
+enum RitmoDeVida {
+  MADRUGADOR
+  NOCTURNO
+  MIXTO
+}
+
+enum ConQuienConvivir {
+  CUALQUIERA
+  SOLO_MUJERES
+  SOLO_HOMBRES
+}
+
 enum AccionAdmin {
   OCULTO_INMUEBLE
   MOSTRO_INMUEBLE
@@ -76,8 +88,58 @@ model Usuario {
   tokens            TokenCorreo[]
   accionesDeAdmin   RegistroAdmin[]
   busquedas         BusquedaGuardada[]
+  perfilRoomie      PerfilRoomie?
+  contactosRoomie   ContactoRoomie[]    @relation("ContactosQueHizo")
+  contactosRecibidos ContactoRoomie[]   @relation("ContactosQueRecibio")
 
   @@index([rol])
+}
+
+// Estudiante que busca con quien compartir arriendo.
+//
+// Un apartamento de 850 mil entre tres sale a 283 mil por cabeza, mas barato
+// que casi cualquier habitacion sola. El problema nunca fue que no existieran
+// esos apartamentos: era no tener con quien tomarlos.
+model PerfilRoomie {
+  id             String            @id @default(cuid())
+  activo         Boolean           @default(true)
+  presupuestoMax Int
+  descripcion    String
+  zonaPreferida  String?
+  carrera        String?
+  semestre       Int?
+  ritmo          RitmoDeVida       @default(MIXTO)
+  conQuien       ConQuienConvivir  @default(CUALQUIERA)
+  fuma           Boolean           @default(false)
+  tieneMascota   Boolean           @default(false)
+  aceptaMascotas Boolean           @default(true)
+  creadoEn       DateTime          @default(now())
+  actualizadoEn  DateTime          @updatedAt
+
+  // Uno por persona: dos perfiles de la misma cuenta solo confunden a quien busca.
+  usuarioId String  @unique
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  contactos ContactoRoomie[]
+
+  @@index([activo, presupuestoMax])
+}
+
+// Deja constancia de quien pidio el numero de quien, igual que con los inmuebles.
+model ContactoRoomie {
+  id       String   @id @default(cuid())
+  creadoEn DateTime @default(now())
+
+  solicitanteId String
+  destinatarioId String
+  perfilId      String
+
+  solicitante  Usuario      @relation("ContactosQueHizo", fields: [solicitanteId], references: [id], onDelete: Cascade)
+  destinatario Usuario      @relation("ContactosQueRecibio", fields: [destinatarioId], references: [id], onDelete: Cascade)
+  perfil       PerfilRoomie @relation(fields: [perfilId], references: [id], onDelete: Cascade)
+
+  @@unique([solicitanteId, perfilId])
+  @@index([destinatarioId])
 }
 
 // Una busqueda que el estudiante guardo para que le avisemos.

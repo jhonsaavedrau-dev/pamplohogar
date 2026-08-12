@@ -44,7 +44,7 @@ export class ErrorApi extends Error {
 }
 
 interface OpcionesPeticion {
-  metodo?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  metodo?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   cuerpo?: unknown;
   formulario?: FormData;
 }

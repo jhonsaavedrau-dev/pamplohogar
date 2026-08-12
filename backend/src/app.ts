@@ -14,6 +14,7 @@ import { rutasReportes } from './routes/reportes.js';
 import { rutasRecuperacion } from './routes/recuperacion.js';
 import { rutasBusquedas } from './routes/busquedas.js';
 import { rutasAvisos } from './routes/avisos.js';
+import { rutasRoomies } from './routes/roomies.js';
 import { prisma } from './lib/prisma.js';
 
 export function crearApp() {
@@ -52,6 +53,7 @@ export function crearApp() {
   app.use('/api/admin', rutasAdmin);
   app.use('/api/busquedas', rutasBusquedas);
   app.use('/api/avisos', rutasAvisos);
+  app.use('/api/roomies', rutasRoomies);
   app.use('/api', rutasContacto);
   app.use('/api', rutasReportes);
 

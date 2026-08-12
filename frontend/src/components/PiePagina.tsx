@@ -31,6 +31,11 @@ export function PiePagina() {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/roomies" className="text-piedra-700 hover:text-terracota-600">
+                    Buscar roomie
+                  </Link>
+                </li>
+                <li>
                   <Link to="/favoritos" className="text-piedra-700 hover:text-terracota-600">
                     Mis favoritos
                   </Link>

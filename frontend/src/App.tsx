@@ -15,6 +15,8 @@ import { CambiarClave } from './pages/CambiarClave';
 import { ConfirmarCorreo } from './pages/ConfirmarCorreo';
 import { AvisoCorreoSinConfirmar } from './components/AvisoCorreoSinConfirmar';
 import { Comparar } from './pages/Comparar';
+import { Roomies } from './pages/Roomies';
+import { MiPerfilRoomie } from './pages/MiPerfilRoomie';
 import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
@@ -30,6 +32,15 @@ export function App() {
           <Route path="/" element={<Buscar />} />
           <Route path="/inmueble/:id" element={<DetalleInmueble />} />
           <Route path="/comparar" element={<Comparar />} />
+          <Route path="/roomies" element={<Roomies />} />
+          <Route
+            path="/roomies/mi-perfil"
+            element={
+              <RutaProtegida>
+                <MiPerfilRoomie />
+              </RutaProtegida>
+            }
+          />
           <Route path="/entrar" element={<Entrar />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/recuperar" element={<Recuperar />} />
