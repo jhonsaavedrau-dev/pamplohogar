@@ -115,7 +115,17 @@ rutasRecuperacion.post(
     const passwordHash = await bcrypt.hash(datos.password, 10);
 
     await prisma.$transaction([
-      prisma.usuario.update({ where: { id: token.usuarioId }, data: { passwordHash } }),
+      prisma.usuario.update({
+        where: { id: token.usuarioId },
+        data: {
+          passwordHash,
+          // Cambiar la clave por correo levanta el freno de una vez. Es la
+          // salida para quien quedo frenado porque otro se puso a probar
+          // contrasenas en su cuenta: nadie se queda encerrado por fuera.
+          intentosFallidos: 0,
+          bloqueadoHasta: null,
+        },
+      }),
       // Cambiar la clave invalida cualquier otro enlace pendiente.
       prisma.tokenCorreo.deleteMany({
         where: { usuarioId: token.usuarioId, tipo: 'RECUPERAR_CLAVE' },

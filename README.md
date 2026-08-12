@@ -145,9 +145,9 @@ administradores ni dejarte por fuera.
 cd backend && npm test
 ```
 
-Son 60 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
+Son 68 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
 verificacion de sesiones, las reglas de validacion de cada formulario, el armado del enlace de
-WhatsApp, la referencia de precio del barrio y la forma de agrupar barrios escritos distinto.
+WhatsApp, la referencia de precio del barrio la forma de agrupar barrios escritos distinto y el freno de intentos de entrada.
 
 Con el servidor encendido se pueden correr ademas las pruebas de la plataforma completa:
 
@@ -184,5 +184,7 @@ como argumento para probar el servidor de internet en vez del local.
 - Cada endpoint revisa que el usuario tenga permiso sobre ese recurso, no solo que haya iniciado
   sesion. Nadie puede editar ni borrar inmuebles ajenos.
 - El celular del arrendador no viaja en las respuestas publicas.
-- Las rutas de registro e inicio de sesion tienen limite de intentos.
+- Las rutas de registro e inicio de sesion tienen limite de intentos, por conexion y ademas por
+  cuenta. Diez fallos seguidos en una cuenta la frenan quince minutos sin afectar a nadie mas, y
+  cambiar la contrasena por correo levanta el freno.
 - Los errores muestran un mensaje claro en espanol y dejan el detalle tecnico solo en el servidor.

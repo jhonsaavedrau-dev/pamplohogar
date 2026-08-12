@@ -64,7 +64,7 @@ export function Entrar() {
 
         <div>
           <label className="etiqueta" htmlFor="password">
-            Contrasena
+            Contraseña
           </label>
           <input
             id="password"

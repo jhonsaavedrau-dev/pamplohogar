@@ -39,10 +39,11 @@ completo y guardado en un computador.
       bajar y hacer portada, en vez de arrastrar: arrastrar es incomodo en celular y la plataforma
       se usa sobre todo desde el telefono.
 
-- [ ] **Limitar los intentos por cuenta y no solo por conexion.** Hoy solo se cuentan los intentos
-      fallidos, asi que un salon entero entrando desde el wifi de la universidad no se bloquea
-      entre si. Pero si alguien ataca desde esa misma red, los demas quedan frenados quince
-      minutos. Contar los fallos por correo, ademas de por conexion, quita ese efecto colateral.
+- [x] ~~**Limitar los intentos por cuenta y no solo por conexion.**~~ Hecho el 12 de agosto de 2026:
+      diez fallos seguidos en una cuenta la frenan quince minutos, y el tope por conexion se subio
+      de 25 a 150 porque ya no es lo unico que protege. Asi, alguien probando contrasenas desde el
+      wifi de la universidad frena su cuenta y no la de los demas. Cambiar la contrasena por correo
+      levanta el freno, para que nadie quede encerrado fuera de su propia cuenta.
 - [x] ~~**Tildes y enes en toda la interfaz.**~~ Hecho: 49 archivos repasados con una regla que
       solo toca frases, nunca rutas ni nombres de variables.
 
@@ -61,7 +62,14 @@ completo y guardado en un computador.
 - [x] ~~**Historial de precios**~~ Hecho: cada cambio de precio queda registrado y el estudiante ve
       en el detalle cuanto subio o bajo desde que se publico, con la fecha de cada cambio.
 - [ ] **Ficha en PDF** del inmueble, para compartirla por fuera de la plataforma.
-- [ ] **Resenas del barrio**, no solo del arrendador: ruido, seguridad, transporte.
+- [x] ~~**Resenas del barrio**, no solo del arrendador: ruido, seguridad, transporte.~~ Hecho el 12
+      de agosto de 2026: tres notas separadas, todas con el 5 como lo mejor, y sin promedio hasta
+      que haya tres opiniones. Solo opinan estudiantes: un arrendador calificando el barrio donde
+      arrienda tiene un interes evidente en que se vea bien.
+- [x] ~~**Comparar el precio con lo normal del barrio.**~~ Hecho el 12 de agosto de 2026: el detalle
+      dice cuanto se cobra normalmente por algo parecido y si el precio se sale de ahi. Se usa la
+      mediana, y con menos de cuatro parecidos no se muestra nada, porque un numero inventado con
+      aire de dato es peor que ninguno.
 
 ## Largo plazo
 

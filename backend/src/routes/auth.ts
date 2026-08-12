@@ -4,7 +4,8 @@ import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
 import { firmarToken } from '../lib/jwt.js';
 import { aUsuarioPublico } from '../lib/usuarioPublico.js';
-import { conflicto, noAutorizado, noEncontrado } from '../lib/errores.js';
+import { conflicto, demasiadosIntentos, noAutorizado, noEncontrado } from '../lib/errores.js';
+import { anotarFallo, limpiarFallos, revisarFreno } from '../lib/intentosDeEntrada.js';
 import { asincrono } from '../middleware/asincrono.js';
 import { requiereSesion } from '../middleware/auth.js';
 import { esquemaActualizarPerfil, esquemaLogin, esquemaRegistro } from '../schemas/auth.js';
@@ -15,19 +16,23 @@ import { origenesPermitidos } from '../lib/env.js';
 export const rutasAuth = Router();
 
 /**
- * Solo cuentan los intentos fallidos.
- * En el wifi de la universidad muchos estudiantes comparten la misma direccion IP,
- * asi que castigar los inicios de sesion correctos dejaria por fuera a medio campus.
- * Lo que interesa frenar es a quien esta probando contrasenas a la fuerza.
+ * Freno por conexion. Solo cuentan los intentos fallidos: en el wifi de la
+ * universidad muchos estudiantes comparten la misma direccion IP, asi que
+ * castigar los inicios de sesion correctos dejaria por fuera a medio campus.
+ *
+ * El tope es holgado porque el trabajo fino lo hace el freno por cuenta, que
+ * protege cada cuenta por separado. Este de aqui solo esta para cortar a un
+ * script que dispara miles de intentos desde una misma conexion, sin que un
+ * salon entero quede bloqueado por culpa de uno.
  */
 const limitadorLogin = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 25,
+  limit: 150,
   skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
-    mensaje: 'Demasiados intentos fallidos. Espera quince minutos y vuelve a probar.',
+    mensaje: 'Demasiados intentos fallidos desde esta conexión. Espera quince minutos.',
   },
 });
 
@@ -107,8 +112,27 @@ rutasAuth.post(
     const usuario = await prisma.usuario.findUnique({ where: { email: datos.email } });
     if (!usuario) throw noAutorizado('Correo o contraseña incorrectos.');
 
+    const freno = revisarFreno(usuario.bloqueadoHasta, new Date());
+    if (freno.frenada) {
+      // Decir que la cuenta esta frenada confirma que ese correo existe, pero
+      // el registro ya lo confirma al responder "ya hay una cuenta con ese
+      // correo". Callarlo aqui solo confundiria a quien si es el dueno.
+      throw demasiadosIntentos(
+        `Demasiados intentos con este correo. Espera ${freno.minutosQueFaltan} ` +
+          `${freno.minutosQueFaltan === 1 ? 'minuto' : 'minutos'}, o cambia tu contraseña ` +
+          'desde "Olvidé mi contraseña" y entras de una vez.',
+      );
+    }
+
     const coincide = await bcrypt.compare(datos.password, usuario.passwordHash);
-    if (!coincide) throw noAutorizado('Correo o contraseña incorrectos.');
+    if (!coincide) {
+      await anotarFallo(usuario.id, usuario.intentosFallidos);
+      throw noAutorizado('Correo o contraseña incorrectos.');
+    }
+
+    if (usuario.intentosFallidos > 0 || usuario.bloqueadoHasta !== null) {
+      await limpiarFallos(usuario.id);
+    }
 
     const token = firmarToken({ sub: usuario.id, rol: usuario.rol });
     res.json({ token, usuario: aUsuarioPublico(usuario) });

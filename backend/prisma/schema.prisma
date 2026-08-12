@@ -76,6 +76,12 @@ model Usuario {
   passwordHash String
   rol          Rol      @default(ESTUDIANTE)
   emailVerificadoEn DateTime?
+
+  // Intentos de inicio de sesion fallidos seguidos, y hasta cuando esta
+  // frenada la cuenta. Van aqui y no en memoria para que sobrevivan a un
+  // reinicio del servidor, que en el plan gratuito pasa a cada rato.
+  intentosFallidos Int       @default(0)
+  bloqueadoHasta   DateTime?
   creadoEn     DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 

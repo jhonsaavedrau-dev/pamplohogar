@@ -22,3 +22,6 @@ export const solicitudInvalida = (mensaje = 'Revisa los datos que enviaste.') =>
   new ErrorApi(400, mensaje);
 
 export const conflicto = (mensaje = 'Ese registro ya existe.') => new ErrorApi(409, mensaje);
+
+export const demasiadosIntentos = (mensaje = 'Demasiados intentos. Espera un momento.') =>
+  new ErrorApi(429, mensaje);

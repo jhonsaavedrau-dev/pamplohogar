@@ -151,7 +151,7 @@ export function Registro() {
 
         <div>
           <label className="etiqueta" htmlFor="password-registro">
-            Contrasena
+            Contraseña
           </label>
           <input
             id="password-registro"
