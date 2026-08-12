@@ -56,7 +56,10 @@ export function TarjetaInmueble({
   const puedeGuardar = usuario !== null && usuario.id !== inmueble.arrendador.id;
 
   return (
-    <article className="group tarjeta overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-piedra-300 hover:shadow-[var(--shadow-elevada)]">
+    <article
+      data-revelar
+      className="group tarjeta overflow-hidden transition-[transform,box-shadow,border-color,opacity] duration-300 ease-[var(--ease-suave)] hover:-translate-y-1.5 hover:border-piedra-300 hover:shadow-[var(--shadow-elevada)]"
+    >
       <div className="relative">
         <Link to={`/inmueble/${inmueble.id}`} className="block">
           <div className="relative aspect-[4/3] overflow-hidden bg-piedra-100">

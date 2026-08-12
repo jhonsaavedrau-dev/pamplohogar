@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSesion } from '../lib/sesion';
 import { Marca } from './Marca';
@@ -6,7 +6,18 @@ import { Marca } from './Marca';
 export function Encabezado() {
   const { usuario, salir } = useSesion();
   const [abierto, setAbierto] = useState(false);
+  const [bajado, setBajado] = useState(false);
   const navegar = useNavigate();
+
+  // El encabezado siempre es solido: transparente solo se veria bien sobre la
+  // portada, y en pantallas como entrar o el panel quedaria flotando sin borde.
+  // Lo unico que cambia al bajar es la sombra, que lo despega del contenido.
+  useEffect(() => {
+    const alDesplazar = () => setBajado(window.scrollY > 16);
+    alDesplazar();
+    window.addEventListener('scroll', alDesplazar, { passive: true });
+    return () => window.removeEventListener('scroll', alDesplazar);
+  }, []);
 
   const cerrar = () => setAbierto(false);
 
@@ -17,12 +28,16 @@ export function Encabezado() {
   };
 
   const claseEnlace = ({ isActive }: { isActive: boolean }) =>
-    `block rounded-lg px-3.5 py-2 text-[0.95rem] font-semibold transition-colors ${
-      isActive ? 'bg-terracota-50 text-terracota-700' : 'text-piedra-700 hover:bg-piedra-100'
+    `enlace-menu block rounded-lg px-3.5 py-2 text-[0.95rem] font-semibold transition-colors ${
+      isActive ? 'text-terracota-700' : 'text-piedra-700 hover:text-piedra-900'
     }`;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-piedra-200/80 bg-white/85 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-30 border-b border-piedra-200/70 bg-white/90 backdrop-blur-md transition-shadow duration-300 ease-[var(--ease-suave)] ${
+        bajado ? 'shadow-[0_4px_16px_-6px_rgba(31,27,23,0.16)]' : 'shadow-none'
+      }`}
+    >
       <div className="contenedor-app flex h-[4.5rem] items-center justify-between">
         <Link to="/" onClick={cerrar} aria-label="Ir al inicio de PamploHogar">
           <Marca />

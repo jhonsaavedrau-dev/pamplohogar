@@ -5,6 +5,7 @@ import { pedir } from '../lib/api';
 import type { RespuestaListado, TipoInmueble } from '../lib/tipos';
 import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO, SERVICIOS_DISPONIBLES } from '../lib/tipos';
 import { TarjetaInmueble } from '../components/TarjetaInmueble';
+import { useRevelarAlEntrar } from '../lib/revelar';
 import { EstadoError, EstadoVacio, TarjetaFantasma } from '../components/Estados';
 import { pesos } from '../lib/formato';
 
@@ -76,6 +77,8 @@ export function Buscar() {
     queryFn: () => pedir<RespuestaListado>(`/api/inmuebles?${consulta}`),
   });
 
+  useRevelarAlEntrar(data?.inmuebles);
+
   const { data: barrios } = useQuery({
     queryKey: ['barrios'],
     queryFn: () => pedir<{ barrios: string[] }>('/api/inmuebles/barrios'),
@@ -94,7 +97,7 @@ export function Buscar() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-piedra-200 bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
+      <section className="con-grano relative overflow-hidden border-b border-piedra-200 bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
         <TejasDeFondo />
 
         <div className="contenedor-app relative py-12 sm:py-20">

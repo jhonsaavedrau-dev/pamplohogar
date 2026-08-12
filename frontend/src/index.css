@@ -48,6 +48,8 @@
   --shadow-suave: 0 1px 2px rgba(31, 27, 23, 0.05), 0 1px 3px rgba(31, 27, 23, 0.04);
   --shadow-elevada: 0 4px 6px -2px rgba(31, 27, 23, 0.06), 0 12px 24px -6px rgba(31, 27, 23, 0.12);
   --shadow-flotante: 0 -2px 12px rgba(31, 27, 23, 0.08);
+
+  --ease-suave: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -136,6 +138,63 @@
   /* Titular de pantalla: grande, apretado y con serif. */
   .titular {
     @apply text-3xl leading-[1.1] font-semibold tracking-tight text-piedra-900 sm:text-4xl;
+  }
+
+  /*
+    Grano fino sobre la portada. Le quita el aspecto plano de plantilla y evoca
+    el papel de un aviso pegado en la universidad, que es de donde viene esto.
+  */
+  .con-grano::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 200px 200px;
+  }
+
+  /* Subrayado que crece al pasar el cursor por el menu. */
+  .enlace-menu {
+    @apply relative;
+  }
+
+  .enlace-menu::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.875rem;
+    bottom: 0.35rem;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-suave);
+  }
+
+  .enlace-menu:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/*
+  Aparicion al entrar en pantalla.
+
+  El contenido arranca VISIBLE y solo se oculta si el navegador soporta la
+  animacion y JavaScript alcanzo a marcarlo. Al reves, un fallo de JavaScript
+  dejaria la pagina en blanco con todo el contenido escondido.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  [data-revelar].por-revelar {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  [data-revelar] {
+    transition:
+      opacity 0.55s var(--ease-suave),
+      transform 0.55s var(--ease-suave);
   }
 }
 
