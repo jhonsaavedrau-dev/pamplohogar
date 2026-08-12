@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "AccionAdmin" ADD VALUE 'LEYO_CONVERSACION';

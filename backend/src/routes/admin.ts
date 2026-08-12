@@ -360,6 +360,98 @@ rutasAdmin.get(
   }),
 );
 
+/**
+ * Conversaciones de la plataforma, para tener la evidencia cuando hay un lio.
+ *
+ * Es correspondencia privada entre dos personas, asi que no se entra de
+ * gratis: cada vez que un administrador abre una queda anotado en el registro,
+ * con quienes hablaban y sobre que inmueble. Y a los usuarios se les avisa en
+ * la propia pantalla del chat que esto puede pasar. Un poder de moderacion sin
+ * rastro y sin avisar no es moderacion, es leer cartas ajenas.
+ */
+rutasAdmin.get(
+  '/conversaciones',
+  asincrono(async (req, res) => {
+    const texto = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+
+    const conversaciones = await prisma.conversacion.findMany({
+      where:
+        texto === ''
+          ? {}
+          : {
+              OR: [
+                { estudiante: { nombre: { contains: texto, mode: 'insensitive' } } },
+                { estudiante: { email: { contains: texto, mode: 'insensitive' } } },
+                { arrendador: { nombre: { contains: texto, mode: 'insensitive' } } },
+                { arrendador: { email: { contains: texto, mode: 'insensitive' } } },
+                { inmueble: { titulo: { contains: texto, mode: 'insensitive' } } },
+              ],
+            },
+      orderBy: { ultimoEn: 'desc' },
+      take: 60,
+      include: {
+        inmueble: { select: { id: true, titulo: true } },
+        estudiante: { select: { nombre: true, email: true } },
+        arrendador: { select: { nombre: true, email: true } },
+        _count: { select: { mensajes: true } },
+      },
+    });
+
+    res.json({
+      conversaciones: conversaciones.map((c) => ({
+        id: c.id,
+        inmuebleId: c.inmueble.id,
+        inmuebleTitulo: c.inmueble.titulo,
+        estudiante: `${c.estudiante.nombre} (${c.estudiante.email})`,
+        arrendador: `${c.arrendador.nombre} (${c.arrendador.email})`,
+        mensajes: c._count.mensajes,
+        ultimoEn: c.ultimoEn,
+      })),
+    });
+  }),
+);
+
+rutasAdmin.get(
+  '/conversaciones/:id',
+  asincrono(async (req, res) => {
+    const conversacion = await prisma.conversacion.findUnique({
+      where: { id: req.params.id },
+      include: {
+        inmueble: { select: { id: true, titulo: true } },
+        estudiante: { select: { id: true, nombre: true, email: true } },
+        arrendador: { select: { id: true, nombre: true, email: true } },
+        mensajes: { orderBy: { creadoEn: 'asc' }, take: 500 },
+      },
+    });
+    if (!conversacion) throw noEncontrado('Esa conversación no existe.');
+
+    // Se anota ANTES de responder. Si el rastro dependiera de que la respuesta
+    // salga bien, bastaria con cortar la conexion para leer sin dejar huella.
+    anotarAccion(
+      req.usuario!.sub,
+      'LEYO_CONVERSACION',
+      `${conversacion.estudiante.nombre} con ${conversacion.arrendador.nombre} ` +
+        `sobre "${conversacion.inmueble.titulo.slice(0, 60)}"`,
+    );
+
+    res.json({
+      conversacion: {
+        id: conversacion.id,
+        inmueble: conversacion.inmueble,
+        estudiante: `${conversacion.estudiante.nombre} (${conversacion.estudiante.email})`,
+        arrendador: `${conversacion.arrendador.nombre} (${conversacion.arrendador.email})`,
+      },
+      mensajes: conversacion.mensajes.map((m) => ({
+        id: m.id,
+        texto: m.texto,
+        creadoEn: m.creadoEn,
+        deQuien: m.autorId === conversacion.estudianteId ? 'estudiante' : 'arrendador',
+        leido: m.leidoEn !== null,
+      })),
+    });
+  }),
+);
+
 /** Ultimas opiniones de barrio, para poder retirar las abusivas. */
 rutasAdmin.get(
   '/resenas-barrio',

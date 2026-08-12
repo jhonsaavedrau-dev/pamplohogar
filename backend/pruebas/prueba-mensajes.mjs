@@ -299,9 +299,46 @@ try {
     );
     return 'dos inmuebles del mismo arrendador son dos hilos aparte';
   });
+  await probar('el administrador SI puede leer, y queda anotado', async () => {
+    // Se necesita un administrador de verdad para probarlo.
+    const correoAdmin = `msg-adm-${suf}@test.com`;
+    const reg = await api('/auth/registro', {
+      metodo: 'POST',
+      cuerpo: { nombre: 'Admin Temporal', email: correoAdmin, password: 'clave12345', rol: 'ESTUDIANTE' },
+    });
+    await prisma.usuario.update({ where: { email: correoAdmin }, data: { rol: 'ADMIN' } });
+    const tAdm = reg.datos.token;
+
+    const antes = await prisma.registroAdmin.count({ where: { accion: 'LEYO_CONVERSACION' } });
+
+    const lista = await api('/admin/conversaciones', { token: tAdm });
+    exigir(lista.estado === 200, `estado ${lista.estado}`);
+    exigir(lista.datos.conversaciones.length > 0, 'no vio ninguna conversacion');
+
+    const hilo = await api(`/admin/conversaciones/${idConversacion}`, { token: tAdm });
+    exigir(hilo.estado === 200, `estado ${hilo.estado}`);
+    exigir(hilo.datos.mensajes.length >= 2, `vio ${hilo.datos.mensajes.length} mensajes`);
+    exigir(hilo.datos.mensajes[0].deQuien === 'estudiante', 'no distingue quien escribio');
+
+    await new Promise((r) => setTimeout(r, 400));
+    const despues = await prisma.registroAdmin.count({ where: { accion: 'LEYO_CONVERSACION' } });
+    exigir(despues === antes + 1, `el registro paso de ${antes} a ${despues}`);
+
+    await prisma.usuario.deleteMany({ where: { email: correoAdmin } });
+    return 'leer una conversacion privada deja rastro en el registro';
+  });
+
+  await probar('un estudiante no entra por la puerta del administrador', async () => {
+    const lista = await api('/admin/conversaciones', { token: tEst });
+    exigir(lista.estado === 403, `estado ${lista.estado}`);
+    const hilo = await api(`/admin/conversaciones/${idConversacion}`, { token: tEst });
+    exigir(hilo.estado === 403, `estado ${hilo.estado}`);
+  });
+
 } finally {
   await prisma.inmueble.deleteMany({ where: { arrendador: { email: correos.arrendador } } });
   await prisma.usuario.deleteMany({ where: { email: { in: Object.values(correos) } } });
+  await prisma.usuario.deleteMany({ where: { email: { startsWith: `msg-adm-${suf}` } } });
   await prisma.$disconnect();
   console.log('\nDatos temporales eliminados.');
 }

@@ -77,6 +77,15 @@ export function Conversacion() {
         </div>
       </div>
 
+      {/*
+        Se avisa de frente. Que un administrador pueda leer esto para atender
+        un reporte es razonable; que la gente se entere despues, no.
+      */}
+      <p className="mb-2 rounded-lg bg-piedra-100 px-3 py-2 text-xs text-piedra-600">
+        Lo que escriban aquí queda guardado. Un administrador puede leerlo si hay un reporte o un
+        problema que atender.
+      </p>
+
       <div className="min-h-0 flex-1 space-y-2 overflow-y-auto pb-2">
         {mensajes.length === 0 && (
           <p className="rounded-xl bg-piedra-100 px-4 py-6 text-center text-sm text-piedra-600">

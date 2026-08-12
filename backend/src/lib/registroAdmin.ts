@@ -32,6 +32,7 @@ export const ETIQUETAS_ACCION: Record<AccionAdmin, string> = {
   CAMBIO_ROL: 'Cambio el rol de alguien',
   ELIMINO_RESENA: 'Retiro una reseña',
   ELIMINO_RESENA_BARRIO: 'Retiro una opinión sobre un barrio',
+  LEYO_CONVERSACION: 'Abrió una conversación privada',
   ATENDIO_REPORTE: 'Atendio un reporte',
   DESCARTO_REPORTE: 'Descarto un reporte',
 };

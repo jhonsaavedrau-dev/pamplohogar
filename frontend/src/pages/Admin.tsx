@@ -6,6 +6,7 @@ import { UsuariosAdmin } from '../components/admin/UsuariosAdmin';
 import { ResenasAdmin } from '../components/admin/ResenasAdmin';
 import { ReportesAdmin } from '../components/admin/ReportesAdmin';
 import { RegistroAdmin } from '../components/admin/RegistroAdmin';
+import { ConversacionesAdmin } from '../components/admin/ConversacionesAdmin';
 
 const SECCIONES = [
   { clave: 'resumen', etiqueta: 'Resumen' },
@@ -13,6 +14,7 @@ const SECCIONES = [
   { clave: 'inmuebles', etiqueta: 'Inmuebles' },
   { clave: 'usuarios', etiqueta: 'Usuarios' },
   { clave: 'resenas', etiqueta: 'Reseñas' },
+  { clave: 'conversaciones', etiqueta: 'Chats' },
   { clave: 'registro', etiqueta: 'Registro' },
 ] as const;
 
@@ -59,6 +61,7 @@ export function Admin() {
       {seccion === 'inmuebles' && <InmueblesAdmin />}
       {seccion === 'usuarios' && <UsuariosAdmin />}
       {seccion === 'resenas' && <ResenasAdmin />}
+      {seccion === 'conversaciones' && <ConversacionesAdmin />}
       {seccion === 'registro' && <RegistroAdmin />}
     </div>
   );

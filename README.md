@@ -27,7 +27,8 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
   registrada para que el arrendador sepa quien le escribio.
 - **Chat dentro de la pagina.** El estudiante escribe al arrendador sin dar su numero, y queda por
   escrito lo que acordaron. Un hilo por publicacion, para que un arrendador con seis habitaciones
-  sepa por cual le estan preguntando. Nadie mas puede leerlos, ni el administrador.
+  sepa por cual le estan preguntando. El administrador puede leerlos para atender un problema, cada
+  lectura queda anotada en el registro y a los usuarios se les avisa en la propia pantalla del chat.
 - **Ficha en PDF** de cada inmueble, para mostrarsela a los papas o mandarla por fuera de la
   plataforma. Incluye la comparacion con lo normal del barrio, y a proposito no incluye el celular
   del arrendador.
