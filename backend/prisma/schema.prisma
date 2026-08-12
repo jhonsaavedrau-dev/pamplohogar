@@ -63,6 +63,7 @@ enum AccionAdmin {
   ELIMINO_USUARIO
   CAMBIO_ROL
   ELIMINO_RESENA
+  ELIMINO_RESENA_BARRIO
   ATENDIO_REPORTE
   DESCARTO_REPORTE
 }
@@ -81,6 +82,7 @@ model Usuario {
   inmuebles         Inmueble[]          @relation("InmueblesDelArrendador")
   favoritos         Favorito[]
   resenasEscritas   Resena[]            @relation("ResenasEscritas")
+  resenasDeBarrio   ResenaBarrio[]      @relation("ResenasDeBarrio")
   resenasRecibidas  Resena[]            @relation("ResenasRecibidas")
   solicitudesHechas SolicitudContacto[] @relation("SolicitudesDelEstudiante")
   reportesHechos    Reporte[]           @relation("ReportesDelAutor")
@@ -340,4 +342,32 @@ model SolicitudContacto {
 
   @@index([inmuebleId])
   @@index([estudianteId])
+}
+
+// Lo que un estudiante que ya vivio ahi sabe del barrio y el que llega de
+// fuera no tiene como averiguar: si se duerme, si se puede caminar de noche,
+// si pasa transporte. Es la parte del voz a voz que mas cuesta reemplazar.
+model ResenaBarrio {
+  id     String @id @default(cuid())
+  // El nombre tal como lo escribio quien opina, para mostrarlo.
+  barrio String
+  // El mismo nombre sin acentos ni mayusculas, que es con lo que se agrupa.
+  clave  String
+
+  // Las tres van en el mismo sentido: 5 siempre es lo mejor. Si "ruido"
+  // fuera de 1 a 5, nadie sabria si 5 es muy ruidoso o muy callado.
+  tranquilidad Int
+  seguridad    Int
+  transporte   Int
+
+  comentario String
+  creadoEn   DateTime @default(now())
+
+  autorId String
+  autor   Usuario @relation("ResenasDeBarrio", fields: [autorId], references: [id], onDelete: Cascade)
+
+  // Una opinion por persona y barrio: si no, alguien solo repite hasta que
+  // el promedio diga lo que le convenga.
+  @@unique([autorId, clave])
+  @@index([clave])
 }

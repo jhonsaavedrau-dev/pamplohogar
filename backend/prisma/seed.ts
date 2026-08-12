@@ -1,5 +1,6 @@
 import { PrismaClient, type TipoInmueble } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { claveDeBarrio } from '../src/lib/barrios.js';
 
 const prisma = new PrismaClient();
 
@@ -43,6 +44,101 @@ const ESTUDIANTES = [
   { nombre: 'Andrés Felipe Rojas', email: 'andres.rojas@ejemplo.com', telefono: '3211234567' },
   { nombre: 'Laura Sofía Contreras', email: 'laura.contreras@ejemplo.com', telefono: '3159876543' },
   { nombre: 'Kevin Duarte', email: 'kevin.duarte@ejemplo.com', telefono: '3024567890' },
+  { nombre: 'Valentina Peñaloza', email: 'valentina.penaloza@ejemplo.com', telefono: '3187654321' },
+  { nombre: 'Sebastián Ortega', email: 'sebastian.ortega@ejemplo.com', telefono: '3143216549' },
+];
+
+// Opiniones sobre los barrios. Se necesitan al menos tres por barrio para que
+// la pagina muestre un promedio, asi que van completas y no salteadas.
+const RESENAS_DE_BARRIO: {
+  barrio: string;
+  indiceEstudiante: number;
+  tranquilidad: number;
+  seguridad: number;
+  transporte: number;
+  comentario: string;
+}[] = [
+  {
+    barrio: 'El Buque',
+    indiceEstudiante: 0,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Viví dos semestres ahí y se estudia bien de noche. Pasa buseta cada cinco minutos por la avenida y de todas formas uno llega a la U caminando en quince minutos.',
+  },
+  {
+    barrio: 'El Buque',
+    indiceEstudiante: 1,
+    tranquilidad: 3,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Sobre la avenida sí se oye el tráfico hasta tarde, pero entrando a las calles internas es callado. Nunca tuve problemas volviendo de noche.',
+  },
+  {
+    barrio: 'El Buque',
+    indiceEstudiante: 3,
+    tranquilidad: 4,
+    seguridad: 3,
+    transporte: 5,
+    comentario:
+      'Muy bien ubicado y con tiendas cerca. Lo único es que hay tramos con poca luz, así que de madrugada mejor no devolverse sola.',
+  },
+  {
+    barrio: 'Centro',
+    indiceEstudiante: 2,
+    tranquilidad: 2,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Todo queda a mano: bancos, papelerías, almuerzos baratos. Pero el ruido del comercio empieza a las seis de la mañana y los fines de semana hay música hasta tarde.',
+  },
+  {
+    barrio: 'Centro',
+    indiceEstudiante: 0,
+    tranquilidad: 2,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Para quien madruga a clase es lo mejor, no se gasta un peso en transporte. Para dormir en semana de parciales no es el sitio, uno se acostumbra pero cuesta.',
+  },
+  {
+    barrio: 'Centro',
+    indiceEstudiante: 4,
+    tranquilidad: 3,
+    seguridad: 5,
+    transporte: 5,
+    comentario:
+      'Siempre hay gente en la calle, eso lo hace seguro a cualquier hora. El ruido depende mucho de la cuadra: sobre el parque es pesado, una calle atrás ya no.',
+  },
+  {
+    barrio: 'La Feria',
+    indiceEstudiante: 1,
+    tranquilidad: 5,
+    seguridad: 3,
+    transporte: 2,
+    comentario:
+      'Es de los barrios más callados y las casas son grandes y baratas. El problema es el transporte: la buseta pasa cada media hora y después de las ocho ya casi no sube.',
+  },
+  {
+    barrio: 'La Feria',
+    indiceEstudiante: 3,
+    tranquilidad: 5,
+    seguridad: 3,
+    transporte: 2,
+    comentario:
+      'Si te gusta la tranquilidad es perfecto y el arriendo rinde mucho más. Toca organizarse con los horarios porque bajar a la U a pie son como treinta minutos.',
+  },
+  {
+    barrio: 'La Feria',
+    indiceEstudiante: 2,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 2,
+    comentario:
+      'Vecinos muy amables y nunca vi nada raro. Lo del transporte sí es real, si vas a coger clases de siete de la noche piénsalo dos veces.',
+  },
 ];
 
 const INMUEBLES: SemillaInmueble[][] = [
@@ -401,9 +497,26 @@ async function main(): Promise<void> {
     });
   }
 
+  process.stdout.write('Creando opiniones de barrio...\n');
+
+  for (const opinion of RESENAS_DE_BARRIO) {
+    await prisma.resenaBarrio.create({
+      data: {
+        autorId: estudiantes[opinion.indiceEstudiante].id,
+        barrio: opinion.barrio,
+        clave: claveDeBarrio(opinion.barrio),
+        tranquilidad: opinion.tranquilidad,
+        seguridad: opinion.seguridad,
+        transporte: opinion.transporte,
+        comentario: opinion.comentario,
+      },
+    });
+  }
+
   process.stdout.write(
     `\nListo. ${total} inmuebles, ${arrendadores.length} arrendadores, ${estudiantes.length} estudiantes, ` +
-      `${RESENAS.length} reseñas y ${totalCambios} cambios de precio.\n` +
+      `${RESENAS.length} reseñas, ${RESENAS_DE_BARRIO.length} opiniones de barrio ` +
+      `y ${totalCambios} cambios de precio.\n` +
       `Cuentas de prueba (todas con la contraseña pamplona2026):\n` +
       `  Arrendador: ${ARRENDADORES[0].email}\n` +
       `  Estudiante: ${ESTUDIANTES[0].email}\n`,

@@ -68,6 +68,26 @@ export interface CambioDePrecio {
   creadoEn: string;
 }
 
+export interface ResenaBarrio {
+  id: string;
+  tranquilidad: number;
+  seguridad: number;
+  transporte: number;
+  comentario: string;
+  creadoEn: string;
+  autor: string;
+  correoConfirmado: boolean;
+  esMia: boolean;
+}
+
+export interface RespuestaResenasBarrio {
+  total: number;
+  minimoParaPromedio: number;
+  promedios: { tranquilidad: number; seguridad: number; transporte: number } | null;
+  yaOpine: boolean;
+  resenas: ResenaBarrio[];
+}
+
 export interface ReferenciaDePrecio {
   mediana: number;
   muestras: number;
@@ -184,6 +204,17 @@ export interface UsuarioAdmin {
   creadoEn: string;
   inmuebles: number;
   resenas: number;
+}
+
+export interface ResenaBarrioAdmin {
+  id: string;
+  barrio: string;
+  tranquilidad: number;
+  seguridad: number;
+  transporte: number;
+  comentario: string;
+  creadoEn: string;
+  autor: string;
 }
 
 export interface ResenaAdmin {

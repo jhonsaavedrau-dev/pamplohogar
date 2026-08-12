@@ -32,10 +32,14 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 - **Comparacion con lo normal del barrio.** El detalle le dice al estudiante cuanto se cobra
   normalmente por algo parecido en esa zona y si lo que esta viendo se sale de ahi. Se usa la
   mediana, no el promedio, y no se muestra nada si hay menos de cuatro publicaciones parecidas.
+- **Como es vivir en el barrio.** Estudiantes que ya vivieron ahi califican tranquilidad, seguridad
+  y transporte, y cuentan lo que solo se sabe viviendo la zona. El promedio no se muestra hasta que
+  haya al menos tres opiniones, porque una sola mala racha no define un barrio.
 - **Historial de precios.** Cada cambio de precio queda registrado, y el estudiante ve cuanto subio
   o bajo desde que se publico. Sirve para negociar con datos y no de memoria.
 - **Panel de administracion** para ver como va la plataforma y moderar: atender los reportes,
-  retirar o eliminar publicaciones, gestionar cuentas y quitar resenas abusivas. Marca solo los
+  retirar o eliminar publicaciones, gestionar cuentas y quitar resenas abusivas, tanto de
+  arrendadores como de barrios. Marca solo los
   inmuebles con precio muy lejano al tipico de la ciudad y los que no tienen fotos.
 
 ## Como esta organizado el proyecto
@@ -114,7 +118,8 @@ Abre `http://localhost:5173`.
 cd backend && npm run seed
 ```
 
-Crea 10 inmuebles en barrios reales de Pamplona, 3 arrendadores, 3 estudiantes y 4 resenas.
+Crea 10 inmuebles en barrios reales de Pamplona, 3 arrendadores, 5 estudiantes, 4 resenas de
+arrendador y 9 opiniones sobre barrios.
 Todas las cuentas de ejemplo usan la contrasena `pamplona2026`:
 
 - Arrendador: `marta.villamizar@ejemplo.com`
@@ -140,9 +145,9 @@ administradores ni dejarte por fuera.
 cd backend && npm test
 ```
 
-Son 55 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
+Son 60 pruebas sobre la logica que de verdad importa: el calculo de distancias, la firma y
 verificacion de sesiones, las reglas de validacion de cada formulario, el armado del enlace de
-WhatsApp y la referencia de precio del barrio.
+WhatsApp, la referencia de precio del barrio y la forma de agrupar barrios escritos distinto.
 
 Con el servidor encendido se pueden correr ademas las pruebas de la plataforma completa:
 

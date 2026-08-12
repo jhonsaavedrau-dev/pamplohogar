@@ -360,6 +360,31 @@ rutasAdmin.get(
   }),
 );
 
+/** Ultimas opiniones de barrio, para poder retirar las abusivas. */
+rutasAdmin.get(
+  '/resenas-barrio',
+  asincrono(async (_req, res) => {
+    const resenas = await prisma.resenaBarrio.findMany({
+      include: { autor: { select: { nombre: true } } },
+      orderBy: { creadoEn: 'desc' },
+      take: 50,
+    });
+
+    res.json({
+      resenas: resenas.map((r) => ({
+        id: r.id,
+        barrio: r.barrio,
+        tranquilidad: r.tranquilidad,
+        seguridad: r.seguridad,
+        transporte: r.transporte,
+        comentario: r.comentario,
+        creadoEn: r.creadoEn,
+        autor: r.autor.nombre,
+      })),
+    });
+  }),
+);
+
 /** Ultimas resenas, para poder retirar las abusivas. */
 rutasAdmin.get(
   '/resenas',

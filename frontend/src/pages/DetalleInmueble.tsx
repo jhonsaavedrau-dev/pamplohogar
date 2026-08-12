@@ -12,6 +12,7 @@ import { Estrellas, SelectorEstrellas } from '../components/Estrellas';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
 import { HistorialDePrecios } from '../components/HistorialDePrecios';
 import { ComparadoConElBarrio } from '../components/ComparadoConElBarrio';
+import { ComoEsElBarrio } from '../components/ComoEsElBarrio';
 import { BotonReportar } from '../components/BotonReportar';
 
 export function DetalleInmueble() {
@@ -188,6 +189,8 @@ export function DetalleInmueble() {
               direccion={inmueble.direccion}
             />
           </section>
+
+          <ComoEsElBarrio barrio={inmueble.barrio} />
 
           <section>
             <div className="mb-3 flex items-center justify-between">
