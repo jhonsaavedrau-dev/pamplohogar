@@ -63,10 +63,18 @@ export function PiePagina() {
           </nav>
         </div>
 
-        <p className="mt-10 border-t border-piedra-100 pt-6 text-xs text-piedra-600">
-          Verifica siempre el inmueble en persona antes de entregar dinero. PamploHogar conecta
-          estudiantes con arrendadores, pero no participa en los acuerdos entre ustedes.
-        </p>
+        <div className="mt-10 flex flex-col gap-3 border-t border-piedra-100 pt-6 sm:flex-row sm:items-start sm:justify-between">
+          <p className="max-w-xl text-xs text-piedra-600">
+            Verifica siempre el inmueble en persona antes de entregar dinero. PamploHogar conecta
+            estudiantes con arrendadores, pero no participa en los acuerdos entre ustedes.
+          </p>
+          <Link
+            to="/privacidad"
+            className="tocable shrink-0 text-xs font-semibold text-piedra-700 hover:text-terracota-600"
+          >
+            Privacidad
+          </Link>
+        </div>
       </div>
     </footer>
   );
