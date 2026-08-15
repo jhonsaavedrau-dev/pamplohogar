@@ -53,12 +53,19 @@ const limitadorLogin = rateLimit({
  * salen con la misma direccion. Con un tope bajo, a partir de cierto numero
  * nadie mas podria crear cuenta, y ni ellos ni nosotros entenderiamos por que.
  *
- * Cien por hora sigue cortando a un script que crea miles, que es lo que
- * de verdad hay que evitar.
+ * Eran cien por hora y se quedaron cortas. La prueba de carga del 15 de agosto
+ * de 2026 lo dejo ver: desde una sola conexion, la cuenta numero ciento uno ya
+ * no entra y tiene que esperar una hora sin entender por que. En el campus todo
+ * el mundo sale por la misma direccion, asi que eso es media jornada de
+ * matriculas frenada.
+ *
+ * Trescientas por hora siguen cortando a un script que crea miles, que es lo
+ * que de verdad hay que evitar, y ya no alcanzan a frenar a una cohorte que se
+ * registra el mismo dia.
  */
 const limitadorRegistro = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 100,
+  limit: 300,
   skipFailedRequests: true,
   standardHeaders: true,
   legacyHeaders: false,

@@ -16,3 +16,7 @@ backend/dist/
 
 # Archivo temporal que TypeScript regenera en cada compilacion
 *.tsbuildinfo
+
+# Resultado de la ultima prueba de carga. Cambia en cada corrida y son numeros
+# de este computador, no de la plataforma: no sirve de nada guardarlo.
+backend/pruebas/ultima-carga.json

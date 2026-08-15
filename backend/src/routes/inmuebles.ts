@@ -216,35 +216,39 @@ rutasInmuebles.get(
     const esDueno = req.usuario?.sub === inmueble.arrendadorId;
     if (!inmueble.activo && !esDueno) throw noEncontrado('Ese inmueble ya no está disponible.');
 
-    const calificaciones = await promediosPorArrendador([inmueble.arrendadorId]);
+    /*
+      Estas cinco preguntas se hacen juntas, no en fila.
 
-    const resenas = await prisma.resena.findMany({
-      where: { arrendadorId: inmueble.arrendadorId },
-      include: { autor: { select: { id: true, nombre: true } } },
-      orderBy: { creadoEn: 'desc' },
-      take: 20,
-    });
+      Ninguna necesita la respuesta de la anterior: lo unico que necesitaban
+      saber era cual es el inmueble, y eso ya se sabe. En fila, la ficha pagaba
+      cinco viajes a la base de datos sumados y era la pantalla mas lenta de la
+      plataforma: cinco segundos con mil estudiantes adentro.
+    */
+    const [calificaciones, resenas, referencia, cambiosDePrecio, favorito] = await Promise.all([
+      promediosPorArrendador([inmueble.arrendadorId]),
+      prisma.resena.findMany({
+        where: { arrendadorId: inmueble.arrendadorId },
+        include: { autor: { select: { id: true, nombre: true } } },
+        orderBy: { creadoEn: 'desc' },
+        take: 20,
+      }),
+      referenciaDePrecio(inmueble.id, inmueble.tipo, inmueble.barrio, inmueble.precio),
+      prisma.cambioDePrecio.findMany({
+        where: { inmuebleId: inmueble.id },
+        orderBy: { creadoEn: 'asc' },
+        select: { precioAnterior: true, precioNuevo: true, creadoEn: true },
+      }),
+      // Sin sesion no hay a quien preguntarle por sus favoritos.
+      req.usuario
+        ? prisma.favorito.findUnique({
+            where: {
+              usuarioId_inmuebleId: { usuarioId: req.usuario.sub, inmuebleId: inmueble.id },
+            },
+          })
+        : null,
+    ]);
 
-    const referencia = await referenciaDePrecio(
-      inmueble.id,
-      inmueble.tipo,
-      inmueble.barrio,
-      inmueble.precio,
-    );
-
-    const cambiosDePrecio = await prisma.cambioDePrecio.findMany({
-      where: { inmuebleId: inmueble.id },
-      orderBy: { creadoEn: 'asc' },
-      select: { precioAnterior: true, precioNuevo: true, creadoEn: true },
-    });
-
-    let esFavorito = false;
-    if (req.usuario) {
-      const fav = await prisma.favorito.findUnique({
-        where: { usuarioId_inmuebleId: { usuarioId: req.usuario.sub, inmuebleId: inmueble.id } },
-      });
-      esFavorito = fav !== null;
-    }
+    const esFavorito = favorito !== null;
 
     res.json({
       inmueble: formatearInmueble(inmueble, calificaciones),
