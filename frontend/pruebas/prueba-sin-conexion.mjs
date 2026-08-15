@@ -226,18 +226,23 @@ await probar('las fotos y los archivos salen al instante de lo guardado', async 
 });
 
 await probar('al cambiar de version se borra lo viejo', async () => {
+  // La version se lee del propio sw.js. Antes estaba escrita a mano aqui, y al
+  // subirla la prueba fallaba justo cuando el trabajador hacia bien su trabajo.
+  const version = codigo.match(/const VERSION = '([^']+)'/)?.[1];
+  exigir(version !== undefined, 'no se encontro la VERSION en sw.js');
+
   const mundo = montar({ respuestaDeLaRed: async () => new Response('x') });
-  mundo.cajas.set('pamplohogar-v0-archivos', new CajaFalsa());
-  mundo.cajas.set('pamplohogar-v1-archivos', new CajaFalsa());
+  mundo.cajas.set('pamplohogar-de-antes-archivos', new CajaFalsa());
+  mundo.cajas.set(`${version}-archivos`, new CajaFalsa());
 
   const esperas = [];
   await mundo.oyentes.activate({ waitUntil: (p) => esperas.push(p) });
   await Promise.all(esperas);
 
   const quedan = await mundo.caches.keys();
-  exigir(!quedan.includes('pamplohogar-v0-archivos'), 'dejo la caja vieja');
-  exigir(quedan.includes('pamplohogar-v1-archivos'), 'borro la caja nueva');
-  return 'si no, un cambio nuevo nunca le llegaria a quien ya entro';
+  exigir(!quedan.includes('pamplohogar-de-antes-archivos'), 'dejo la caja vieja');
+  exigir(quedan.includes(`${version}-archivos`), 'borro la caja nueva');
+  return `si no, un cambio nuevo nunca le llegaria a quien ya entro (hoy ${version})`;
 });
 
 console.log('\n=================================');
