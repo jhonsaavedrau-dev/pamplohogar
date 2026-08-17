@@ -20,3 +20,18 @@ backend/dist/
 # Resultado de la ultima prueba de carga. Cambia en cada corrida y son numeros
 # de este computador, no de la plataforma: no sirve de nada guardarlo.
 backend/pruebas/ultima-carga.json
+
+# La app de Android. Solo se guardan la receta y el generador de dibujos: con
+# esos dos, `bubblewrap build` vuelve a armar todo lo demas. El proyecto que
+# genera Bubblewrap pesa y se regenera solo, no tiene sentido guardarlo.
+#
+# Las llaves de firma NUNCA van aqui. Viven fuera del proyecto, en
+# PAMPLOHOGAR-LLAVES. Si una llave de firma se sube a GitHub hay que darla por
+# perdida y pedirle a Google que la reponga.
+android/*
+!android/twa-manifest.json
+!android/generar-recursos.mjs
+*.keystore
+*.jks
+*.aab
+*.apk

@@ -1,0 +1,41 @@
+{
+  "packageId": "com.pamplohogar.app",
+  "host": "pamplohogar.com",
+  "name": "PamploHogar",
+  "launcherName": "PamploHogar",
+  "display": "standalone",
+  "themeColor": "#D2691E",
+  "themeColorDark": "#D2691E",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#00000000",
+  "navigationDividerColorDark": "#00000000",
+  "backgroundColor": "#FFF7F0",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://pamplohogar.com/icono-512.png",
+  "maskableIconUrl": "https://pamplohogar.com/icono-recortable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:/Users/jhons/OneDrive/Desktop/CLAUDECODEFACTORA/PAMPLOHOGAR-LLAVES/pamplohogar-subida.keystore",
+    "alias": "subida"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://pamplohogar.com/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://pamplohogar.com/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": []
+}

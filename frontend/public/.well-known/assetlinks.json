@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pamplohogar.app",
+      "sha256_cert_fingerprints": [
+        "98:7C:30:BC:32:10:92:FC:B8:01:5A:07:21:EA:10:E2:E3:AD:5A:99:00:53:E6:CA:9B:F0:97:E7:23:D7:F7:50"
+      ]
+    }
+  }
+]
