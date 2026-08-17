@@ -16,7 +16,7 @@ export function HistorialDePrecios({ cambios, precioActual }: Props) {
 
   return (
     <section>
-      <h2 className="mb-2 text-lg font-bold text-piedra-900">Como ha cambiado el precio</h2>
+      <h2 className="mb-2 text-lg font-bold text-piedra-900">Cómo ha cambiado el precio</h2>
 
       {variacion !== 0 && (
         <p
@@ -26,7 +26,7 @@ export function HistorialDePrecios({ cambios, precioActual }: Props) {
               : 'border-confianza-100 bg-confianza-50 text-confianza-700'
           }`}
         >
-          {subio ? 'Subio' : 'Bajo'} {Math.abs(porcentaje)} por ciento desde que se publico:{' '}
+          {subio ? 'Subio' : 'Bajo'} {Math.abs(porcentaje)} por ciento desde que se publicó:{' '}
           de {pesos(primerPrecio)} a {pesos(precioActual)}.
         </p>
       )}

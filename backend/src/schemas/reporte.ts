@@ -11,12 +11,12 @@ export const MOTIVOS = [
 
 export const esquemaCrearReporte = z.object({
   motivo: z.enum(MOTIVOS, {
-    errorMap: () => ({ message: 'Elige por que estas reportando esta publicación.' }),
+    errorMap: () => ({ message: '¿Por qué estás reportando esta publicación?' }),
   }),
   detalle: z
     .string()
     .trim()
-    .min(20, 'Cuentanos que paso en al menos 20 caracteres para poder revisarlo.')
+    .min(20, 'Cuéntanos qué pasó en al menos 20 caracteres para poder revisarlo.')
     .max(1000, 'El detalle es demasiado largo.'),
 });
 

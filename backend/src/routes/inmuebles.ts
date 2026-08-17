@@ -314,7 +314,7 @@ rutasInmuebles.patch(
     const existente = await prisma.inmueble.findUnique({ where: { id: req.params.id } });
     if (!existente) throw noEncontrado('Ese inmueble no existe.');
     if (existente.arrendadorId !== req.usuario!.sub && req.usuario!.rol !== 'ADMIN') {
-      throw prohibido('Solo puedes editar los inmuebles que tu publicaste.');
+      throw prohibido('Solo puedes editar los inmuebles que tú publicaste.');
     }
 
     const datos = esquemaActualizarInmueble.parse(req.body);
@@ -391,7 +391,7 @@ rutasInmuebles.delete(
     const existente = await prisma.inmueble.findUnique({ where: { id: req.params.id } });
     if (!existente) throw noEncontrado('Ese inmueble no existe.');
     if (existente.arrendadorId !== req.usuario!.sub && req.usuario!.rol !== 'ADMIN') {
-      throw prohibido('Solo puedes retirar los inmuebles que tu publicaste.');
+      throw prohibido('Solo puedes retirar los inmuebles que tú publicaste.');
     }
 
     const fotos = await prisma.fotoInmueble.findMany({

@@ -15,7 +15,7 @@ const cliente = new QueryClient({
 });
 
 const raiz = document.getElementById('root');
-if (!raiz) throw new Error('No se encontro el elemento raiz de la aplicacion.');
+if (!raiz) throw new Error('No se encontró el elemento raíz de la aplicación.');
 
 /*
   Se registra solo en la version publicada. En el computador estorba: dejaria

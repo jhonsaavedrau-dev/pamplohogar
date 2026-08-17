@@ -5,7 +5,7 @@ const estrellas = (nombre: string) =>
     .number({ invalid_type_error: `Falta calificar ${nombre}.` })
     .int()
     .min(1, `Dale al menos una estrella a ${nombre}.`)
-    .max(5, 'El maximo son cinco estrellas.');
+    .max(5, 'El máximo son cinco estrellas.');
 
 export const esquemaCrearResenaBarrio = z.object({
   barrio: z.string().trim().min(3, 'Escribe el barrio.').max(60),

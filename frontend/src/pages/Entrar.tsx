@@ -9,7 +9,7 @@ import { Aviso } from '../components/Estados';
 import { BotonGoogle } from '../components/BotonGoogle';
 
 const esquema = z.object({
-  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
+  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece válido.'),
   password: z.string().min(1, 'Escribe tu contraseña.'),
 });
 

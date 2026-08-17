@@ -141,11 +141,11 @@ export function ConversacionesAdmin() {
 
       {lista.data.conversaciones.length === 0 ? (
         <EstadoVacio
-          titulo={busqueda ? 'Sin resultados' : 'Todavia no hay conversaciones'}
+          titulo={busqueda ? 'Sin resultados' : 'Todavía no hay conversaciones'}
           descripcion={
             busqueda
-              ? 'Prueba con otro nombre, correo o titulo de publicacion.'
-              : 'Cuando los estudiantes empiecen a escribirle a los arrendadores, apareceran aqui.'
+              ? 'Prueba con otro nombre, correo o título de publicación.'
+              : 'Cuando los estudiantes empiecen a escribirle a los arrendadores, aparecerán aquí.'
           }
         />
       ) : (

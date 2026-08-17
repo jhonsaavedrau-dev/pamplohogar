@@ -62,7 +62,7 @@ export function Resumen() {
       )}
 
       <section>
-        <h2 className="mb-3 text-lg font-bold text-piedra-900">Quien esta en la plataforma</h2>
+        <h2 className="mb-3 text-lg font-bold text-piedra-900">Quién está en la plataforma</h2>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Dato etiqueta="Personas registradas" valor={String(totalUsuarios)} />
           <Dato etiqueta="Estudiantes" valor={String(data.usuarios.estudiantes)} />
@@ -101,7 +101,7 @@ export function Resumen() {
           <Dato
             etiqueta="Contactos solicitados"
             valor={String(data.actividad.solicitudes)}
-            pie="Veces que un estudiante pidio el celular"
+            pie="Veces que un estudiante pidió el celular"
           />
           <Dato etiqueta="Reseñas escritas" valor={String(data.actividad.resenas)} />
           <Dato

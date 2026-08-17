@@ -48,7 +48,7 @@ interface PropsError {
 export function EstadoError({ mensaje, alReintentar }: PropsError) {
   return (
     <div className="rounded-2xl border border-terracota-200 bg-terracota-50 px-6 py-10 text-center">
-      <h3 className="text-lg font-bold text-terracota-700">Algo no salio bien</h3>
+      <h3 className="text-lg font-bold text-terracota-700">Algo no salió bien</h3>
       <p className="mx-auto mt-2 max-w-sm text-sm text-piedra-600">{mensaje}</p>
       {alReintentar && (
         <button type="button" onClick={alReintentar} className="boton-suave mt-4">

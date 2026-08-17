@@ -156,7 +156,7 @@ export function Comparar() {
                   <span className="font-extrabold text-terracota-600">{pesos(i.precio)}</span>
                   {i.precio === masBarato && inmuebles.length > 1 && (
                     <span className="mt-1 block">
-                      <Destacado>El mas barato</Destacado>
+                      <Destacado>El más barato</Destacado>
                     </span>
                   )}
                 </td>
@@ -172,7 +172,7 @@ export function Comparar() {
                   {distancia(i.distanciaUniversidadKm)}
                   {i.distanciaUniversidadKm === masCerca && inmuebles.length > 1 && (
                     <span className="mt-1 block">
-                      <Destacado>El mas cerca</Destacado>
+                      <Destacado>El más cerca</Destacado>
                     </span>
                   )}
                 </td>

@@ -183,13 +183,13 @@ export type EstadoReporte = 'PENDIENTE' | 'ATENDIDO' | 'DESCARTADO';
 export const MOTIVOS_REPORTE: { valor: MotivoReporte; etiqueta: string; ayuda: string }[] = [
   {
     valor: 'PRECIO_ABUSIVO',
-    etiqueta: 'Me cobraron mas de lo publicado',
+    etiqueta: 'Me cobraron más de lo publicado',
     ayuda: 'El precio real no es el que aparece aquí',
   },
   {
     valor: 'INFORMACION_FALSA',
     etiqueta: 'La publicación no dice la verdad',
-    ayuda: 'Las fotos, el tamano o los servicios no coinciden',
+    ayuda: 'Las fotos, el tamaño o los servicios no coinciden',
   },
   {
     valor: 'NO_EXISTE',
@@ -199,12 +199,12 @@ export const MOTIVOS_REPORTE: { valor: MotivoReporte; etiqueta: string; ayuda: s
   {
     valor: 'NO_RESPONDE',
     etiqueta: 'El arrendador nunca contesta',
-    ayuda: 'Escribi varias veces y no hubo respuesta',
+    ayuda: 'Escribí varias veces y no hubo respuesta',
   },
   {
     valor: 'TRATO_IRRESPETUOSO',
     etiqueta: 'Me trataron mal',
-    ayuda: 'Hubo groserias, discriminacion o acoso',
+    ayuda: 'Hubo groserías, discriminación o acoso',
   },
   { valor: 'OTRO', etiqueta: 'Otra cosa', ayuda: 'Cuentanos que paso' },
 ];

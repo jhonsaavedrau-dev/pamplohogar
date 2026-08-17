@@ -118,7 +118,7 @@ export function correoDeRecuperacion(para: string, nombre: string, enlace: strin
     asunto: 'Recupera tu contraseña de PamploHogar',
     titulo: `Hola ${nombre}, vamos a recuperar tu cuenta`,
     parrafos: [
-      'Pediste cambiar la contraseña de tu cuenta. Pulsa el boton y elige una nueva.',
+      'Pediste cambiar la contraseña de tu cuenta. Pulsa el botón y elige una nueva.',
       'Este enlace sirve una sola vez y vence en una hora.',
     ],
     textoBoton: 'Cambiar mi contraseña',
@@ -186,12 +186,12 @@ export function correoDeVerificacion(para: string, nombre: string, enlace: strin
     asunto: 'Confirma tu correo en PamploHogar',
     titulo: `Bienvenido a PamploHogar, ${nombre}`,
     parrafos: [
-      'Solo falta confirmar que este correo es tuyo. Pulsa el boton y listo.',
+      'Solo falta confirmar que este correo es tuyo. Pulsa el botón y listo.',
       'Confirmarlo le da confianza a los estudiantes y arrendadores con los que hables.',
     ],
     textoBoton: 'Confirmar mi correo',
     enlace,
-    pie: 'Si no creaste esta cuenta, ignora este correo y no pasara nada.',
+    pie: 'Si no creaste esta cuenta, ignora este correo y no pasará nada.',
   };
 }
 

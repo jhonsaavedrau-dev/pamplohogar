@@ -25,14 +25,14 @@ export function anotarAccion(
 }
 
 export const ETIQUETAS_ACCION: Record<AccionAdmin, string> = {
-  OCULTO_INMUEBLE: 'Retiro un inmueble',
-  MOSTRO_INMUEBLE: 'Volvio a publicar un inmueble',
-  ELIMINO_INMUEBLE: 'Elimino un inmueble',
-  ELIMINO_USUARIO: 'Elimino una cuenta',
-  CAMBIO_ROL: 'Cambio el rol de alguien',
+  OCULTO_INMUEBLE: 'Retiró un inmueble',
+  MOSTRO_INMUEBLE: 'Volvió a publicar un inmueble',
+  ELIMINO_INMUEBLE: 'Eliminó un inmueble',
+  ELIMINO_USUARIO: 'Eliminó una cuenta',
+  CAMBIO_ROL: 'Cambió el rol de alguien',
   ELIMINO_RESENA: 'Retiro una reseña',
   ELIMINO_RESENA_BARRIO: 'Retiro una opinión sobre un barrio',
   LEYO_CONVERSACION: 'Abrió una conversación privada',
-  ATENDIO_REPORTE: 'Atendio un reporte',
-  DESCARTO_REPORTE: 'Descarto un reporte',
+  ATENDIO_REPORTE: 'Atendió un reporte',
+  DESCARTO_REPORTE: 'Descartó un reporte',
 };

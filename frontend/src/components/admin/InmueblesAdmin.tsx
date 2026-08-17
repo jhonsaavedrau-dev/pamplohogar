@@ -75,7 +75,7 @@ export function InmueblesAdmin() {
         <input
           type="search"
           className="campo flex-1"
-          placeholder="Busca por titulo, barrio, arrendador o correo"
+          placeholder="Busca por título, barrio, arrendador o correo"
           value={busqueda}
           onChange={(e) => {
             setBusqueda(e.target.value);
@@ -118,7 +118,7 @@ export function InmueblesAdmin() {
             {data.medianaPrecios > 0 && (
               <span className="text-piedra-400">
                 {' '}
-                · el precio tipico de la ciudad es {pesos(data.medianaPrecios)}
+                · el precio típico de la ciudad es {pesos(data.medianaPrecios)}
               </span>
             )}
           </p>
@@ -126,7 +126,7 @@ export function InmueblesAdmin() {
           {data.inmuebles.length === 0 ? (
             <EstadoVacio
               titulo="Nada por aquí"
-              descripcion="Con esa busqueda y ese filtro no hay inmuebles. Prueba cambiando alguno."
+              descripcion="Con esa búsqueda y ese filtro no hay inmuebles. Prueba cambiando alguno."
             />
           ) : (
             <ul className="space-y-3">

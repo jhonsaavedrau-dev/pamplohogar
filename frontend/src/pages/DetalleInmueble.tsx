@@ -168,7 +168,7 @@ export function DetalleInmueble() {
 
           {inmueble.servicios.length > 0 && (
             <section>
-              <h2 className="mb-3 text-xl font-semibold text-piedra-900">Que incluye</h2>
+              <h2 className="mb-3 text-xl font-semibold text-piedra-900">Qué incluye</h2>
               <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {inmueble.servicios.map((s) => (
                   <li
@@ -195,7 +195,7 @@ export function DetalleInmueble() {
           <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Donde queda</h2>
+            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Dónde queda</h2>
             <p className="mb-3 text-sm text-piedra-600">{inmueble.direccion}</p>
             <MapaDiferido
               lat={inmueble.lat}
@@ -249,7 +249,7 @@ export function DetalleInmueble() {
                 <textarea
                   className="campo min-h-24 py-3"
                   rows={3}
-                  placeholder="Como fue tratar con este arrendador? Cumplio lo que prometio?"
+                  placeholder="¿Cómo fue tratar con este arrendador? ¿Cumplió lo que prometió?"
                   value={comentario}
                   onChange={(e) => setComentario(e.target.value)}
                 />
@@ -341,7 +341,7 @@ export function DetalleInmueble() {
                   className="boton-suave w-full text-terracota-700"
                   disabled={eliminar.isPending}
                   onClick={() => {
-                    if (window.confirm('Seguro que quieres eliminar este inmueble?')) {
+                    if (window.confirm('¿Seguro que quieres eliminar este inmueble?')) {
                       eliminar.mutate();
                     }
                   }}

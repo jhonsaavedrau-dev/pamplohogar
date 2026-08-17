@@ -16,7 +16,7 @@ const ORDENES = [
   { valor: 'recientes', etiqueta: 'Mas recientes' },
   { valor: 'precioAsc', etiqueta: 'Precio: menor a mayor' },
   { valor: 'precioDesc', etiqueta: 'Precio: mayor a menor' },
-  { valor: 'cercania', etiqueta: 'Mas cerca de la U' },
+  { valor: 'cercania', etiqueta: 'Más cerca de la U' },
 ] as const;
 
 /** Patron de tejas que evoca las fachadas del centro historico de Pamplona. */

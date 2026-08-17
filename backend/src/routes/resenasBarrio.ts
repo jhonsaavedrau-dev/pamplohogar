@@ -32,7 +32,7 @@ rutasResenasBarrio.post(
   asincrono(async (req, res) => {
     const datos = esquemaCrearResenaBarrio.parse(req.body);
     const clave = claveDeBarrio(datos.barrio);
-    if (!clave) throw solicitudInvalida('Ese nombre de barrio no es valido.');
+    if (!clave) throw solicitudInvalida('Ese nombre de barrio no es válido.');
 
     const guardada = await prisma.resenaBarrio.upsert({
       where: { autorId_clave: { autorId: req.usuario!.sub, clave } },
@@ -121,7 +121,7 @@ rutasResenasBarrio.delete(
   requiereSesion,
   asincrono(async (req, res) => {
     const resena = await prisma.resenaBarrio.findUnique({ where: { id: req.params.id } });
-    if (!resena) throw noEncontrado('Esa opinion no existe.');
+    if (!resena) throw noEncontrado('Esa opinión no existe.');
     if (resena.autorId !== req.usuario!.sub && req.usuario!.rol !== 'ADMIN') {
       throw solicitudInvalida('Solo puedes borrar tus propias opiniones.');
     }

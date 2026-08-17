@@ -11,7 +11,7 @@ import { BotonGoogle } from '../components/BotonGoogle';
 // hace falta, y asi la puerta de entrada tiene tres campos en vez de cuatro.
 const esquema = z.object({
   nombre: z.string().trim().min(3, 'Escribe tu nombre completo.'),
-  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
+  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece válido.'),
   password: z.string().min(8, 'Usa al menos 8 caracteres.'),
   rol: z.enum(['ESTUDIANTE', 'ARRENDADOR']),
 });

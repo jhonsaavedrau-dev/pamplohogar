@@ -49,8 +49,8 @@ function OpinionesDeBarrio() {
 
       {data.resenas.length === 0 ? (
         <EstadoVacio
-          titulo="Todavia nadie ha opinado de un barrio"
-          descripcion="Cuando los estudiantes cuenten como es vivir en cada zona, aparecera aquí para moderarlo."
+          titulo="Todavía nadie ha opinado de un barrio"
+          descripcion="Cuando los estudiantes cuenten cómo es vivir en cada zona, aparecerá aquí para moderarlo."
         />
       ) : (
         <ul className="space-y-3">
@@ -137,8 +137,8 @@ export function ResenasAdmin() {
 
       {data.resenas.length === 0 ? (
         <EstadoVacio
-          titulo="Todavia no hay reseñas"
-          descripcion="Cuando los estudiantes empiecen a calificar arrendadores, apareceran aquí para moderarlas."
+          titulo="Todavía no hay reseñas"
+          descripcion="Cuando los estudiantes empiecen a calificar arrendadores, aparecerán aquí para moderarlas."
         />
       ) : (
         <ul className="space-y-3">

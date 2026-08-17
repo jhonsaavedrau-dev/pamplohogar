@@ -94,7 +94,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
       )}
 
       <fieldset>
-        <legend className="etiqueta">Que paso?</legend>
+        <legend className="etiqueta">¿Qué pasó?</legend>
         <div className="space-y-2">
           {MOTIVOS_REPORTE.map((m) => (
             <button
@@ -124,7 +124,7 @@ export function BotonReportar({ inmuebleId }: { inmuebleId: string }) {
           className="campo min-h-24 py-3"
           rows={3}
           maxLength={1000}
-          placeholder="Entre mas concreto seas, mas rápido podemos actuar."
+          placeholder="Entre más concreto seas, más rápido podemos actuar."
           value={detalle}
           onChange={(e) => setDetalle(e.target.value)}
         />

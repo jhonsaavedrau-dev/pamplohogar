@@ -15,7 +15,7 @@ const subida = multer({
   limits: { fileSize: 6 * 1024 * 1024, files: 10 },
   fileFilter: (_req, file, cb) => {
     if (!TIPOS_PERMITIDOS.includes(file.mimetype)) {
-      cb(new Error('Solo aceptamos imagenes JPG, PNG o WEBP.'));
+      cb(new Error('Solo aceptamos imágenes JPG, PNG o WEBP.'));
       return;
     }
     cb(null, true);
@@ -43,7 +43,7 @@ function subirABuffer(
       },
       (error, resultado) => {
         if (error || !resultado) {
-          rechazar(new Error(error?.message ?? 'Cloudinary no devolvio una respuesta.'));
+          rechazar(new Error(error?.message ?? 'Cloudinary no devolvió una respuesta.'));
           return;
         }
         resolver({ url: resultado.secure_url, publicId: resultado.public_id });

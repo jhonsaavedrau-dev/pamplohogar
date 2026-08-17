@@ -84,7 +84,7 @@ export async function pedir<T>(ruta: string, opciones: OpcionesPeticion = {}): P
     const mensaje =
       datos !== null && typeof datos === 'object' && 'mensaje' in datos
         ? String((datos as { mensaje: unknown }).mensaje)
-        : 'Algo salio mal. Intenta de nuevo.';
+        : 'Algo salió mal. Intenta de nuevo.';
     if (respuesta.status === 401) anunciarSesionPerdida();
     throw new ErrorApi(respuesta.status, mensaje);
   }

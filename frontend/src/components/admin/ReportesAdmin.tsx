@@ -164,7 +164,7 @@ export function ReportesAdmin() {
                       type="text"
                       className="campo"
                       maxLength={500}
-                      placeholder="Nota interna: que hiciste con este reporte (opcional)"
+                      placeholder="Nota interna: qué hiciste con este reporte (opcional)"
                       value={notas[r.id] ?? ''}
                       onChange={(e) => setNotas((p) => ({ ...p, [r.id]: e.target.value }))}
                       aria-label="Nota interna sobre el reporte"

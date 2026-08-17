@@ -36,7 +36,7 @@ export function Favoritos() {
       {data &&
         (data.inmuebles.length === 0 ? (
           <EstadoVacio
-            titulo="Todavia no has guardado nada"
+            titulo="Todavía no has guardado nada"
             descripcion="Cuando veas un inmueble que te sirva, pulsa Guardar en favoritos y aparecera aquí."
             accion={
               <Link to="/" className="boton-primario mt-2">

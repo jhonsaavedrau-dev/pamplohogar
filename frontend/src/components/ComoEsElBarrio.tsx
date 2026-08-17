@@ -9,9 +9,9 @@ import type { RespuestaResenasBarrio } from '../lib/tipos';
 
 /** Las tres cosas que un estudiante de fuera no tiene como averiguar solo. */
 const ASPECTOS = [
-  { clave: 'tranquilidad', titulo: 'Tranquilidad', pista: 'Se puede dormir y estudiar?' },
-  { clave: 'seguridad', titulo: 'Seguridad', pista: 'Se puede caminar de noche?' },
-  { clave: 'transporte', titulo: 'Transporte', pista: 'Pasa buseta? Se llega a pie?' },
+  { clave: 'tranquilidad', titulo: 'Tranquilidad', pista: '¿Se puede dormir y estudiar?' },
+  { clave: 'seguridad', titulo: 'Seguridad', pista: '¿Se puede caminar de noche?' },
+  { clave: 'transporte', titulo: 'Transporte', pista: '¿Pasa buseta? ¿Se llega a pie?' },
 ] as const;
 
 type ClaveAspecto = (typeof ASPECTOS)[number]['clave'];
@@ -176,7 +176,7 @@ export function ComoEsElBarrio({ barrio }: { barrio: string }) {
               <textarea
                 className="campo min-h-24 py-3"
                 rows={3}
-                placeholder="Que deberia saber alguien que va a vivir ahi? Ruido, calles, buses, comercio cerca."
+                placeholder="¿Qué debería saber alguien que va a vivir ahí? Ruido, calles, buses, comercio cerca."
                 value={comentario}
                 onChange={(e) => setComentario(e.target.value)}
               />

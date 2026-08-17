@@ -26,12 +26,12 @@ export const esquemaCrearInmueble = z.object({
   titulo: z
     .string()
     .trim()
-    .min(10, 'El titulo debe tener al menos 10 caracteres.')
-    .max(120, 'El titulo es demasiado largo.'),
+    .min(10, 'El título debe tener al menos 10 caracteres.')
+    .max(120, 'El título es demasiado largo.'),
   descripcion: z
     .string()
     .trim()
-    .min(30, 'Cuenta un poco mas del inmueble, mínimo 30 caracteres.')
+    .min(30, 'Cuenta un poco más del inmueble, mínimo 30 caracteres.')
     .max(2000, 'La descripción es demasiado larga.'),
   tipo: z.enum(TIPOS, { errorMap: () => ({ message: 'Elige el tipo de inmueble.' }) }),
   precio: z
@@ -58,7 +58,7 @@ const numeroOpcional = z
   .string()
   .optional()
   .transform((v) => (v === undefined || v === '' ? undefined : Number(v)))
-  .refine((v) => v === undefined || Number.isFinite(v), 'Valor numerico invalido.');
+  .refine((v) => v === undefined || Number.isFinite(v), 'Valor numérico inválido.');
 
 export const esquemaBusqueda = z.object({
   q: z.string().trim().max(120).optional(),

@@ -33,7 +33,7 @@ rutasContacto.post(
     const telefono = inmueble.arrendador.telefono;
     if (!telefono) {
       throw solicitudInvalida(
-        'Este arrendador todavia no registro su celular. Intenta con otro inmueble.',
+        'Este arrendador todavía no registró su celular. Intenta con otro inmueble.',
       );
     }
 

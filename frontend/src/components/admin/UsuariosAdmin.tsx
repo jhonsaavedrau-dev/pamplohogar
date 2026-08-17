@@ -55,7 +55,7 @@ export function UsuariosAdmin() {
   const eliminar = useMutation({
     mutationFn: (id: string) => pedir(`/api/admin/usuarios/${id}`, { metodo: 'DELETE' }),
     onSuccess: () => {
-      setMensaje('Cuenta eliminada junto con lo que habia publicado.');
+      setMensaje('Cuenta eliminada junto con lo que había publicado.');
       void clienteQuery.invalidateQueries({ queryKey: ['admin'] });
       void clienteQuery.invalidateQueries({ queryKey: ['inmuebles'] });
     },
@@ -120,7 +120,7 @@ export function UsuariosAdmin() {
           {data.usuarios.length === 0 ? (
             <EstadoVacio
               titulo="Nadie coincide"
-              descripcion="Con esa busqueda no aparece ninguna cuenta. Prueba con otro nombre o correo."
+              descripcion="Con esa búsqueda no aparece ninguna cuenta. Prueba con otro nombre o correo."
             />
           ) : (
             <ul className="space-y-3">

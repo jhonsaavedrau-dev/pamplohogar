@@ -3,7 +3,7 @@ import { z } from 'zod';
 const telefonoColombiano = z
   .string()
   .trim()
-  .regex(/^3\d{9}$/, 'El celular debe tener 10 digitos y empezar por 3.');
+  .regex(/^3\d{9}$/, 'El celular debe tener 10 dígitos y empezar por 3.');
 
 export const esquemaRegistro = z.object({
   nombre: z
@@ -11,7 +11,7 @@ export const esquemaRegistro = z.object({
     .trim()
     .min(3, 'Escribe tu nombre completo.')
     .max(80, 'El nombre es demasiado largo.'),
-  email: z.string().trim().toLowerCase().email('Escribe un correo valido.'),
+  email: z.string().trim().toLowerCase().email('Escribe un correo válido.'),
   password: z
     .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres.')
@@ -25,7 +25,7 @@ export const esquemaRegistro = z.object({
 });
 
 export const esquemaLogin = z.object({
-  email: z.string().trim().toLowerCase().email('Escribe un correo valido.'),
+  email: z.string().trim().toLowerCase().email('Escribe un correo válido.'),
   password: z.string().min(1, 'Escribe tu contraseña.'),
 });
 
@@ -43,7 +43,7 @@ export const esquemaActualizarPerfil = z.object({
 });
 
 export const esquemaPedirRecuperacion = z.object({
-  email: z.string().trim().toLowerCase().email('Escribe un correo valido.'),
+  email: z.string().trim().toLowerCase().email('Escribe un correo válido.'),
 });
 
 export const esquemaRestablecerClave = z.object({

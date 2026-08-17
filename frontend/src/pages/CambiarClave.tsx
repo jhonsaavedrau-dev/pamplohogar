@@ -51,7 +51,7 @@ export function CambiarClave() {
       <div className="contenedor-app max-w-md py-10">
         <EstadoVacio
           titulo="Este enlace está incompleto"
-          descripcion="Abre el enlace tal cual te llego al correo, sin cortarlo. Si no funciona, pide uno nuevo."
+          descripcion="Abre el enlace tal cual te llegó al correo, sin cortarlo. Si no funciona, pide uno nuevo."
           accion={
             <Link to="/recuperar" className="boton-primario mt-2">
               Pedir un enlace nuevo

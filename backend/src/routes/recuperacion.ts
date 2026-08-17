@@ -54,7 +54,7 @@ const limitadorCanje = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: {
-    mensaje: 'Demasiados enlaces invalidos. Espera un rato y pide uno nuevo.',
+    mensaje: 'Demasiados enlaces inválidos. Espera un rato y pide uno nuevo.',
   },
 });
 
@@ -79,7 +79,7 @@ rutasRecuperacion.post(
 
     if (!correoConfigurado) {
       throw solicitudInvalida(
-        'Todavia no podemos enviar correos. Escribenos y te ayudamos a entrar a tu cuenta.',
+        'Todavía no podemos enviar correos. Escríbenos y te ayudamos a entrar a tu cuenta.',
       );
     }
 
@@ -143,7 +143,7 @@ rutasRecuperacion.post(
   limitadorEnvio,
   asincrono(async (req, res) => {
     if (!correoConfigurado) {
-      throw solicitudInvalida('Todavia no podemos enviar correos. Intenta mas tarde.');
+      throw solicitudInvalida('Todavía no podemos enviar correos. Intenta más tarde.');
     }
 
     const usuario = await prisma.usuario.findUnique({ where: { id: req.usuario!.sub } });

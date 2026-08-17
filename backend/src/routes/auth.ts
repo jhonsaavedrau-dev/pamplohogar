@@ -70,7 +70,7 @@ const limitadorRegistro = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: {
-    mensaje: 'Se crearon demasiadas cuentas desde esta conexion. Intenta mas tarde.',
+    mensaje: 'Se crearon demasiadas cuentas desde esta conexión. Intenta más tarde.',
   },
 });
 

@@ -22,14 +22,14 @@ interface Registro {
 }
 
 const ETIQUETAS: Record<AccionAdmin, string> = {
-  OCULTO_INMUEBLE: 'Retiro un inmueble',
-  MOSTRO_INMUEBLE: 'Volvio a publicar un inmueble',
-  ELIMINO_INMUEBLE: 'Elimino un inmueble',
-  ELIMINO_USUARIO: 'Elimino una cuenta',
-  CAMBIO_ROL: 'Cambio un rol',
+  OCULTO_INMUEBLE: 'Retiró un inmueble',
+  MOSTRO_INMUEBLE: 'Volvió a publicar un inmueble',
+  ELIMINO_INMUEBLE: 'Eliminó un inmueble',
+  ELIMINO_USUARIO: 'Eliminó una cuenta',
+  CAMBIO_ROL: 'Cambió un rol',
   ELIMINO_RESENA: 'Retiro una reseña',
-  ATENDIO_REPORTE: 'Atendio un reporte',
-  DESCARTO_REPORTE: 'Descarto un reporte',
+  ATENDIO_REPORTE: 'Atendió un reporte',
+  DESCARTO_REPORTE: 'Descartó un reporte',
 };
 
 /** Las acciones que borran algo se marcan distinto: son las irreversibles. */
@@ -70,7 +70,7 @@ export function RegistroAdmin() {
   if (data.registros.length === 0) {
     return (
       <EstadoVacio
-        titulo="Todavia no hay nada anotado"
+        titulo="Todavía no hay nada anotado"
         descripcion="Cuando un administrador retire una publicación, elimine una cuenta o atienda un reporte, queda aquí con su nombre y la fecha."
       />
     );

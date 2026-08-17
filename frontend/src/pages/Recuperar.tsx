@@ -7,7 +7,7 @@ import { pedir } from '../lib/api';
 import { Aviso } from '../components/Estados';
 
 const esquema = z.object({
-  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece valido.'),
+  email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece válido.'),
 });
 
 type Datos = z.infer<typeof esquema>;

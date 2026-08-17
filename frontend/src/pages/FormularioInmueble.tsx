@@ -158,9 +158,9 @@ export function FormularioInmueble() {
   };
 
   const validar = (): string | null => {
-    if (form.titulo.trim().length < 10) return 'El titulo debe tener al menos 10 caracteres.';
+    if (form.titulo.trim().length < 10) return 'El título debe tener al menos 10 caracteres.';
     if (form.descripcion.trim().length < 30)
-      return 'Cuenta un poco mas del inmueble, mínimo 30 caracteres.';
+      return 'Cuenta un poco más del inmueble, mínimo 30 caracteres.';
     const precio = Number(form.precio);
     if (!Number.isFinite(precio) || precio < 50000)
       return 'Escribe un precio valido, mínimo 50.000 pesos.';
@@ -268,7 +268,7 @@ export function FormularioInmueble() {
             className="campo min-h-32 py-3"
             rows={5}
             maxLength={2000}
-            placeholder="Cuenta como es el lugar, las reglas de la casa, si hay wifi, con quien se comparte, a que hora se puede entrar..."
+            placeholder="Cuenta cómo es el lugar, las reglas de la casa, si hay wifi, con quién se comparte, a qué hora se puede entrar..."
             value={form.descripcion}
             onChange={(e) => cambiar('descripcion', e.target.value)}
           />
@@ -383,7 +383,7 @@ export function FormularioInmueble() {
         </label>
 
         <div>
-          <p className="etiqueta">Que incluye el arriendo?</p>
+          <p className="etiqueta">¿Qué incluye el arriendo?</p>
           <div className="flex flex-wrap gap-2">
             {SERVICIOS_DISPONIBLES.map((servicio) => {
               const activo = form.servicios.includes(servicio);
