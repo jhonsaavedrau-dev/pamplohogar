@@ -10,12 +10,12 @@
 */
 
 // Al cambiar este numero se descartan todos los guardados viejos.
-const VERSION = 'pamplohogar-v2';
+const VERSION = 'pamplohogar-v3';
 const CAJA_ARCHIVOS = `${VERSION}-archivos`;
 const CAJA_DATOS = `${VERSION}-datos`;
 
 /** Lo minimo para que la pagina abra sin internet. */
-const BASICOS = ['/', '/index.html', '/marca.svg', '/manifest.webmanifest'];
+const BASICOS = ['/', '/index.html', '/marca-completa.png', '/marca-icono.png', '/manifest.webmanifest'];
 
 self.addEventListener('install', (evento) => {
   evento.waitUntil(

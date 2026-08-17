@@ -8,7 +8,8 @@
   un error que solo dice "resource drawable/splash not found" y no explica de
   donde salia ese dibujo.
 
-  Todo sale de frontend/public/marca.svg, la misma casa de la pagina.
+  Todo sale de frontend/public/marca-icono.png, el logo de Jhon recortado en
+  cuadrado y con el fondo transparente. Es el mismo que se ve en la pagina.
 
   Como correrlo, desde la carpeta android:
 
@@ -35,7 +36,7 @@ try {
   process.exit(1);
 }
 
-const marca = await readFile(join(proyecto, 'frontend', 'public', 'marca.svg'), 'utf8');
+const marca = await readFile(join(proyecto, 'frontend', 'public', 'marca-icono.png'));
 
 // El crema de la marca. Un fondo transparente se ve sucio sobre el cajon de
 // aplicaciones de Android, que es blanco.
@@ -49,7 +50,7 @@ const CREMA = '#FFF7F0';
  * @param {string} destino Donde se guarda.
  */
 async function dibujar(lado, proporcion, destino) {
-  const casa = await sharp(Buffer.from(marca))
+  const casa = await sharp(marca)
     .resize(Math.round(lado * proporcion), Math.round(lado * proporcion))
     .png()
     .toBuffer();
@@ -91,8 +92,15 @@ for (const [carpeta, lado] of ARRANQUE) {
 
 for (const [carpeta, lado] of ICONO) {
   await mkdir(join(RES, carpeta), { recursive: true });
+
+  // El recortable: la casa al 60%, porque Android le pasa la tijera.
   await dibujar(lado, 0.6, join(RES, carpeta, 'ic_maskable.png'));
   process.stdout.write(`${carpeta}/ic_maskable.png (${lado}x${lado})\n`);
+
+  // El normal, para los telefonos viejos que no recortan: la casa mas grande,
+  // que si no se ve un icono diminuto flotando en un cuadro.
+  await dibujar(lado, 0.86, join(RES, carpeta, 'ic_launcher.png'));
+  process.stdout.write(`${carpeta}/ic_launcher.png (${lado}x${lado})\n`);
 }
 
 process.stdout.write('\nListo. Ahora se puede compilar con bubblewrap build.\n');
