@@ -16,7 +16,7 @@ export function HistorialDePrecios({ cambios, precioActual }: Props) {
 
   return (
     <section>
-      <h2 className="mb-2 text-lg font-bold text-piedra-900">Cómo ha cambiado el precio</h2>
+      <h2 className="titulo-seccion">Cómo ha cambiado el precio</h2>
 
       {variacion !== 0 && (
         <p

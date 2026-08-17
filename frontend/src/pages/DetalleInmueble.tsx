@@ -123,7 +123,7 @@ export function DetalleInmueble() {
       <Carrusel fotos={inmueble.fotos} titulo={inmueble.titulo} />
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_20rem]">
-        <div className="space-y-6">
+        <div className="bloques">
           <div>
             <span className="chip">{ETIQUETAS_TIPO[inmueble.tipo]}</span>
             <h1 className="titular mt-3">{inmueble.titulo}</h1>
@@ -160,7 +160,7 @@ export function DetalleInmueble() {
           </dl>
 
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Sobre este lugar</h2>
+            <h2 className="titulo-seccion">Sobre este lugar</h2>
             <p className="leading-relaxed whitespace-pre-line text-piedra-700">
               {inmueble.descripcion}
             </p>
@@ -168,7 +168,7 @@ export function DetalleInmueble() {
 
           {inmueble.servicios.length > 0 && (
             <section>
-              <h2 className="mb-3 text-xl font-semibold text-piedra-900">Qué incluye</h2>
+              <h2 className="titulo-seccion">Qué incluye</h2>
               <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {inmueble.servicios.map((s) => (
                   <li
@@ -195,7 +195,7 @@ export function DetalleInmueble() {
           <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-piedra-900">Dónde queda</h2>
+            <h2 className="titulo-seccion">Dónde queda</h2>
             <p className="mb-3 text-sm text-piedra-600">{inmueble.direccion}</p>
             <MapaDiferido
               lat={inmueble.lat}
@@ -208,9 +208,9 @@ export function DetalleInmueble() {
           <ComoEsElBarrio barrio={inmueble.barrio} />
 
           <section>
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-piedra-900">
-                Que dicen del arrendador ({resenas.length})
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <h2 className="titulo-seccion mb-0">
+                Qué dicen del arrendador ({resenas.length})
               </h2>
               <Estrellas
                 valor={inmueble.arrendador.calificacionPromedio}
@@ -221,7 +221,7 @@ export function DetalleInmueble() {
 
             {resenas.length === 0 ? (
               <p className="rounded-xl bg-piedra-100 px-4 py-6 text-center text-sm text-piedra-600">
-                Todavia nadie ha calificado a este arrendador. Si viviste aquí, tu opinion le sirve
+                Todavía nadie ha calificado a este arrendador. Si viviste aquí, tu opinión le sirve
                 al siguiente estudiante.
               </p>
             ) : (

@@ -45,7 +45,7 @@ export function Resumen() {
     data.usuarios.estudiantes + data.usuarios.arrendadores + data.usuarios.administradores;
 
   return (
-    <div className="space-y-6">
+    <div className="bloques">
       {data.actividad.reportesPendientes > 0 && (
         <div className="rounded-2xl border border-terracota-200 bg-terracota-50 p-4">
           <p className="font-bold text-terracota-700">
@@ -55,14 +55,14 @@ export function Resumen() {
               : 'reportes sin revisar'}
           </p>
           <p className="mt-1 text-sm text-piedra-600">
-            Son avisos de estudiantes sobre publicaciones que no deberian estar. Revisalos en la
-            pestana Reportes.
+            Son avisos de estudiantes sobre publicaciones que no deberían estar. Revísalos en la
+            pestaña Reportes.
           </p>
         </div>
       )}
 
       <section>
-        <h2 className="mb-3 text-lg font-bold text-piedra-900">Quién está en la plataforma</h2>
+        <h2 className="titulo-seccion">Quién está en la plataforma</h2>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Dato etiqueta="Personas registradas" valor={String(totalUsuarios)} />
           <Dato etiqueta="Estudiantes" valor={String(data.usuarios.estudiantes)} />
@@ -72,7 +72,7 @@ export function Resumen() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-bold text-piedra-900">Inmuebles</h2>
+        <h2 className="titulo-seccion">Inmuebles</h2>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Dato etiqueta="Publicados" valor={String(data.inmuebles.activos)} />
           <Dato etiqueta="Ocultos" valor={String(data.inmuebles.ocultos)} />
@@ -96,7 +96,7 @@ export function Resumen() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-bold text-piedra-900">Movimiento</h2>
+        <h2 className="titulo-seccion">Movimiento</h2>
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Dato
             etiqueta="Contactos solicitados"
@@ -105,7 +105,7 @@ export function Resumen() {
           />
           <Dato etiqueta="Reseñas escritas" valor={String(data.actividad.resenas)} />
           <Dato
-            etiqueta="Precio tipico"
+            etiqueta="Precio típico"
             valor={pesos(data.precios.mediana)}
             pie="La mitad cuesta menos que esto"
           />

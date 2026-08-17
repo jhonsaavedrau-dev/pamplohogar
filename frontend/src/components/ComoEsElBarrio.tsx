@@ -81,7 +81,7 @@ export function ComoEsElBarrio({ barrio }: { barrio: string }) {
 
   return (
     <section>
-      <h2 className="mb-1 text-lg font-bold text-piedra-900">Cómo es vivir en {barrio}</h2>
+      <h2 className="titulo-seccion mb-1">Cómo es vivir en {barrio}</h2>
       <p className="mb-3 text-sm text-piedra-600">
         Lo cuentan estudiantes que ya vivieron ahí, no el arrendador.
       </p>

@@ -145,6 +145,38 @@
     @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold;
   }
 
+  /*
+    Titulo de un bloque dentro de una pantalla larga.
+
+    Antes cada bloque del detalle del inmueble usaba su propio tamano: "Sobre
+    este lugar" iba en 20 puntos semi-negrita, "Como ha cambiado el precio" en
+    18 negrita y la comparacion con el barrio en 16. Todos son lo mismo, un
+    bloque de la misma pantalla, y verlos distintos hace pensar que unos
+    importan mas que otros.
+  */
+  .titulo-seccion {
+    @apply mb-3 text-xl font-semibold text-piedra-900;
+  }
+
+  /*
+    Pila de bloques separados por una raya fina.
+
+    En una pantalla larga, dejar solo aire entre un bloque y otro no basta: se
+    lee como un chorro de texto y uno no sabe donde termina la descripcion y
+    donde empiezan las resenas. La raya no adorna, dice donde corta cada tema.
+  */
+  .bloques > * {
+    @apply border-t border-piedra-200 py-7;
+  }
+
+  .bloques > *:first-child {
+    @apply border-t-0 pt-0;
+  }
+
+  .bloques > *:last-child {
+    @apply pb-0;
+  }
+
   /* Titular de pantalla: grande, apretado y con serif. */
   .titular {
     @apply text-3xl leading-[1.1] font-semibold tracking-tight text-piedra-900 sm:text-4xl;
