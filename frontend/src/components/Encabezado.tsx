@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useSesion } from '../lib/sesion';
@@ -12,6 +12,73 @@ function PuntoSinLeer({ cuantos }: { cuantos: number }) {
     <span className="ml-1.5 inline-grid h-5 min-w-5 place-items-center rounded-full bg-terracota-600 px-1 text-xs font-bold text-white">
       {cuantos > 9 ? '9+' : cuantos}
     </span>
+  );
+}
+
+/*
+  El menu de la cuenta propia, en el computador.
+
+  La barra llegaba a nueve enlaces en fila y todos pesaban igual: buscar
+  vivienda competia con cerrar sesion. Lo que uno usa a cada rato queda a la
+  vista y lo de la cuenta se recoge aqui, que es donde la gente ya lo busca.
+*/
+function MenuDeCuenta({
+  nombre,
+  children,
+}: {
+  nombre: string;
+  children: (cerrar: () => void) => React.ReactNode;
+}) {
+  const [abierto, setAbierto] = useState(false);
+  const caja = useRef<HTMLDivElement>(null);
+
+  // Se cierra al pulsar fuera o con Escape: si no, queda abierto tapando la
+  // pantalla y toca adivinar que hay que volver a pulsar el mismo boton.
+  useEffect(() => {
+    if (!abierto) return;
+    const alPulsarFuera = (e: MouseEvent) => {
+      if (!caja.current?.contains(e.target as Node)) setAbierto(false);
+    };
+    const alTeclear = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setAbierto(false);
+    };
+    document.addEventListener('mousedown', alPulsarFuera);
+    document.addEventListener('keydown', alTeclear);
+    return () => {
+      document.removeEventListener('mousedown', alPulsarFuera);
+      document.removeEventListener('keydown', alTeclear);
+    };
+  }, [abierto]);
+
+  return (
+    <div className="relative" ref={caja}>
+      <button
+        type="button"
+        onClick={() => setAbierto((v) => !v)}
+        aria-expanded={abierto}
+        aria-haspopup="menu"
+        className={`flex min-h-10 items-center gap-2 rounded-lg px-3 text-[0.95rem] font-semibold transition-colors ${
+          abierto ? 'bg-piedra-100 text-piedra-900' : 'text-piedra-700 hover:bg-piedra-100'
+        }`}
+      >
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-terracota-100 text-xs font-bold text-terracota-700">
+          {nombre.trim().charAt(0).toUpperCase()}
+        </span>
+        {nombre.split(' ')[0]}
+        <svg viewBox="0 0 12 12" className="h-3 w-3 text-piedra-500" aria-hidden="true">
+          <path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      </button>
+
+      {abierto && (
+        <div
+          role="menu"
+          className="absolute right-0 z-40 mt-2 w-60 overflow-hidden rounded-xl border border-piedra-200 bg-white py-1.5 shadow-[var(--shadow-elevada)]"
+        >
+          {children(() => setAbierto(false))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -49,9 +116,28 @@ export function Encabezado() {
     navegar('/');
   };
 
+  /*
+    En que pantalla estas se veia solo por el color de la letra, y entre el
+    gris oscuro y el terracota hay poca diferencia de un vistazo. Ahora la
+    pantalla en la que estas va dentro de una pastilla de color: se ve sin
+    leer, que es como uno mira una barra de menu.
+  */
   const claseEnlace = ({ isActive }: { isActive: boolean }) =>
-    `enlace-menu block rounded-lg px-3.5 py-2 text-[0.95rem] font-semibold transition-colors ${
-      isActive ? 'text-terracota-700' : 'text-piedra-700 hover:text-piedra-900'
+    `enlace-menu flex min-h-10 items-center rounded-lg px-3.5 text-[0.95rem] font-semibold transition-colors ${
+      isActive
+        ? 'bg-terracota-50 text-terracota-700'
+        : 'text-piedra-700 hover:bg-piedra-100 hover:text-piedra-900'
+    }`;
+
+  /** Raya fina que separa lo de todos de lo de tu cuenta. */
+  const Separador = () => (
+    <span aria-hidden="true" className="mx-2 h-6 w-px shrink-0 bg-piedra-200" />
+  );
+
+  /** Cada renglon dentro del menu de cuenta. */
+  const claseEnMenu = ({ isActive }: { isActive: boolean }) =>
+    `flex min-h-11 items-center px-4 text-[0.95rem] font-semibold transition-colors ${
+      isActive ? 'bg-terracota-50 text-terracota-700' : 'text-piedra-700 hover:bg-piedra-50'
     }`;
 
   /*
@@ -93,42 +179,61 @@ export function Encabezado() {
           <NavLink to="/mapa-de-precios" className={claseEnlace}>
             Precios
           </NavLink>
-          {usuario && (
+          {usuario ? (
             <>
+              <Separador />
+
+              {/* Mensajes se queda a la vista aunque haya menu de cuenta: es
+                  lo unico que cambia solo y necesita verse el punto rojo sin
+                  abrir nada. */}
               <NavLink to="/mensajes" className={claseEnlace}>
                 Mensajes
                 <PuntoSinLeer cuantos={sinLeer} />
               </NavLink>
-              <NavLink to="/favoritos" className={claseEnlace}>
-                Favoritos
-              </NavLink>
-              <NavLink to="/busquedas" className={claseEnlace}>
-                Mis búsquedas
-              </NavLink>
-            </>
-          )}
-          {usuario?.rol === 'ARRENDADOR' && (
-            <NavLink to="/mis-inmuebles" className={claseEnlace}>
-              Mis inmuebles
-            </NavLink>
-          )}
-          {usuario?.rol === 'ADMIN' && (
-            <NavLink to="/admin" className={claseEnlace}>
-              Panel
-            </NavLink>
-          )}
-          {usuario ? (
-            <>
-              <NavLink to="/mi-cuenta" className={claseEnlace}>
-                Mi cuenta
-              </NavLink>
-            <button
-              type="button"
-              onClick={cerrarSesion}
-              className="ml-3 min-h-11 rounded-lg px-3.5 text-[0.95rem] font-semibold text-piedra-600 transition-colors hover:bg-piedra-100 hover:text-piedra-900"
-            >
-              Salir
-            </button>
+
+              {usuario.rol === 'ARRENDADOR' && (
+                <Link to="/publicar" className="boton-primario ml-1 min-h-10 px-4 text-[0.95rem]">
+                  Publicar
+                </Link>
+              )}
+
+              <MenuDeCuenta nombre={usuario.nombre}>
+                {(cerrarMenu) => (
+                  <>
+                    <NavLink to="/favoritos" className={claseEnMenu} onClick={cerrarMenu}>
+                      Mis favoritos
+                    </NavLink>
+                    <NavLink to="/busquedas" className={claseEnMenu} onClick={cerrarMenu}>
+                      Mis búsquedas
+                    </NavLink>
+                    {usuario.rol === 'ARRENDADOR' && (
+                      <NavLink to="/mis-inmuebles" className={claseEnMenu} onClick={cerrarMenu}>
+                        Mis inmuebles
+                      </NavLink>
+                    )}
+                    {usuario.rol === 'ADMIN' && (
+                      <NavLink to="/admin" className={claseEnMenu} onClick={cerrarMenu}>
+                        Panel de administración
+                      </NavLink>
+                    )}
+                    <NavLink to="/mi-cuenta" className={claseEnMenu} onClick={cerrarMenu}>
+                      Mi cuenta
+                    </NavLink>
+
+                    <div className="my-1.5 border-t border-piedra-100" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        cerrarMenu();
+                        cerrarSesion();
+                      }}
+                      className="flex w-full min-h-11 items-center px-4 text-left text-[0.95rem] font-semibold text-piedra-600 transition-colors hover:bg-piedra-50 hover:text-piedra-900"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </>
+                )}
+              </MenuDeCuenta>
             </>
           ) : (
             <>
