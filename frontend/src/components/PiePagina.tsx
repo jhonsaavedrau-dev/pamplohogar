@@ -7,7 +7,14 @@ export function PiePagina() {
       <div className="contenedor-app py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">
-            <Marca conLema />
+            {/*
+              El logo del pie tambien lleva al inicio. Antes era solo un dibujo:
+              quien llega al final de la pagina y quiere volver a empezar le
+              pulsa, no pasa nada, y toca subir hasta arriba.
+            */}
+            <Link to="/" aria-label="Ir al inicio de PamploHogar" className="inline-block">
+              <Marca conLema />
+            </Link>
             <p className="mt-3 text-sm leading-relaxed text-piedra-600">
               Vivienda estudiantil en Pamplona, Norte de Santander. Para que encontrar donde vivir
               no dependa de a quien conozcas.

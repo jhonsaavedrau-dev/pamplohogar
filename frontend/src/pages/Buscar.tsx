@@ -110,13 +110,12 @@ export function Buscar() {
           </p>
 
           <h1 className="max-w-3xl text-[2.4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-piedra-900 sm:text-[3.75rem]">
-            Encuentra dónde vivir en Pamplona{' '}
-            <span className="block text-terracota-600">sin conocer a nadie</span>
+            Busca menos.{' '}
+            <span className="block text-terracota-600">Elige mejor.</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600 sm:text-lg">
-            Ves el precio antes de escribir, a cuántos minutos queda de la U y qué dicen los
-            estudiantes que vivieron ahí antes que tú.
+            Encuentra habitaciones y apartamentos en Pamplona con información que sí te sirve.
           </p>
 
           <div className="mt-8 max-w-2xl rounded-2xl border border-piedra-200/80 bg-white p-2 shadow-[var(--shadow-elevada)]">
@@ -146,10 +145,17 @@ export function Buscar() {
           </div>
 
           <ul className="mt-8 grid gap-x-8 gap-y-3 text-sm text-piedra-600 sm:grid-cols-3">
+            {/*
+              Lo que la plataforma de verdad hace, en las palabras del
+              estudiante. Antes decia "el precio que ves es el que pagas", que
+              es una promesa que no depende de nosotros: quien cobra es el
+              arrendador. Prometer eso y que despues le cobren mas al estudiante
+              es peor que no decir nada.
+            */}
             {[
-              'El precio que ves es el que pagas',
-              'Escribes por WhatsApp cuando tú decidas',
-              'Reseñas de quienes ya vivieron ahí',
+              'La distancia real hasta la universidad',
+              'Si el precio se sale de lo normal del barrio',
+              'Lo que cuentan los que ya vivieron ahí',
             ].map((texto) => (
               <li key={texto} className="flex items-start gap-2">
                 <svg
