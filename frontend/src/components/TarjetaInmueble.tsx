@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { pedir } from '../lib/api';
 import { useSesion } from '../lib/sesion';
 import { useComparador } from '../lib/comparador';
@@ -15,7 +15,8 @@ interface Props {
   accion?: ReactNode;
   /** El comparador y los favoritos no tienen sentido en la pantalla del arrendador. */
   comparable?: boolean;
-  favorito?: boolean;
+  /** Si se muestra el corazon para guardar. No dice si YA esta guardado. */
+  conFavorito?: boolean;
 }
 
 function IconoCorazon({ lleno }: { lleno: boolean }) {
@@ -36,13 +37,35 @@ export function TarjetaInmueble({
   inmueble,
   accion,
   comparable = true,
-  favorito = false,
+  conFavorito = false,
 }: Props) {
   const portada = inmueble.fotos[0];
   const { usuario } = useSesion();
   const { contiene, alternar, estaLleno } = useComparador();
   const clienteQuery = useQueryClient();
   const marcado = contiene(inmueble.id);
+
+  const puedeGuardar = usuario !== null && usuario.id !== inmueble.arrendador.id;
+
+  /*
+    Cuales tiene guardados esta persona.
+
+    Se pide la misma lista que usa la pantalla de favoritos, con la misma
+    llave: aunque haya veinte tarjetas en pantalla, sale una sola peticion y
+    todas leen la misma respuesta.
+
+    Antes la tarjeta no sabia nada: el corazon salia siempre vacio y el boton
+    siempre mandaba "agregar". El estudiante lo pulsaba, no cambiaba nada a la
+    vista, y volvia a pulsarlo creyendo que no habia funcionado.
+  */
+  const { data: misFavoritos } = useQuery({
+    queryKey: ['favoritos'],
+    queryFn: () => pedir<{ inmuebles: Inmueble[] }>('/api/favoritos'),
+    enabled: puedeGuardar,
+    staleTime: 60_000,
+  });
+
+  const guardado = misFavoritos?.inmuebles.some((i) => i.id === inmueble.id) ?? false;
 
   const guardar = useMutation({
     mutationFn: (activar: boolean) =>
@@ -52,8 +75,6 @@ export function TarjetaInmueble({
       void clienteQuery.invalidateQueries({ queryKey: ['inmueble', inmueble.id] });
     },
   });
-
-  const puedeGuardar = usuario !== null && usuario.id !== inmueble.arrendador.id;
 
   // Recien publicado: le sirve al estudiante para saber que todavia esta libre.
   const DIAS_NUEVO = 14;
@@ -117,15 +138,22 @@ export function TarjetaInmueble({
           </div>
         </Link>
 
-        {favorito && puedeGuardar && (
+        {conFavorito && puedeGuardar && (
           <button
             type="button"
             disabled={guardar.isPending}
-            onClick={() => guardar.mutate(true)}
-            aria-label={`Guardar ${inmueble.titulo} en favoritos`}
-            className="absolute top-2.5 right-2.5 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-piedra-700 shadow-[var(--shadow-suave)] backdrop-blur-sm transition-colors hover:text-terracota-600 disabled:opacity-50"
+            onClick={() => guardar.mutate(!guardado)}
+            aria-label={
+              guardado
+                ? `Quitar ${inmueble.titulo} de favoritos`
+                : `Guardar ${inmueble.titulo} en favoritos`
+            }
+            aria-pressed={guardado}
+            className={`absolute top-2.5 right-2.5 grid h-11 w-11 place-items-center rounded-full bg-white/95 shadow-[var(--shadow-suave)] backdrop-blur-sm transition-colors disabled:opacity-50 ${
+              guardado ? 'text-terracota-600' : 'text-piedra-700 hover:text-terracota-600'
+            }`}
           >
-            <IconoCorazon lleno={false} />
+            <IconoCorazon lleno={guardado} />
           </button>
         )}
       </div>

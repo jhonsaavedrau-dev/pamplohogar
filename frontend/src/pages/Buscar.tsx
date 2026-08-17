@@ -13,7 +13,7 @@ import { pesos } from '../lib/formato';
 const TIPOS: TipoInmueble[] = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'];
 
 const ORDENES = [
-  { valor: 'recientes', etiqueta: 'Mas recientes' },
+  { valor: 'recientes', etiqueta: 'Más recientes' },
   { valor: 'precioAsc', etiqueta: 'Precio: menor a mayor' },
   { valor: 'precioDesc', etiqueta: 'Precio: mayor a menor' },
   { valor: 'cercania', etiqueta: 'Más cerca de la U' },
@@ -379,7 +379,7 @@ export function Buscar() {
             ) : (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {data.inmuebles.map((inmueble) => (
-                  <TarjetaInmueble key={inmueble.id} inmueble={inmueble} favorito />
+                  <TarjetaInmueble key={inmueble.id} inmueble={inmueble} conFavorito />
                 ))}
               </div>
             )}

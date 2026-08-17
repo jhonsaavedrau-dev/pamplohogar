@@ -28,6 +28,7 @@ import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
 import { Privacidad } from './pages/Privacidad';
 import { SubirAlCambiarDePantalla } from './components/SubirAlCambiarDePantalla';
+import { BarraInferior } from './components/BarraInferior';
 
 export function App() {
   return (
@@ -140,6 +141,7 @@ export function App() {
 
       <BarraComparador />
       <PiePagina />
+      <BarraInferior />
     </div>
   );
 }
