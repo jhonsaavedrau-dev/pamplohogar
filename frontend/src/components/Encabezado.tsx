@@ -54,6 +54,24 @@ export function Encabezado() {
       isActive ? 'text-terracota-700' : 'text-piedra-700 hover:text-piedra-900'
     }`;
 
+  /*
+    En el celular los renglones del menu son mas altos que en el computador.
+    Los de arriba miden 38 puntos y el minimo comodo para un dedo son 44: por
+    eso se le daba al de al lado. Aqui van 48, ocupan todo el ancho y se
+    pintan enteros al pulsarlos, para que se vea cual se toco.
+  */
+  const claseEnlaceMovil = ({ isActive }: { isActive: boolean }) =>
+    `flex min-h-12 items-center rounded-xl px-4 text-[1.02rem] font-semibold transition-colors ${
+      isActive ? 'bg-terracota-50 text-terracota-700' : 'text-piedra-800 active:bg-piedra-100'
+    }`;
+
+  /** Titulo de cada grupo del menu del celular. */
+  const Grupo = ({ titulo }: { titulo: string }) => (
+    <p className="px-4 pt-4 pb-1 text-[0.68rem] font-bold tracking-[0.12em] text-piedra-500 uppercase">
+      {titulo}
+    </p>
+  );
+
   return (
     <header
       className={`sin-imprimir sticky top-0 z-30 border-b border-piedra-200/70 bg-white/90 backdrop-blur-md transition-shadow duration-300 ease-[var(--ease-suave)] ${
@@ -144,50 +162,66 @@ export function Encabezado() {
 
       {abierto && (
         <div className="border-t border-piedra-200 bg-white md:hidden">
-          <nav className="contenedor-app space-y-1 py-3">
-            <NavLink to="/" className={claseEnlace} onClick={cerrar} end>
+          {/*
+            Antes era una sola lista de hasta nueve renglones seguidos, sin
+            separacion: buscar vivienda y cerrar sesion se veian igual de
+            importantes. Ahora va en grupos, primero lo que hace cualquiera y
+            despues lo de la cuenta propia, que es lo que se usa de vez en
+            cuando.
+          */}
+          <nav className="contenedor-app space-y-0.5 pt-1 pb-4">
+            <Grupo titulo="Buscar" />
+            <NavLink to="/" className={claseEnlaceMovil} onClick={cerrar} end>
               Buscar vivienda
             </NavLink>
-            <NavLink to="/roomies" className={claseEnlace} onClick={cerrar}>
+            <NavLink to="/roomies" className={claseEnlaceMovil} onClick={cerrar}>
               Buscar roomie
             </NavLink>
-            <NavLink to="/mapa-de-precios" className={claseEnlace} onClick={cerrar}>
+            <NavLink to="/mapa-de-precios" className={claseEnlaceMovil} onClick={cerrar}>
               Mapa de precios
             </NavLink>
+
             {usuario && (
               <>
-                <NavLink to="/mensajes" className={claseEnlace} onClick={cerrar}>
+                <Grupo titulo="Lo mío" />
+                <NavLink to="/mensajes" className={claseEnlaceMovil} onClick={cerrar}>
                   Mis mensajes
                   <PuntoSinLeer cuantos={sinLeer} />
                 </NavLink>
-                <NavLink to="/mi-cuenta" className={claseEnlace} onClick={cerrar}>
-                  Mi cuenta
-                </NavLink>
-                <NavLink to="/favoritos" className={claseEnlace} onClick={cerrar}>
+                <NavLink to="/favoritos" className={claseEnlaceMovil} onClick={cerrar}>
                   Mis favoritos
                 </NavLink>
-                <NavLink to="/busquedas" className={claseEnlace} onClick={cerrar}>
+                <NavLink to="/busquedas" className={claseEnlaceMovil} onClick={cerrar}>
                   Mis búsquedas
+                </NavLink>
+                <NavLink to="/mi-cuenta" className={claseEnlaceMovil} onClick={cerrar}>
+                  Mi cuenta
                 </NavLink>
               </>
             )}
+
             {usuario?.rol === 'ARRENDADOR' && (
               <>
-                <NavLink to="/mis-inmuebles" className={claseEnlace} onClick={cerrar}>
-                  Mis inmuebles
+                <Grupo titulo="Mis inmuebles" />
+                <NavLink to="/mis-inmuebles" className={claseEnlaceMovil} onClick={cerrar}>
+                  Ver mis inmuebles
                 </NavLink>
-                <NavLink to="/publicar" className={claseEnlace} onClick={cerrar}>
+                <NavLink to="/publicar" className={claseEnlaceMovil} onClick={cerrar}>
                   Publicar inmueble
                 </NavLink>
               </>
             )}
+
             {usuario?.rol === 'ADMIN' && (
-              <NavLink to="/admin" className={claseEnlace} onClick={cerrar}>
-                Panel de administración
-              </NavLink>
+              <>
+                <Grupo titulo="Administración" />
+                <NavLink to="/admin" className={claseEnlaceMovil} onClick={cerrar}>
+                  Panel de administración
+                </NavLink>
+              </>
             )}
 
-            <div className="space-y-2 pt-3">
+            <div className="space-y-2 pt-5">
               {usuario ? (
                 <>
                   <p className="px-4 text-sm text-piedra-600">

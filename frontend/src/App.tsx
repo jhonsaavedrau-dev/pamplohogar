@@ -27,10 +27,12 @@ import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
 import { Privacidad } from './pages/Privacidad';
+import { SubirAlCambiarDePantalla } from './components/SubirAlCambiarDePantalla';
 
 export function App() {
   return (
     <div className="flex min-h-dvh flex-col">
+      <SubirAlCambiarDePantalla />
       <Encabezado />
       <AvisoSinConexion />
       <AvisoCorreoSinConfirmar />
