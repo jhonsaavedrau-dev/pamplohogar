@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encuesta a arrendadores - PamploHogar</title>
+    <!--
+      Encuesta en papel para arrendadores.
+
+      Esta va pensada para llenarla TU mientras hablas con la persona, no para
+      dejarsela. Un arrendador de sesenta anos no llena un formulario, pero si
+      contesta cuatro minutos de preguntas si alguien las hace.
+
+      Por eso arriba hay espacio para anotar el nombre y el telefono: cada
+      arrendador entrevistado es un inmueble posible el dia del lanzamiento, y
+      esa lista vale mas que la encuesta misma.
+    -->
+    <style>
+      @page {
+        size: letter;
+        margin: 12mm;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        width: 192mm;
+        font-size: 9pt;
+        line-height: 1.28;
+        color: #1f1b17;
+      }
+
+      header {
+        border-bottom: 2pt solid #d2691e;
+        padding-bottom: 3mm;
+        margin-bottom: 3mm;
+      }
+
+      h1 {
+        font-size: 15pt;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        font-size: 8.5pt;
+        color: #4a443b;
+        margin-top: 1mm;
+      }
+
+      /* Los datos de contacto, que son lo que de verdad se busca aqui. */
+      .contacto {
+        display: flex;
+        gap: 5mm;
+        background: #fff7f0;
+        border: 0.7pt solid #f2ccb0;
+        border-radius: 3mm;
+        padding: 3mm;
+        margin-bottom: 4mm;
+        font-size: 8.5pt;
+      }
+
+      .contacto div {
+        flex: 1;
+      }
+
+      .contacto span {
+        display: block;
+        font-weight: 700;
+        color: #8c4013;
+        font-size: 7.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .contacto .raya {
+        border-bottom: 0.5pt solid #a49c8e;
+        height: 5mm;
+      }
+
+      .columnas {
+        column-count: 2;
+        column-gap: 7mm;
+      }
+
+      .p {
+        break-inside: avoid;
+        margin-bottom: 2.4mm;
+      }
+
+      .p > strong {
+        display: block;
+        margin-bottom: 1.2mm;
+      }
+
+      .op {
+        display: block;
+        padding-left: 5mm;
+        text-indent: -5mm;
+        margin-bottom: 0.35mm;
+      }
+
+      .op::before {
+        content: "";
+        display: inline-block;
+        width: 3mm;
+        height: 3mm;
+        border: 0.7pt solid #4a443b;
+        margin-right: 2mm;
+        vertical-align: -0.3mm;
+      }
+
+      .varias {
+        font-size: 8pt;
+        color: #655e52;
+        font-style: italic;
+      }
+
+      .lineas {
+        border-bottom: 0.5pt solid #a49c8e;
+        height: 5mm;
+        margin-top: 1mm;
+      }
+
+      footer {
+        margin-top: 4mm;
+        border-top: 0.5pt solid #e6e1d8;
+        padding-top: 2.5mm;
+        font-size: 8pt;
+        color: #655e52;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Cómo se arrienda a estudiantes en Pamplona</h1>
+      <p>Estudio sobre el arriendo estudiantil. Cuatro minutos, no se vende nada.</p>
+    </header>
+
+    <div class="contacto">
+      <div>
+        <span>Nombre</span>
+        <div class="raya"></div>
+      </div>
+      <div>
+        <span>Teléfono</span>
+        <div class="raya"></div>
+      </div>
+      <div>
+        <span>Barrio</span>
+        <div class="raya"></div>
+      </div>
+      <div>
+        <span>Fecha</span>
+        <div class="raya"></div>
+      </div>
+    </div>
+
+    <div class="columnas">
+      <div class="p">
+        <strong>1. ¿Cuántos lugares arrienda en total?</strong>
+        <span class="op">Uno</span>
+        <span class="op">Entre dos y cinco</span>
+        <span class="op">Más de cinco</span>
+      </div>
+
+      <div class="p">
+        <strong>2. ¿Qué tipo?</strong>
+        <span class="varias">Puede marcar varios</span>
+        <span class="op">Habitaciones en casa donde vive gente</span>
+        <span class="op">Habitaciones solo para estudiantes</span>
+        <span class="op">Apartaestudios</span>
+        <span class="op">Apartamentos completos</span>
+        <span class="op">Casas completas</span>
+      </div>
+
+      <div class="p">
+        <strong>3. ¿Cómo consigue a sus inquilinos?</strong>
+        <span class="varias">Puede marcar varios</span>
+        <span class="op">Voz a voz, llegan recomendados</span>
+        <span class="op">Aviso pegado en la puerta o la calle</span>
+        <span class="op">Grupos de WhatsApp</span>
+        <span class="op">Facebook</span>
+        <span class="op">Una inmobiliaria</span>
+        <span class="op">Tengo fijos varios semestres</span>
+      </div>
+
+      <div class="p">
+        <strong>4. ¿Cuánto se demora en llenar un lugar que queda libre?</strong>
+        <span class="op">Menos de una semana</span>
+        <span class="op">Entre una y tres semanas</span>
+        <span class="op">Un mes o más</span>
+        <span class="op">Depende mucho de la época</span>
+      </div>
+
+      <div class="p">
+        <strong>5. ¿Cuántos meses al año le quedan lugares vacíos?</strong>
+        <span class="op">Ninguno, siempre lleno</span>
+        <span class="op">Uno o dos meses</span>
+        <span class="op">Entre tres y cinco</span>
+        <span class="op">Más de la mitad del año</span>
+      </div>
+
+      <div class="p">
+        <strong>6. ¿En qué época le cuesta más llenar?</strong>
+        <div class="lineas"></div>
+      </div>
+
+      <div class="p">
+        <strong>7. ¿Qué es lo más incómodo de arrendarle a estudiantes?</strong>
+        <span class="varias">Puede marcar varios</span>
+        <span class="op">Escriben y después no aparecen</span>
+        <span class="op">Repetir lo mismo a cada persona</span>
+        <span class="op">Preguntan solo el precio y ya</span>
+        <span class="op">Se van antes de tiempo</span>
+        <span class="op">Los daños o el ruido</span>
+        <span class="op">Nada en particular</span>
+      </div>
+
+      <div class="p">
+        <strong>8. ¿Le escriben y nunca van a ver el lugar?</strong>
+        <span class="op">Todo el tiempo</span>
+        <span class="op">A veces</span>
+        <span class="op">Casi nunca</span>
+      </div>
+
+      <div class="p">
+        <strong>
+          9. Si existiera una página gratis donde publicar y que la vieran los
+          estudiantes de la Unipamplona, ¿publicaría?
+        </strong>
+        <span class="op">Sí, de una</span>
+        <span class="op">Sí, pero que alguien me ayude a subirlo</span>
+        <span class="op">Lo pensaría</span>
+        <span class="op">No</span>
+      </div>
+
+      <div class="p">
+        <strong>
+          10. ¿Le molestaría que los estudiantes dejen opiniones públicas sobre
+          cómo fue vivir ahí?
+        </strong>
+        <span class="op">No, me parece bien</span>
+        <span class="op">Depende de cómo funcione</span>
+        <span class="op">Sí, no me gusta la idea</span>
+      </div>
+
+      <div class="p">
+        <strong>11. ¿Pagaría para que su publicación salga destacada cuando tiene afán?</strong>
+        <span class="op">Sí</span>
+        <span class="op">Depende de cuánto</span>
+        <span class="op">No</span>
+      </div>
+
+      <div class="p">
+        <strong>12. Si dijo sí o depende: ¿cuánto al mes le parecería razonable?</strong>
+        <div class="lineas"></div>
+      </div>
+
+      <div class="p">
+        <strong>13. ¿Qué necesitaría ver para confiar en una página así?</strong>
+        <div class="lineas"></div>
+        <div class="lineas"></div>
+        <div class="lineas"></div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Gracias por el tiempo.</span>
+      <strong>pamplohogar.com</strong>
+    </footer>
+  </body>
+</html>

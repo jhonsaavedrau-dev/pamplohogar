@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encuesta a estudiantes - PamploHogar</title>
+    <!--
+      Encuesta en papel, para llenar a mano en la universidad.
+
+      Cabe en una hoja tamano carta. Se imprime con Ctrl+P marcando
+      "Graficos de fondo".
+
+      Por que en papel si ya existe el formulario de Google: en la fila de la
+      cafeteria nadie saca el celular, escanea un codigo, espera que cargue y
+      responde. Una hoja y un lapiz se llenan en dos minutos. En persona rinde
+      tres o cuatro veces mas.
+    -->
+    <style>
+      @page {
+        size: letter;
+        margin: 12mm;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        width: 192mm;
+        font-size: 9pt;
+        line-height: 1.28;
+        color: #1f1b17;
+      }
+
+      header {
+        border-bottom: 2pt solid #d2691e;
+        padding-bottom: 2mm;
+        margin-bottom: 3mm;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 6mm;
+      }
+
+      h1 {
+        font-size: 13.5pt;
+        letter-spacing: -0.02em;
+      }
+
+      header p {
+        font-size: 8.5pt;
+        color: #4a443b;
+        max-width: 110mm;
+        margin-top: 1mm;
+      }
+
+      .anonimo {
+        font-size: 8pt;
+        font-weight: 700;
+        color: #16593c;
+        background: #ecf7f1;
+        border: 0.5pt solid #cfeade;
+        padding: 1.5mm 3mm;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .columnas {
+        column-count: 2;
+        column-gap: 7mm;
+      }
+
+      .p {
+        break-inside: avoid;
+        margin-bottom: 2.4mm;
+      }
+
+      .p > strong {
+        display: block;
+        margin-bottom: 1.2mm;
+      }
+
+      .op {
+        display: block;
+        padding-left: 5mm;
+        text-indent: -5mm;
+        margin-bottom: 0.35mm;
+      }
+
+      /* La casilla para marcar con lapiz. */
+      .op::before {
+        content: "";
+        display: inline-block;
+        width: 3mm;
+        height: 3mm;
+        border: 0.7pt solid #4a443b;
+        margin-right: 2mm;
+        vertical-align: -0.3mm;
+      }
+
+      .varias {
+        font-size: 8pt;
+        color: #655e52;
+        font-style: italic;
+      }
+
+      .lineas {
+        border-bottom: 0.5pt solid #a49c8e;
+        height: 5mm;
+        margin-top: 1mm;
+      }
+
+      footer {
+        margin-top: 2.5mm;
+        border-top: 0.5pt solid #e6e1d8;
+        padding-top: 2.5mm;
+        font-size: 8pt;
+        color: #655e52;
+        display: flex;
+        justify-content: space-between;
+        gap: 4mm;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>¿Cómo conseguiste dónde vivir en Pamplona?</h1>
+        <p>
+          Estoy investigando cómo hace la gente para conseguir arriendo aquí.
+          Son 3 minutos y no vendo nada.
+        </p>
+      </div>
+      <span class="anonimo">Anónima</span>
+    </header>
+
+    <div class="columnas">
+      <div class="p">
+        <strong>1. ¿De dónde eres?</strong>
+        <span class="op">De Pamplona</span>
+        <span class="op">De otro municipio de Norte de Santander</span>
+        <span class="op">De otro departamento</span>
+      </div>
+
+      <div class="p">
+        <strong>2. ¿En qué semestre vas?</strong>
+        <span class="op">Primero o segundo</span>
+        <span class="op">De tercero a sexto</span>
+        <span class="op">De séptimo en adelante</span>
+      </div>
+
+      <div class="p">
+        <strong>3. ¿Dónde vives ahora?</strong>
+        <span class="op">Habitación arrendada</span>
+        <span class="op">Apartaestudio o apartamento solo</span>
+        <span class="op">Compartiendo con otros</span>
+        <span class="op">Casa de familiares</span>
+        <span class="op">Casa propia o de mis papás</span>
+      </div>
+
+      <div class="p">
+        <strong>4. La última vez que buscaste, ¿cómo lo conseguiste?</strong>
+        <span class="op">Un familiar o conocido</span>
+        <span class="op">Un grupo de WhatsApp</span>
+        <span class="op">Facebook o Marketplace</span>
+        <span class="op">Un aviso pegado en la calle</span>
+        <span class="op">Caminando y preguntando</span>
+        <span class="op">Una inmobiliaria</span>
+        <span class="op">Otro: ______________________</span>
+      </div>
+
+      <div class="p">
+        <strong>5. ¿Cuánto te demoraste en encontrarlo?</strong>
+        <span class="op">Menos de un día</span>
+        <span class="op">Entre 2 y 3 días</span>
+        <span class="op">Una semana</span>
+        <span class="op">Dos semanas o más</span>
+      </div>
+
+      <div class="p">
+        <strong>6. ¿Cuántos lugares viste antes de decidir?</strong>
+        <span class="op">Ninguno, tomé el primero</span>
+        <span class="op">Uno o dos</span>
+        <span class="op">Entre tres y cinco</span>
+        <span class="op">Más de cinco</span>
+      </div>
+
+      <div class="p">
+        <strong>7. ¿Cuánto pagas al mes? (sin servicios)</strong>
+        <span class="op">Menos de 250.000</span>
+        <span class="op">250.000 a 400.000</span>
+        <span class="op">400.000 a 600.000</span>
+        <span class="op">600.000 a 900.000</span>
+        <span class="op">Más de 900.000</span>
+        <span class="op">No pago arriendo</span>
+      </div>
+
+      <div class="p">
+        <strong>8. ¿Los servicios van incluidos?</strong>
+        <span class="op">Sí, todo incluido</span>
+        <span class="op">Algunos sí, otros no</span>
+        <span class="op">No, todo aparte</span>
+        <span class="op">No sé bien</span>
+      </div>
+
+      <div class="p">
+        <strong>9. ¿Cuánto caminas hasta la universidad?</strong>
+        <span class="op">Menos de 10 minutos</span>
+        <span class="op">Entre 10 y 20</span>
+        <span class="op">Entre 20 y 30</span>
+        <span class="op">Más de 30, o tomo transporte</span>
+      </div>
+
+      <div class="p">
+        <strong>10. ¿Te pasó alguna de estas?</strong>
+        <span class="varias">Puedes marcar varias</span>
+        <span class="op">No era como en las fotos</span>
+        <span class="op">Me pidieron más plata de la publicada</span>
+        <span class="op">Cobros que nadie mencionó</span>
+        <span class="op">El arrendador no cumplió algo</span>
+        <span class="op">Me tocó mudarme antes de tiempo</span>
+        <span class="op">No, todo bien</span>
+      </div>
+
+      <div class="p">
+        <strong>11. ¿Qué fue lo más difícil de buscar?</strong>
+        <div class="lineas"></div>
+        <div class="lineas"></div>
+      </div>
+
+      <div class="p">
+        <strong>
+          12. Si existiera un solo sitio con todos los arriendos, ¿qué te habría
+          servido más ver?
+        </strong>
+        <span class="varias">Máximo 2</span>
+        <span class="op">El precio antes de escribir</span>
+        <span class="op">A cuántos minutos queda de la U</span>
+        <span class="op">Si está caro para ese barrio</span>
+        <span class="op">Fotos de verdad y suficientes</span>
+        <span class="op">Opiniones de quienes vivieron ahí</span>
+        <span class="op">Si el arrendador responde</span>
+      </div>
+
+      <div class="p">
+        <strong>13. ¿Buscaste alguna vez con quién compartir (roomie)?</strong>
+        <span class="op">Sí, y encontré</span>
+        <span class="op">Sí, pero no encontré</span>
+        <span class="op">No, nunca lo necesité</span>
+      </div>
+
+      <div class="p">
+        <strong>14. ¿Te gustaría que te avisaran cuando salga algo que encaje?</strong>
+        <span class="op">Sí, por WhatsApp</span>
+        <span class="op">Sí, por correo</span>
+        <span class="op">No me interesa</span>
+      </div>
+
+      <div class="p">
+        <strong>15. Si quieres que te avisemos cuando esté lista, déjanos tu contacto</strong>
+        <span class="varias">Opcional</span>
+        <div class="lineas"></div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Gracias por los 3 minutos.</span>
+      <strong>pamplohogar.com</strong>
+    </footer>
+  </body>
+</html>

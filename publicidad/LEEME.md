@@ -25,6 +25,29 @@ publicidad/
 
 ---
 
+## Las ocho piezas y cuándo usar cada una
+
+Publicar siempre la misma imagen la quema: la gente la ve dos veces y deja de
+mirarla. Estas atacan el mismo problema por lados distintos, para poder
+publicar varias semanas seguidas sin repetirse.
+
+| Pieza | Para quién | Cuándo |
+|---|---|---|
+| `cuadrado-estudiantes` | Estudiantes | La general, sirve siempre |
+| `cuadrado-sin-conocidos` | Recién llegados | Comienzo de semestre |
+| `cuadrado-precio` | Estudiantes | Cuando se quiere hablar de plata |
+| `cuadrado-matriculas` | Los que aún no consiguen | Enero y julio, con afán |
+| `cuadrado-resenas` | Estudiantes | Cuando ya haya reseñas de verdad |
+| `cuadrado-arrendadores` | Arrendadores | La general para ellos |
+| `cuadrado-arrendadores-vacio` | Arrendadores | Temporada baja, cuando duele el cuarto vacío |
+| `historia-estudiantes` | Estudiantes | Estados de WhatsApp e historias |
+
+**Una advertencia sobre `cuadrado-resenas`:** no la publiques hasta que haya
+reseñas escritas de verdad. Prometer algo que al entrar no existe es la forma
+más rápida de que alguien no vuelva.
+
+---
+
 ## Cómo imprimir el cartel y el volante
 
 1. Abre el archivo `.html` con doble clic. Se abre en el navegador.
