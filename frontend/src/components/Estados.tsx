@@ -13,7 +13,7 @@ export function Cargando({ texto = 'Cargando...' }: { texto?: string }) {
 export function TarjetaFantasma() {
   return (
     <div className="tarjeta overflow-hidden">
-      <div className="h-44 animate-pulse bg-piedra-100" />
+      <div className="aspect-square animate-pulse bg-piedra-100" />
       <div className="space-y-2 p-4">
         <div className="h-4 w-3/4 animate-pulse rounded bg-piedra-100" />
         <div className="h-4 w-1/2 animate-pulse rounded bg-piedra-100" />

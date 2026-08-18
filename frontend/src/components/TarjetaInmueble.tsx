@@ -88,7 +88,7 @@ export function TarjetaInmueble({
     >
       <div className="relative">
         <Link to={`/inmueble/${inmueble.id}`} className="block">
-          <div className="relative aspect-[4/3] overflow-hidden bg-piedra-100">
+          <div className="relative aspect-square overflow-hidden bg-piedra-100">
             {portada ? (
               <FotoInmueble
                 url={portada.url}

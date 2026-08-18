@@ -10,6 +10,11 @@ import { GuardarBusqueda } from '../components/GuardarBusqueda';
 import { EstadoError, EstadoVacio, TarjetaFantasma } from '../components/Estados';
 import { pesos } from '../lib/formato';
 
+const INMUEBLE_DISPONIBLE = 'inmueble disponible';
+const INMUEBLES_DISPONIBLES = 'inmuebles disponibles';
+const PRECIO_MAX = 'precioMax';
+const HASTA = ' hasta ';
+
 const TIPOS: TipoInmueble[] = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'];
 
 const ORDENES = [
@@ -146,7 +151,7 @@ export function Buscar() {
             Pamplona, Norte de Santander
           </p>
 
-          <h1 className="max-w-3xl text-[2.4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-piedra-900 sm:text-[3.75rem]">
+          <h1 className="max-w-3xl text-[2.6rem] leading-[0.98] font-semibold tracking-[-0.03em] text-piedra-900 sm:text-[4.5rem]">
             Busca menos.{' '}
             <span className="block text-terracota-600">Elige mejor.</span>
           </h1>
@@ -385,14 +390,24 @@ export function Buscar() {
 
         {data && (
           <>
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-piedra-600">
-              <strong className="font-semibold text-piedra-900">
-                {data.total === 0
-                  ? 'Sin resultados'
-                  : `${data.total} ${data.total === 1 ? 'inmueble disponible' : 'inmuebles disponibles'}`}
-              </strong>
-                {valor('precioMax') && ` hasta ${pesos(Number(valor('precioMax')))}`}
+            {/*
+              La barra de resultados.
+
+              Antes el numero de inmuebles y el boton de avisos eran dos
+              textos sueltos flotando encima del listado. Ahora van en una
+              barra con fondo propio: se ve que son el mando de lo que hay
+              debajo y no el final de la portada. El numero va grande y en la
+              serif, porque es el dato que se busca al llegar.
+            */}
+            <div className="tarjeta mb-5 flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+              <p className="flex items-baseline gap-2">
+                <span className="precio text-2xl font-extrabold text-piedra-900">
+                  {data.total}
+                </span>
+                <span className="text-sm text-piedra-600">
+                  {data.total === 1 ? INMUEBLE_DISPONIBLE : INMUEBLES_DISPONIBLES}
+                  {valor(PRECIO_MAX) && HASTA + pesos(Number(valor(PRECIO_MAX)))}
+                </span>
               </p>
               <GuardarBusqueda />
             </div>
