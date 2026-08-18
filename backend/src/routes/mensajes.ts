@@ -33,8 +33,10 @@ async function conversacionDe(id: string, usuarioId: string) {
     where: { id },
     include: {
       inmueble: { select: { id: true, titulo: true, precio: true, barrio: true } },
-      estudiante: { select: { id: true, nombre: true } },
-      arrendador: { select: { id: true, nombre: true } },
+      // La foto va aqui porque el chat es entre dos personas: ver la cara de
+      // con quien se esta hablando es la mitad de la confianza.
+      estudiante: { select: { id: true, nombre: true, foto: true } },
+      arrendador: { select: { id: true, nombre: true, foto: true } },
     },
   });
   if (!conversacion) throw noEncontrado('Esa conversación no existe.');
@@ -101,8 +103,8 @@ rutasMensajes.get(
             fotos: { select: { url: true }, orderBy: { orden: 'asc' }, take: 1 },
           },
         },
-        estudiante: { select: { id: true, nombre: true } },
-        arrendador: { select: { id: true, nombre: true } },
+        estudiante: { select: { id: true, nombre: true, foto: true } },
+        arrendador: { select: { id: true, nombre: true, foto: true } },
         mensajes: { orderBy: { creadoEn: 'desc' }, take: 1 },
         _count: {
           select: { mensajes: { where: { leidoEn: null, autorId: { not: yo } } } },
@@ -120,6 +122,9 @@ rutasMensajes.get(
           id: c.id,
           // Solo el nombre de pila, igual que en el resto de la plataforma.
           con: otro.nombre.split(' ')[0],
+          // La cara de la otra persona, que es distinta de la foto del
+          // inmueble: en la bandeja se ve con quien se hablo, no solo de que.
+          conFoto: otro.foto,
           inmuebleId: c.inmueble.id,
           inmuebleTitulo: c.inmueble.titulo,
           foto,
@@ -174,6 +179,7 @@ rutasMensajes.get(
       conversacion: {
         id: conversacion.id,
         con: otro.nombre.split(' ')[0],
+        conFoto: otro.foto,
         soyElArrendador: conversacion.arrendadorId === yo,
         inmueble: conversacion.inmueble,
       },

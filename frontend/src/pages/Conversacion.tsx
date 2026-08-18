@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { pedir } from '../lib/api';
 import { pesos } from '../lib/formato';
 import { Aviso, Cargando, EstadoError } from '../components/Estados';
+import { Avatar } from '../components/Avatar';
 import { SEGUNDOS_ENTRE_REVISIONES } from './Mensajes';
 import type { RespuestaConversacion } from '../lib/tipos';
 
@@ -66,6 +67,9 @@ export function Conversacion() {
         <Link to="/mensajes" className="text-sm font-semibold text-confianza-600">
           Volver
         </Link>
+        {/* Con quien se esta hablando, con cara: en un chat donde se acuerda
+            ir a ver una habitacion, saber a quien se le escribe importa. */}
+        <Avatar nombre={conversacion.con} foto={conversacion.conFoto} tamano={40} />
         <div className="min-w-0 flex-1">
           <strong className="block truncate text-piedra-900">{conversacion.con}</strong>
           <Link

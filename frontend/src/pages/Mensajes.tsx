@@ -4,6 +4,7 @@ import { pedir } from '../lib/api';
 import { fechaCorta } from '../lib/formato';
 import { fotoDeAncho } from '../lib/fotos';
 import { Cargando, EstadoError, EstadoVacio } from '../components/Estados';
+import { Avatar } from '../components/Avatar';
 import type { ResumenConversacion } from '../lib/tipos';
 
 /**
@@ -58,16 +59,30 @@ export function Mensajes() {
                 to={`/mensajes/${c.id}`}
                 className="tarjeta flex items-center gap-3 p-3 transition-colors hover:bg-piedra-50"
               >
-                {c.foto !== null ? (
-                  <img
-                    src={fotoDeAncho(c.foto, 160)}
-                    alt=""
-                    loading="lazy"
-                    className="h-14 w-14 shrink-0 rounded-xl object-cover"
+                {/*
+                  La foto del inmueble con la cara de la persona encima. La
+                  bandeja se lee por dos cosas: de que inmueble se hablaba y
+                  con quien. Antes solo salia el inmueble, y con tres hilos del
+                  mismo edificio no habia forma de distinguirlos de un vistazo.
+                */}
+                <div className="relative shrink-0">
+                  {c.foto !== null ? (
+                    <img
+                      src={fotoDeAncho(c.foto, 160)}
+                      alt=""
+                      loading="lazy"
+                      className="h-14 w-14 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="h-14 w-14 rounded-xl bg-piedra-100" />
+                  )}
+                  <Avatar
+                    nombre={c.con}
+                    foto={c.conFoto}
+                    tamano={26}
+                    className="absolute -right-1.5 -bottom-1.5 ring-2 ring-white"
                   />
-                ) : (
-                  <div className="h-14 w-14 shrink-0 rounded-xl bg-piedra-100" />
-                )}
+                </div>
 
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">

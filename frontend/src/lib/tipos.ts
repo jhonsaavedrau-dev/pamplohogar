@@ -96,6 +96,8 @@ export interface RespuestaResenasBarrio {
 export interface ResumenConversacion {
   id: string;
   con: string;
+  /** La cara de la otra persona. Distinta de `foto`, que es la del inmueble. */
+  conFoto: string | null;
   inmuebleId: string;
   inmuebleTitulo: string;
   foto: string | null;
@@ -116,6 +118,7 @@ export interface RespuestaConversacion {
   conversacion: {
     id: string;
     con: string;
+    conFoto: string | null;
     soyElArrendador: boolean;
     inmueble: { id: string; titulo: string; precio: number; barrio: string };
   };

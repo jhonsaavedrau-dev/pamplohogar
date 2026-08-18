@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSesion } from '../lib/sesion';
 import { pedir } from '../lib/api';
 import { Marca } from './Marca';
+import { Avatar } from './Avatar';
 
 /** El punto rojo con los mensajes sin leer, al lado del enlace. */
 function PuntoSinLeer({ cuantos }: { cuantos: number }) {
@@ -24,9 +25,11 @@ function PuntoSinLeer({ cuantos }: { cuantos: number }) {
 */
 function MenuDeCuenta({
   nombre,
+  foto,
   children,
 }: {
   nombre: string;
+  foto: string | null;
   children: (cerrar: () => void) => React.ReactNode;
 }) {
   const [abierto, setAbierto] = useState(false);
@@ -61,9 +64,7 @@ function MenuDeCuenta({
           abierto ? 'bg-piedra-100 text-piedra-900' : 'text-piedra-700 hover:bg-piedra-100'
         }`}
       >
-        <span className="grid h-7 w-7 place-items-center rounded-full bg-terracota-100 text-xs font-bold text-terracota-700">
-          {nombre.trim().charAt(0).toUpperCase()}
-        </span>
+        <Avatar nombre={nombre} foto={foto} tamano={28} />
         {nombre.split(' ')[0]}
         <svg viewBox="0 0 12 12" className="h-3 w-3 text-piedra-500" aria-hidden="true">
           <path d="m2.5 4.5 3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -197,7 +198,7 @@ export function Encabezado() {
                 </Link>
               )}
 
-              <MenuDeCuenta nombre={usuario.nombre}>
+              <MenuDeCuenta nombre={usuario.nombre} foto={usuario.foto}>
                 {(cerrarMenu) => (
                   <>
                     <NavLink to="/favoritos" className={claseEnMenu} onClick={cerrarMenu}>
@@ -329,9 +330,13 @@ export function Encabezado() {
             <div className="space-y-2 pt-5">
               {usuario ? (
                 <>
-                  <p className="px-4 text-sm text-piedra-600">
-                    Sesión de <strong className="text-piedra-900">{usuario.nombre}</strong>
-                  </p>
+                  <div className="flex items-center gap-3 px-4 py-1">
+                    <Avatar nombre={usuario.nombre} foto={usuario.foto} tamano={40} />
+                    <p className="min-w-0 text-sm text-piedra-600">
+                      Sesión de{' '}
+                      <strong className="block truncate text-piedra-900">{usuario.nombre}</strong>
+                    </p>
+                  </div>
                   <button type="button" onClick={cerrarSesion} className="boton-suave w-full">
                     Cerrar sesión
                   </button>
