@@ -149,14 +149,6 @@ export function Buscar() {
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
             Pamplona, Norte de Santander
-            <span className="text-terracota-400" aria-hidden="true">
-              ·
-            </span>
-            2.200 m
-            <span className="text-terracota-400" aria-hidden="true">
-              ·
-            </span>
-            15°C
           </p>
 
           <h1 className="max-w-3xl text-[2.6rem] leading-[0.98] font-semibold tracking-[-0.03em] text-piedra-900 sm:text-[4.5rem]">

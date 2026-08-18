@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 /*
   Quien esta detras de PamploHogar y por que existe.
 
-  Google Play y cualquiera que vaya a donar preguntan lo mismo: quien es el
-  responsable. Una plataforma sin cara pidiendo plata da desconfianza, con
-  razon. Aqui se dice claro que la hizo una persona, sola, sin plata de nadie.
+  Google Play y cualquiera que vaya a aportar preguntan lo mismo: quien
+  responde por esto. Una plataforma sin cara pidiendo plata da desconfianza,
+  con razon.
 
   LOS DATOS DE JHON VAN COMO CONSTANTES AQUI ARRIBA, no repartidos por el
   texto: cuando cambie un numero o un correo se cambia en un solo sitio y no
@@ -15,22 +15,9 @@ import { Link } from 'react-router-dom';
 const AUTOR = {
   nombre: 'Jhon Saavedra',
   correo: 'jhonsaavedrau@gmail.com',
-  // La foto va en frontend/public. Mientras no exista, se muestra la inicial.
-  foto: '/jhon.jpg',
 };
 
-/*
-  Las donaciones.
-
-  El numero se deja vacio a proposito hasta que Jhon lo confirme: publicar un
-  numero equivocado manda la plata de un estudiante a un desconocido. Con el
-  vacio, el bloque no se dibuja y no pasa nada.
-*/
-const DONACIONES = {
-  activo: false,
-  medio: 'Nequi',
-  numero: '',
-};
+const NEQUI = '312 830 3205';
 
 function Bloque({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
@@ -52,94 +39,89 @@ export function ElProyecto() {
       <h1 className="titular">Vi un problema y lo resolví</h1>
 
       <p className="mt-4 text-lg leading-relaxed text-piedra-600">
-        PamploHogar no es una empresa. Es una plataforma que hizo una sola persona, sin plata de
-        nadie, porque buscar dónde vivir en Pamplona dependía de a quién conocieras.
+        Buscar arriendo en Pamplona es difícil porque no hay nada organizado. Hay grupos de
+        WhatsApp, publicaciones sueltas en Facebook y conocidos de conocidos. Eso es todo.
       </p>
 
       <div className="bloques mt-10">
         <Bloque titulo="Por qué existe">
           <p>
-            Cada semestre llegan estudiantes de toda la región a la Universidad de Pamplona. Los que
-            tienen un primo, un paisano o un compañero de colegio en la ciudad consiguen habitación
-            en dos días. Los que no, terminan pagando de más por lo primero que aparece, sin saber
-            si ese precio es normal, a cuánto queda de la universidad o cómo es el barrio de noche.
+            Cada semestre llegan estudiantes de toda la región a la Universidad de Pamplona. El que
+            tiene un primo, un paisano o un compañero de colegio en la ciudad consigue habitación en
+            dos días. El que no, pregunta en un grupo donde el mismo aviso lleva tres meses dando
+            vueltas, o termina tomando lo primero que aparece sin saber si ese precio es normal, a
+            cuánto queda de la universidad o cómo es el barrio de noche.
           </p>
           <p>
-            Esa información existía, pero repartida en cabezas y en grupos de WhatsApp. Aquí está
-            junta y a la vista: el precio antes de escribir, la distancia real hasta la U, si el
-            arriendo se sale de lo que se cobra en ese barrio, y lo que cuentan los que ya vivieron
-            ahí.
+            La información existía. Estaba repartida en cabezas, en chats y en carteles pegados en
+            un poste. Aquí está junta, ordenada y a la vista: el precio antes de escribir, la
+            distancia real hasta la U, si el arriendo se sale de lo que se cobra en ese barrio, y lo
+            que cuentan los que ya vivieron ahí.
           </p>
         </Bloque>
 
         <Bloque titulo="Quién la hace">
-          <div className="flex items-start gap-4">
-            <img
-              src={AUTOR.foto}
-              alt=""
-              className="h-20 w-20 shrink-0 rounded-2xl object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-            <div className="space-y-3">
-              <p>
-                <strong className="text-piedra-900">{AUTOR.nombre}</strong>. Una persona, no un
-                equipo. Nadie financia esto: ni la universidad, ni una inmobiliaria, ni un fondo.
-              </p>
-              <p>
-                Decirlo importa porque explica dos cosas. Que aquí ninguna publicación se muestra
-                primero por haber pagado, sencillamente porque no hay a quién pagarle. Y que si algo
-                tarda en arreglarse, es porque lo arregla una sola persona.
-              </p>
-              <p>
-                Si algo no funciona o se te ocurre algo mejor, escríbeme:{' '}
-                <a
-                  className="font-semibold text-confianza-600 underline"
-                  href={`mailto:${AUTOR.correo}`}
-                >
-                  {AUTOR.correo}
-                </a>
-              </p>
-            </div>
-          </div>
-        </Bloque>
-
-        <Bloque titulo="Qué cuesta mantenerla">
           <p>
-            La plataforma es gratis para el estudiante y para el arrendador, y va a seguir así.
-            Pero mantenerla sí cuesta: el dominio se paga cada año, y los servidores donde viven la
-            página, la base de datos y las fotos tienen un plan gratuito que se queda corto en
-            época de matrículas, justo cuando más gente entra.
+            <strong className="text-piedra-900">{AUTOR.nombre}</strong>. Una persona, no un equipo.
+            La levanté yo, sin apoyo económico de nadie: ni de la universidad, ni de una
+            inmobiliaria, ni de un fondo.
+          </p>
+          <p>
+            Lo digo porque explica el ritmo. Si algo se daña o falta algo, lo arregla una sola
+            persona, en los ratos que quedan.
+          </p>
+          <p>
+            Si algo no funciona o se te ocurre algo mejor, escríbeme:{' '}
+            <a
+              className="font-semibold text-confianza-600 underline"
+              href={`mailto:${AUTOR.correo}`}
+            >
+              {AUTOR.correo}
+            </a>
           </p>
         </Bloque>
 
-        {DONACIONES.activo && DONACIONES.numero !== '' && (
-          <Bloque titulo="Si quieres ayudar">
-            <p>
-              Con lo que valen dos empanadas se paga un día de servidor. No hay recompensas ni
-              beneficios: quien done ve exactamente lo mismo que quien no.
-            </p>
-            <div className="tarjeta mt-2 p-5">
-              <p className="text-xs font-bold tracking-wide text-piedra-500 uppercase">
-                {DONACIONES.medio}
-              </p>
-              <p className="precio mt-1 text-2xl font-extrabold text-piedra-900">
-                {DONACIONES.numero}
-              </p>
-              <p className="mt-2 text-sm text-piedra-600">A nombre de {AUTOR.nombre}.</p>
-            </div>
-          </Bloque>
-        )}
+        <Bloque titulo="Gásteme un tinto">
+          <p>
+            Mantener esto prendido cuesta: el dominio se paga cada año y los servidores donde viven
+            la página, la base de datos y las fotos se quedan cortos justo en época de matrículas,
+            que es cuando más gente entra.
+          </p>
+          <p>
+            Si la plataforma te sirvió para encontrar dónde vivir, o simplemente para no dar tantas
+            vueltas, un tinto se agradece. Sin recompensas ni beneficios: quien aporta ve
+            exactamente lo mismo que quien no.
+          </p>
 
-        <Bloque titulo="En qué se puede confiar">
+          <div className="tarjeta mt-2 flex items-center justify-between gap-4 p-5">
+            <div>
+              <p className="text-xs font-bold tracking-wide text-piedra-500 uppercase">Nequi</p>
+              <p className="precio mt-1 text-2xl font-extrabold text-piedra-900">{NEQUI}</p>
+              <p className="mt-1 text-sm text-piedra-600">A nombre de {AUTOR.nombre}</p>
+            </div>
+            <span className="text-4xl" aria-hidden="true">
+              ☕
+            </span>
+          </div>
+        </Bloque>
+
+        <Bloque titulo="Cómo se sostiene">
+          <p>
+            Hoy no hay publicidad ni cobros. Más adelante puede haber patrocinios o publicaciones
+            destacadas, y si llega a pasar se va a ver claramente marcado como tal, para que nadie
+            confunda un aviso pagado con un resultado de la búsqueda.
+          </p>
+          <p>Lo que no va a pasar nunca: vender los datos de quien usa la plataforma.</p>
+        </Bloque>
+
+        <Bloque titulo="Lo que sí está garantizado">
           <ul className="ml-5 list-disc space-y-2">
-            <li>Ninguna publicación aparece más arriba por haber pagado.</li>
-            <li>No se venden datos, no hay publicidad y no hay rastreadores.</li>
+            <li>No se venden datos y no hay rastreadores de terceros.</li>
             <li>
               El celular del arrendador solo se muestra cuando el estudiante lo pide, y queda
-              constancia.
+              constancia de quién lo pidió.
             </li>
+            <li>Las reseñas no se borran por pedido del arrendador.</li>
             <li>
               Lo que se guarda y para qué está escrito en la{' '}
               <Link className="font-semibold text-confianza-600 underline" to="/privacidad">

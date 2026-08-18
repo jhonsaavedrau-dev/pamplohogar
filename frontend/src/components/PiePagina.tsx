@@ -2,41 +2,9 @@ import { Link } from 'react-router-dom';
 import { Marca } from './Marca';
 
 
-/*
-  Los arcos de los portales de la plaza, cerrando la pagina.
-
-  Pamplona es ciudad colonial y sus portales de arcos son lo primero que uno
-  reconoce del centro. Van como remate del pie, en linea fina y del color de la
-  piedra: se leen como una cenefa, no como un dibujo. Quien conoce la ciudad
-  los reconoce; quien no, ve un borde bonito.
-*/
-function ArcosDelPortal() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 120 20"
-      preserveAspectRatio="none"
-      className="pointer-events-none block h-5 w-full text-piedra-300"
-    >
-      <defs>
-        <pattern id="arcos-portal" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path
-            d="M2 20V9a8 8 0 0 1 16 0v11"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.2"
-          />
-        </pattern>
-      </defs>
-      <rect width="120" height="20" fill="url(#arcos-portal)" />
-    </svg>
-  );
-}
-
 export function PiePagina() {
   return (
     <footer className="sin-imprimir mt-20 border-t border-piedra-200 bg-white">
-      <ArcosDelPortal />
       <div className="contenedor-app py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">
