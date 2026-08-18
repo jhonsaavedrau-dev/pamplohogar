@@ -29,13 +29,49 @@ interface PropsVacio {
   accion?: ReactNode;
 }
 
+/*
+  Las tejas del centro historico, de fondo.
+
+  Una pantalla vacia es la que mas se ve al principio: sin inmuebles guardados,
+  sin mensajes, sin busquedas. Era un cuadro gris con el logo apagado, que se
+  lee como "aqui se dano algo" y no como "aqui todavia no hay nada". Las tejas
+  la convierten en parte de la plataforma en vez de un hueco.
+
+  Van muy claras y se desvanecen hacia abajo, para que el texto siempre gane.
+*/
+function TejasSuaves() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 h-full w-full text-terracota-400/20"
+    >
+      <defs>
+        <pattern id="tejas-vacio" width="36" height="18" patternUnits="userSpaceOnUse">
+          <path d="M0 18C0 8 8 0 18 0s18 8 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </pattern>
+        <linearGradient id="desvanecer-vacio" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        <mask id="mascara-vacio">
+          <rect width="100%" height="100%" fill="url(#desvanecer-vacio)" />
+        </mask>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#tejas-vacio)" mask="url(#mascara-vacio)" />
+    </svg>
+  );
+}
+
 export function EstadoVacio({ titulo, descripcion, accion }: PropsVacio) {
   return (
-    <div className="tarjeta flex flex-col items-center gap-3 px-6 py-14 text-center">
-      <IconoMarca className="h-12 w-12 opacity-35 grayscale" />
-      <h3 className="text-lg font-bold text-piedra-900">{titulo}</h3>
-      <p className="max-w-sm text-sm text-piedra-600">{descripcion}</p>
-      {accion}
+    <div className="tarjeta relative overflow-hidden px-6 py-14 text-center">
+      <TejasSuaves />
+      <div className="relative flex flex-col items-center gap-3">
+        <IconoMarca className="h-12 w-12 opacity-60" />
+        <h3 className="text-lg font-bold text-piedra-900">{titulo}</h3>
+        <p className="max-w-sm text-sm text-piedra-600">{descripcion}</p>
+        {accion}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { Encabezado } from './components/Encabezado';
 import { PiePagina } from './components/PiePagina';
 import { RutaProtegida } from './components/RutaProtegida';
@@ -31,6 +31,8 @@ import { SubirAlCambiarDePantalla } from './components/SubirAlCambiarDePantalla'
 import { BarraInferior } from './components/BarraInferior';
 
 export function App() {
+  const ubicacion = useLocation();
+
   return (
     <div className="flex min-h-dvh flex-col">
       <SubirAlCambiarDePantalla />
@@ -38,7 +40,12 @@ export function App() {
       <AvisoSinConexion />
       <AvisoCorreoSinConfirmar />
 
-      <main className="flex-1">
+      {/*
+        La llave hace que React vuelva a montar el contenido al cambiar de
+        direccion, y eso es lo que dispara el desvanecido. Sin ella la
+        animacion solo correria la primera vez.
+      */}
+      <main key={ubicacion.pathname} className="entrada-de-pantalla flex-1">
         <Routes>
           <Route path="/" element={<Buscar />} />
           <Route path="/inmueble/:id" element={<DetalleInmueble />} />

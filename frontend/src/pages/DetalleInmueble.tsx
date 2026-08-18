@@ -114,8 +114,10 @@ export function DetalleInmueble() {
 
   const { inmueble, esFavorito, esDueno, resenas, cambiosDePrecio, referenciaDePrecio } = data;
 
+  // El aire de abajo deja libres las dos barras que se pegan al fondo en el
+  // celular: la de contactar y la de navegar.
   return (
-    <div className="contenedor-app py-6 pb-28 lg:pb-10">
+    <div className="contenedor-app py-6 pb-44 md:pb-32 lg:pb-10">
       <Link to="/" className="tocable mb-2 text-sm font-semibold text-confianza-600">
         &larr; Volver a la busqueda
       </Link>
@@ -449,10 +451,16 @@ export function DetalleInmueble() {
       {!esDueno && (
         <div
           className={`fixed inset-x-0 z-20 border-t border-piedra-200 bg-white/95 px-4 py-3 shadow-[0_-4px_20px_rgba(36,31,26,0.10)] backdrop-blur lg:hidden ${
-            // Si la barra del comparador esta abajo, esta se sube para no
-            // quedar tapada. Dos barras flotantes en el mismo sitio se comen
-            // la una a la otra y el boton de contactar deja de existir.
-            hayComparador ? 'bottom-[5.25rem]' : 'bottom-0'
+            // Todo lo que se pega al fondo se apila, no se monta encima.
+            // De abajo hacia arriba: la barra de navegar (4rem, solo en
+            // celular), la del comparador si hay algo marcado, y esta.
+            //
+            // En tableta la barra de navegar no existe, por eso el md:. Sin
+            // esto, el boton de contactar tapaba los botones de navegar y
+            // ninguno de los dos servia.
+            hayComparador
+              ? 'bottom-[9.25rem] md:bottom-[5.25rem]'
+              : 'bottom-16 md:bottom-0'
           }`}
         >
           <div className="flex items-center gap-3">

@@ -221,6 +221,32 @@
 }
 
 /*
+  Cambio de pantalla.
+
+  Al pasar de una pantalla a otra el contenido nuevo aparecia de golpe, y con
+  la pagina ya subida al principio el salto se nota mas todavia: parece que
+  parpadeo. Un desvanecido corto le da continuidad sin hacer esperar a nadie.
+
+  Solo opacidad, sin movimiento, y a proposito: la ficha del inmueble tiene
+  barras pegadas al fondo de la pantalla, y animar la posicion de algo que las
+  contiene las manda a otro sitio mientras dura la animacion.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .entrada-de-pantalla {
+    animation: aparecer-pantalla 0.28s var(--ease-suave) both;
+  }
+}
+
+@keyframes aparecer-pantalla {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
   Aparicion al entrar en pantalla.
 
   El contenido arranca VISIBLE y solo se oculta si el navegador soporta la
