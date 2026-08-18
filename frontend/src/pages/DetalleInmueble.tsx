@@ -136,7 +136,7 @@ export function DetalleInmueble() {
               </span>
               {distancia(inmueble.distanciaUniversidadKm)}
             </p>
-            <p className="mt-4 text-[2.25rem] leading-none font-extrabold tracking-tight text-terracota-600">
+            <p className="precio mt-4 text-[2.4rem] leading-none font-extrabold text-terracota-600">
               {pesos(inmueble.precio)}
               <span className="ml-1 text-base font-medium text-piedra-500">al mes</span>
             </p>

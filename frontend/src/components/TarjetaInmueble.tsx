@@ -161,7 +161,7 @@ export function TarjetaInmueble({
       <div className="p-4">
         <Link to={`/inmueble/${inmueble.id}`} className="block">
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-[1.35rem] leading-none font-extrabold tracking-tight text-piedra-900">
+            <p className="precio text-[1.45rem] leading-none font-extrabold text-piedra-900">
               {pesos(inmueble.precio)}
             </p>
             <span className="shrink-0 text-xs font-medium text-piedra-600">al mes</span>

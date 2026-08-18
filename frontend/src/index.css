@@ -104,11 +104,11 @@
     El 500 se sigue usando donde no lleva texto encima.
   */
   .boton-primario {
-    @apply bg-terracota-600 text-white shadow-[0_1px_2px_rgba(140,64,19,0.25)] hover:bg-terracota-700 active:scale-[0.985] active:bg-terracota-800;
+    @apply bg-gradient-to-b from-terracota-500 to-terracota-600 text-white shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_2px_6px_-1px_rgba(140,64,19,0.45)] hover:from-terracota-600 hover:to-terracota-700 active:scale-[0.985] active:shadow-[0_1px_2px_rgba(140,64,19,0.35)];
   }
 
   .boton-confianza {
-    @apply bg-confianza-500 text-white shadow-[0_1px_2px_rgba(17,70,117,0.25)] hover:bg-confianza-600 active:scale-[0.985] active:bg-confianza-700;
+    @apply bg-gradient-to-b from-confianza-500 to-confianza-600 text-white shadow-[0_1px_0_rgba(255,255,255,0.22)_inset,0_2px_6px_-1px_rgba(17,70,117,0.45)] hover:from-confianza-600 hover:to-confianza-700 active:scale-[0.985] active:shadow-[0_1px_2px_rgba(17,70,117,0.35)];
   }
 
   .boton-suave {
@@ -138,7 +138,7 @@
   }
 
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full bg-piedra-100 px-2.5 py-1 text-xs font-medium text-piedra-700;
+    @apply inline-flex items-center gap-1 rounded-full border border-piedra-200/80 bg-piedra-100/70 px-2.5 py-1 text-xs font-medium text-piedra-700;
   }
 
   .insignia {
@@ -155,7 +155,25 @@
     importan mas que otros.
   */
   .titulo-seccion {
-    @apply mb-3 text-xl font-semibold text-piedra-900;
+    @apply relative mb-3 pt-3 text-xl font-semibold text-piedra-900;
+  }
+
+  /*
+    La barrita de terracota encima de cada titulo de bloque.
+
+    Es lo que hace una revista para que la vista sepa donde empieza algo sin
+    tener que leerlo. Va en el estilo compartido y no pantalla por pantalla,
+    asi aparece sola en cada bloque nuevo que se escriba.
+  */
+  .titulo-seccion::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.75rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-terracota-500), var(--color-terracota-300));
   }
 
   /*
@@ -175,6 +193,19 @@
 
   .bloques > *:last-child {
     @apply pb-0;
+  }
+
+  /*
+    El precio, en la serif de los titulos.
+
+    Es el primer dato que mira cualquiera que busca donde vivir, y estaba en la
+    misma letra que el resto. Con la serif toma el peso de un titular y la
+    tarjeta gana jerarquia sin agrandar nada ni meter mas color.
+  */
+  .precio {
+    font-family: var(--font-titulo);
+    font-optical-sizing: auto;
+    @apply tracking-tight;
   }
 
   /* Titular de pantalla: grande, apretado y con serif. */
