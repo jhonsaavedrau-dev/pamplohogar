@@ -1,9 +1,42 @@
 import { Link } from 'react-router-dom';
 import { Marca } from './Marca';
 
+
+/*
+  Los arcos de los portales de la plaza, cerrando la pagina.
+
+  Pamplona es ciudad colonial y sus portales de arcos son lo primero que uno
+  reconoce del centro. Van como remate del pie, en linea fina y del color de la
+  piedra: se leen como una cenefa, no como un dibujo. Quien conoce la ciudad
+  los reconoce; quien no, ve un borde bonito.
+*/
+function ArcosDelPortal() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 120 20"
+      preserveAspectRatio="none"
+      className="pointer-events-none block h-5 w-full text-piedra-300"
+    >
+      <defs>
+        <pattern id="arcos-portal" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path
+            d="M2 20V9a8 8 0 0 1 16 0v11"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+        </pattern>
+      </defs>
+      <rect width="120" height="20" fill="url(#arcos-portal)" />
+    </svg>
+  );
+}
+
 export function PiePagina() {
   return (
     <footer className="sin-imprimir mt-20 border-t border-piedra-200 bg-white">
+      <ArcosDelPortal />
       <div className="contenedor-app py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
           <div className="max-w-sm">
@@ -70,11 +103,17 @@ export function PiePagina() {
           </nav>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-piedra-100 pt-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-piedra-100 pt-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
           <p className="max-w-xl text-xs text-piedra-600">
             Verifica siempre el inmueble en persona antes de entregar dinero. PamploHogar conecta
             estudiantes con arrendadores, pero no participa en los acuerdos entre ustedes.
           </p>
+          <Link
+            to="/el-proyecto"
+            className="tocable shrink-0 text-xs font-semibold text-piedra-700 hover:text-terracota-600"
+          >
+            Sobre el proyecto
+          </Link>
           <Link
             to="/privacidad"
             className="tocable shrink-0 text-xs font-semibold text-piedra-700 hover:text-terracota-600"

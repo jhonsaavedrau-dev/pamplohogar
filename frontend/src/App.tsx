@@ -27,6 +27,7 @@ import { BarraComparador } from './components/BarraComparador';
 import { Admin } from './pages/Admin';
 import { NoEncontrado } from './pages/NoEncontrado';
 import { Privacidad } from './pages/Privacidad';
+import { ElProyecto } from './pages/ElProyecto';
 import { SubirAlCambiarDePantalla } from './components/SubirAlCambiarDePantalla';
 import { BarraInferior } from './components/BarraInferior';
 
@@ -91,6 +92,7 @@ export function App() {
           <Route path="/cambiar-clave" element={<CambiarClave />} />
           <Route path="/confirmar-correo" element={<ConfirmarCorreo />} />
           <Route path="/privacidad" element={<Privacidad />} />
+          <Route path="/el-proyecto" element={<ElProyecto />} />
 
           <Route
             path="/favoritos"
