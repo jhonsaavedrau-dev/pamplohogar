@@ -190,7 +190,11 @@ export function DetalleInmueble() {
             </section>
           )}
 
-          <ComparadoConElBarrio referencia={referenciaDePrecio} barrio={inmueble.barrio} />
+          <ComparadoConElBarrio
+            referencia={referenciaDePrecio}
+            barrio={inmueble.barrio}
+            precio={inmueble.precio}
+          />
 
           <HistorialDePrecios cambios={cambiosDePrecio} precioActual={inmueble.precio} />
 

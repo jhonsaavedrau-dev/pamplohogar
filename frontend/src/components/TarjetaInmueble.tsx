@@ -5,7 +5,7 @@ import { pedir } from '../lib/api';
 import { useSesion } from '../lib/sesion';
 import { useComparador } from '../lib/comparador';
 import type { Inmueble } from '../lib/tipos';
-import { ETIQUETAS_TIPO } from '../lib/tipos';
+import { ETIQUETAS_SERVICIO, ETIQUETAS_TIPO } from '../lib/tipos';
 import { distancia, pesos } from '../lib/formato';
 import { Estrellas } from './Estrellas';
 import { FotoInmueble } from './FotoInmueble';
@@ -182,6 +182,41 @@ export function TarjetaInmueble({
             </span>
             {inmueble.amoblado && <span className="chip">Amoblado</span>}
           </div>
+
+          {/*
+            Lo que incluye, al pasar el cursor.
+
+            Para saber si hay wifi habia que abrir la ficha, volver, abrir otra:
+            es lo que mas se compara y estaba escondido. Aparece solo con el
+            cursor encima, asi que la tarjeta sigue tan limpia como antes.
+
+            No se muestra en el celular, donde no hay cursor: alli abrir la
+            ficha es un toque y volver es otro. Y quien no quiere animaciones
+            en su sistema lo ve aparecer sin transicion, no le aparece nada
+            saltando.
+          */}
+          {inmueble.servicios.length > 0 && (
+            <div
+              aria-hidden="true"
+              className="hidden max-h-0 overflow-hidden opacity-0 transition-[max-height,opacity] duration-300 ease-[var(--ease-suave)] group-hover:max-h-20 group-hover:opacity-100 motion-reduce:transition-none sm:block"
+            >
+              <div className="mt-2.5 flex flex-wrap gap-1.5">
+                {inmueble.servicios.slice(0, 4).map((s) => (
+                  <span
+                    key={s}
+                    className="rounded-full bg-terracota-50 px-2.5 py-1 text-xs font-medium text-terracota-700"
+                  >
+                    {ETIQUETAS_SERVICIO[s] ?? s}
+                  </span>
+                ))}
+                {inmueble.servicios.length > 4 && (
+                  <span className="rounded-full bg-terracota-50 px-2.5 py-1 text-xs font-medium text-terracota-700">
+                    +{inmueble.servicios.length - 4}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="mt-3 flex items-center justify-between gap-2 border-t border-piedra-100 pt-3">
             <span className="truncate text-xs text-piedra-600">{inmueble.arrendador.nombre}</span>

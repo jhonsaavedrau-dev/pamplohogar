@@ -19,6 +19,41 @@ const ORDENES = [
   { valor: 'cercania', etiqueta: 'Más cerca de la U' },
 ] as const;
 
+/*
+  El valle donde esta Pamplona, cerrando la portada.
+
+  Pamplona esta metida entre montanas y eso lo sabe cualquiera que haya
+  estudiado alli: son las que se ven desde la ventana de cualquier habitacion
+  que se arriende. Las tres capas van de mas clara a mas oscura para dar
+  distancia, y la ultima remata contra el color de fondo del listado, asi que
+  la portada no termina en un corte recto sino en el horizonte de la ciudad.
+
+  Es decoracion, no informacion: por eso no la lee el lector de pantalla.
+*/
+function MontanasDeFondo() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 1440 160"
+      preserveAspectRatio="none"
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-24 w-full sm:h-32"
+    >
+      <path
+        d="M0 96 180 48l150 38 170-58 190 62 160-40 200 54 190-36 180 44v96H0Z"
+        className="fill-terracota-100/45"
+      />
+      <path
+        d="M0 122 210 78l160 34 200-44 180 48 210-30 240 44 240-26v92H0Z"
+        className="fill-terracota-200/40"
+      />
+      <path
+        d="M0 148 240 116l220 22 210-30 260 34 250-24 260 26v56H0Z"
+        className="fill-piedra-50"
+      />
+    </svg>
+  );
+}
+
 /** Patron de tejas que evoca las fachadas del centro historico de Pamplona. */
 function TejasDeFondo() {
   return (
@@ -98,12 +133,14 @@ export function Buscar() {
 
   return (
     <>
-      <section className="con-grano relative overflow-hidden border-b border-piedra-200 bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
+      <section className="con-grano relative overflow-hidden bg-gradient-to-b from-terracota-50 via-terracota-50/40 to-piedra-50">
         <TejasDeFondo />
+        <MontanasDeFondo />
 
         {/* El encabezado es fijo y tapaba la etiqueta de arriba: por eso el
-            espacio superior es mayor que el inferior. */}
-        <div className="contenedor-app relative pt-14 pb-12 sm:pt-20 sm:pb-20">
+            espacio superior es grande. Y el de abajo tiene que dejar libres las
+            montanas, que son de alto fijo y van pegadas al fondo. */}
+        <div className="contenedor-app relative pt-14 pb-32 sm:pt-20 sm:pb-44">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
             Pamplona, Norte de Santander
