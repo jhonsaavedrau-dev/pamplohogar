@@ -8,31 +8,43 @@ import { COLOR } from './marca';
   dependen de un archivo que se pueda perder, no hay licencias de por medio, y
   cambiar el color o el grosor es cambiar un numero.
 
-  Para que sirven: una captura suelta flotando en la pantalla se ve como una
-  imagen pegada. Metida en un marco de telefono, el cerebro entiende de una que
-  eso es una aplicacion y que se usa con el dedo.
+  COMO SE MUEVE LA PANTALLA DE ADENTRO, que es lo que se veia mal antes:
+
+  La captura entra a lo ancho del marco y conserva su alto natural. Como son
+  capturas de la pagina COMPLETA, la imagen mide varias pantallas y sobra por
+  abajo. Moverla hacia arriba es entonces un desplazamiento de verdad, con
+  cada pixel en su sitio.
+
+  Antes se agrandaba una captura corta para simular movimiento, y agrandar una
+  imagen es inventarse pixeles: por eso se veia blanda.
 */
 
 const MARCO = '#2A2521';
 
-/**
- * El contenido que va dentro del marco, con su propio movimiento.
- *
- * La imagen va mas grande que la ventana y se mueve dentro: asi el movimiento
- * se ve como si alguien estuviera recorriendo la pantalla, y nunca aparece un
- * borde vacio.
- */
-function Pantalla({ captura, estilo }: { captura: string; estilo: React.CSSProperties }) {
+interface PropsPantalla {
+  captura: string;
+  /**
+   * Cuanto se ha bajado, de 0 a 1: la fraccion del alto de la imagen que
+   * queda por encima del borde superior de la pantalla.
+   */
+  recorrido?: number;
+  /** Acercamiento suave. Con moderacion: mucho zoom vuelve a emborronar. */
+  acercamiento?: number;
+}
+
+function Pantalla({ captura, recorrido = 0, acercamiento = 1 }: PropsPantalla) {
   return (
     <div style={{ width: '100%', height: '100%', overflow: 'hidden', background: COLOR.crema }}>
       <Img
         src={staticFile(captura)}
         style={{
           width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          objectPosition: 'top center',
-          ...estilo,
+          height: 'auto',
+          display: 'block',
+          // El porcentaje de translateY se mide sobre el alto de la propia
+          // imagen, que es justo lo que hace falta para desplazar la pagina.
+          transform: `scale(${acercamiento}) translateY(${-recorrido * 100}%)`,
+          transformOrigin: 'top center',
         }}
       />
     </div>
@@ -43,12 +55,9 @@ function Pantalla({ captura, estilo }: { captura: string; estilo: React.CSSPrope
 export function MarcoCelular({
   captura,
   ancho = 620,
-  estilo = {},
-}: {
-  captura: string;
-  ancho?: number;
-  estilo?: React.CSSProperties;
-}) {
+  recorrido,
+  acercamiento,
+}: PropsPantalla & { ancho?: number }) {
   const borde = Math.round(ancho * 0.026);
   const alto = Math.round((ancho * 844) / 390 + borde * 3.4);
 
@@ -60,19 +69,14 @@ export function MarcoCelular({
         borderRadius: ancho * 0.095,
         background: MARCO,
         padding: `${borde * 2.4}px ${borde}px`,
-        boxShadow: '0 40px 80px -20px rgba(31,27,23,0.45)',
+        boxShadow: '0 50px 90px -25px rgba(31,27,23,0.5)',
         position: 'relative',
       }}
     >
       <div
-        style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: ancho * 0.075,
-          overflow: 'hidden',
-        }}
+        style={{ width: '100%', height: '100%', borderRadius: ancho * 0.075, overflow: 'hidden' }}
       >
-        <Pantalla captura={captura} estilo={estilo} />
+        <Pantalla captura={captura} recorrido={recorrido} acercamiento={acercamiento} />
       </div>
 
       {/* La islita, en el borde de arriba y no encima de la pantalla: asi no
@@ -97,12 +101,9 @@ export function MarcoCelular({
 export function MarcoComputador({
   captura,
   ancho = 1000,
-  estilo = {},
-}: {
-  captura: string;
-  ancho?: number;
-  estilo?: React.CSSProperties;
-}) {
+  recorrido,
+  acercamiento,
+}: PropsPantalla & { ancho?: number }) {
   const alto = Math.round((ancho * 800) / 1280);
   const borde = Math.round(ancho * 0.014);
 
@@ -115,16 +116,15 @@ export function MarcoComputador({
           borderRadius: 22,
           background: MARCO,
           padding: borde,
-          boxShadow: '0 40px 80px -20px rgba(31,27,23,0.45)',
+          boxShadow: '0 50px 90px -25px rgba(31,27,23,0.5)',
         }}
       >
         <div style={{ width: '100%', height: '100%', borderRadius: 12, overflow: 'hidden' }}>
-          <Pantalla captura={captura} estilo={estilo} />
+          <Pantalla captura={captura} recorrido={recorrido} acercamiento={acercamiento} />
         </div>
       </div>
 
-      {/* La base. Un poco mas ancha que la pantalla, como en un portatil de
-          verdad, y con una muesca en el centro. */}
+      {/* La base, un poco mas ancha que la pantalla y con su muesca. */}
       <div
         style={{
           width: ancho * 1.08,
@@ -133,6 +133,7 @@ export function MarcoComputador({
           background: MARCO,
           display: 'flex',
           justifyContent: 'center',
+          boxShadow: '0 24px 40px -20px rgba(31,27,23,0.5)',
         }}
       >
         <div

@@ -1,29 +1,25 @@
 import { AbsoluteFill, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Escena, type DatosEscena } from './Escena';
+import { Fondo } from './Fondo';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
-  El video completo de PamploHogar: 40 segundos, sin grabar nada.
+  El video de PamploHogar: 42 segundos, sin grabar nada.
 
-  Estructura:
+    0 - 9 s    El problema, en tres frases. Palabra por palabra.
+    9 - 13 s   El giro.
+    13 - 36 s  La plataforma: seis pantallas con marco de dispositivo.
+    36 - 42 s  El cierre con el codigo.
 
-    0 - 9 s    El problema, en tres frases. Todo quieto.
-    9 - 13 s   El giro: y si estuvieran todos en un solo sitio.
-    13 - 34 s  La plataforma, seis pantallas con marco de dispositivo.
-    34 - 40 s  El cierre con el codigo.
+  Los primeros nueve segundos van casi quietos a proposito. Sin gente ni
+  camara, lo unico que da energia es el contraste: si todo se mueve desde el
+  principio, nada se mueve.
 
-  Los primeros nueve segundos van QUIETOS a proposito. Sin gente ni camara, lo
-  unico que da energia es el contraste: si todo se mueve desde el principio,
-  nada se mueve. La quietud del problema hace que la plataforma se sienta como
-  un alivio.
-
-  Para cambiar el video se tocan las dos listas de abajo. No hace falta entrar
-  a Escena.tsx ni a Marcos.tsx.
+  Para cambiar el video se tocan las dos listas de abajo.
 */
 
 const s = (segundos: number) => Math.round(segundos * VIDEO.fps);
 
-/** Las tres frases del problema. La segunda parte va en terracota. */
 const PROBLEMA = [
   ['En Pamplona, conseguir dónde vivir', 'depende de a quién conozcas.'],
   ['Grupos de WhatsApp. Avisos en un poste.', 'Conocidos de conocidos.'],
@@ -33,12 +29,14 @@ const PROBLEMA = [
 /*
   Las seis pantallas.
 
-  El orden no es casual: primero lo que se ve de una (el listado), despues lo
-  que hay que abrir (la ficha), y al final lo que nadie mas tiene (la regla de
-  precios y el mapa).
+  El orden no es casual: primero lo que se ve de una, despues lo que hay que
+  abrir, y al final lo que no tiene nadie mas.
 
-  Se alternan celular y computador. El cambio de forma, una alta y una ancha,
+  Se alternan celular y computador: el cambio de forma, una alta y una ancha,
   refresca la vista sin que uno se de cuenta.
+
+  Los recorridos van sobre capturas de pagina completa. El listado del celular
+  mide diez pantallas, asi que bajar hasta 0,2 ya recorre dos pantallas largas.
 */
 const ESCENAS: DatosEscena[] = [
   {
@@ -48,22 +46,29 @@ const ESCENAS: DatosEscena[] = [
     movimiento: 'acercar',
   },
   {
-    captura: 'capturas/celular/2-listado.png',
+    captura: 'capturas/celular/2-listado-largo.png',
     dispositivo: 'celular',
     rotulo: 'El precio, sin preguntar',
-    movimiento: 'recorrer',
+    movimiento: 'bajar',
+    desde: 0.04,
+    hasta: 0.2,
   },
   {
-    captura: 'capturas/computador/3-ficha.png',
+    captura: 'capturas/computador/2-listado-largo.png',
     dispositivo: 'computador',
-    rotulo: 'A cuántos minutos queda de la U',
-    movimiento: 'deriva',
+    rotulo: 'Y a cuántos minutos queda de la U',
+    movimiento: 'bajar',
+    desde: 0.1,
+    hasta: 0.34,
   },
   {
-    captura: 'capturas/computador/4-ficha-precio.png',
+    captura: 'capturas/computador/3-ficha-larga.png',
     dispositivo: 'computador',
     rotulo: 'Si te cobran de más, te lo dice',
-    movimiento: 'acercar',
+    movimiento: 'bajar',
+    desde: 0.32,
+    hasta: 0.44,
+    senalar: { x: 26, y: 51 },
   },
   {
     captura: 'capturas/computador/5-mapa-precios.png',
@@ -72,45 +77,71 @@ const ESCENAS: DatosEscena[] = [
     movimiento: 'acercar',
   },
   {
-    captura: 'capturas/celular/7-roomies.png',
+    captura: 'capturas/celular/7-roomies-largo.png',
     dispositivo: 'celular',
     rotulo: 'Y con quién compartir',
-    movimiento: 'recorrer',
+    movimiento: 'bajar',
+    desde: 0.06,
+    hasta: 0.34,
   },
 ];
 
-/** Una frase del problema, sobre el crema. Sin movimiento, a proposito. */
+/**
+ * Una frase del problema, palabra por palabra.
+ *
+ * Aparecer de golpe se lee como una diapositiva. Palabra por palabra obliga a
+ * leer al ritmo que uno quiere, que es el mismo truco de un buen subtitulo.
+ */
 function Frase({ texto, resaltado }: { texto: string; resaltado: string }) {
   const cuadro = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
-  // Solo aparece y desaparece. Es lo unico que se mueve en estos nueve
-  // segundos, y es lo que hace que los cortes se sientan secos.
-  const opacidad = interpolate(cuadro, [0, 8, s(3) - 8, s(3)], [0, 1, 1, 0], {
+  const palabras = [
+    ...texto.split(' ').map((p) => ({ p, fuerte: false })),
+    ...resaltado.split(' ').map((p) => ({ p, fuerte: true })),
+  ];
+
+  const salida = interpolate(cuadro, [s(3) - 10, s(3)], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   return (
     <AbsoluteFill
-      style={{
-        backgroundColor: COLOR.crema,
-        fontFamily: LETRA,
-        padding: '0 100px',
-        justifyContent: 'center',
-        opacity: opacidad,
-      }}
+      style={{ fontFamily: LETRA, padding: '0 100px', justifyContent: 'center', opacity: salida }}
     >
       <p
         style={{
           fontSize: 86,
           fontWeight: 800,
-          lineHeight: 1.1,
+          lineHeight: 1.12,
           letterSpacing: -2,
-          color: COLOR.piedra,
           margin: 0,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0 20px',
         }}
       >
-        {texto} <span style={{ color: COLOR.terracota }}>{resaltado}</span>
+        {palabras.map(({ p, fuerte }, i) => {
+          const entrada = spring({
+            frame: cuadro - i * 2.5,
+            fps,
+            config: { damping: 200, stiffness: 120 },
+          });
+          return (
+            <span
+              key={p + i}
+              style={{
+                color: fuerte ? COLOR.terracota : COLOR.piedra,
+                opacity: entrada,
+                transform: `translateY(${interpolate(entrada, [0, 1], [26, 0])}px)`,
+                display: 'inline-block',
+              }}
+            >
+              {p}
+            </span>
+          );
+        })}
       </p>
     </AbsoluteFill>
   );
@@ -119,20 +150,22 @@ function Frase({ texto, resaltado }: { texto: string; resaltado: string }) {
 /** El giro: la pregunta que abre la segunda mitad. */
 function Giro() {
   const cuadro = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
-  // Aqui si hay un acercamiento lentisimo. Es el punto donde el video cambia
-  // de tono, y el movimiento lo anuncia antes de que se lea el texto.
-  const acercar = interpolate(cuadro, [0, s(4)], [1, 1.06]);
-  const opacidad = interpolate(cuadro, [0, 10], [0, 1], { extrapolateRight: 'clamp' });
+  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 60 } });
+  const acercar = interpolate(cuadro, [0, s(4)], [1.04, 1]);
+  const salida = interpolate(cuadro, [s(4) - 12, s(4)], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: COLOR.crema,
         fontFamily: LETRA,
         padding: '0 100px',
         justifyContent: 'center',
-        opacity: opacidad,
+        opacity: entrada * salida,
         transform: `scale(${acercar})`,
       }}
     >
@@ -158,26 +191,23 @@ function Cierre() {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 80 } });
+  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 70 } });
   const entradaCodigo = spring({
-    frame: cuadro - Math.round(fps * 0.5),
+    frame: cuadro - Math.round(fps * 0.6),
     fps,
     config: { damping: 200, stiffness: 90 },
   });
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: COLOR.crema,
-        fontFamily: LETRA,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <AbsoluteFill style={{ fontFamily: LETRA, alignItems: 'center', justifyContent: 'center' }}>
       <div
         style={{
           opacity: entrada,
-          transform: `translateY(${interpolate(entrada, [0, 1], [40, 0])}px)`,
+          transform: `translateY(${interpolate(entrada, [0, 1], [44, 0])}px) scale(${interpolate(
+            entrada,
+            [0, 1],
+            [0.92, 1],
+          )})`,
           textAlign: 'center',
         }}
       >
@@ -198,21 +228,30 @@ function Cierre() {
         </p>
       </div>
 
-      <div style={{ opacity: entradaCodigo, marginTop: 60 }}>
-        <Img
-          src={staticFile('qr-pamplohogar.png')}
-          style={{ width: 280, height: 280, borderRadius: 22 }}
-        />
+      <div
+        style={{
+          opacity: entradaCodigo,
+          marginTop: 60,
+          transform: `scale(${interpolate(entradaCodigo, [0, 1], [0.85, 1])})`,
+          background: '#fff',
+          padding: 18,
+          borderRadius: 26,
+          boxShadow: '0 24px 50px -20px rgba(31,27,23,0.35)',
+        }}
+      >
+        <Img src={staticFile('qr-pamplohogar.png')} style={{ width: 260, height: 260 }} />
       </div>
     </AbsoluteFill>
   );
 }
 
 export function VideoCompleto() {
-  const duracionEscena = s(3.5);
+  const duracionEscena = s(3.8);
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLOR.crema }}>
+      <Fondo />
+
       {PROBLEMA.map(([texto, resaltado], i) => (
         <Sequence key={texto} from={s(3) * i} durationInFrames={s(3)}>
           <Frase texto={texto} resaltado={resaltado} />
@@ -223,17 +262,20 @@ export function VideoCompleto() {
         <Giro />
       </Sequence>
 
+      {/* Las escenas se encabalgan doce cuadros: mientras una se va, la otra
+          ya esta entrando. Sin ese cruce, seis cortes secos seguidos se
+          sienten como pasar diapositivas. */}
       {ESCENAS.map((escena, i) => (
         <Sequence
           key={escena.captura}
           from={s(13) + duracionEscena * i}
-          durationInFrames={duracionEscena}
+          durationInFrames={duracionEscena + 12}
         >
           <Escena {...escena} />
         </Sequence>
       ))}
 
-      <Sequence from={s(34)} durationInFrames={s(6)}>
+      <Sequence from={s(13) + duracionEscena * ESCENAS.length} durationInFrames={s(6)}>
         <Cierre />
       </Sequence>
     </AbsoluteFill>

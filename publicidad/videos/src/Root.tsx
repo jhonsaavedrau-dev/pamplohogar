@@ -17,7 +17,7 @@ export function Root() {
       <Composition
         id="VideoCompleto"
         component={VideoCompleto}
-        durationInFrames={VIDEO.fps * 40}
+        durationInFrames={VIDEO.fps * 42}
         fps={VIDEO.fps}
         width={VIDEO.ancho}
         height={VIDEO.alto}
