@@ -35,3 +35,10 @@ android/*
 *.jks
 *.aab
 *.apk
+
+# Los videos de publicidad. Se guarda la receta (el codigo que los arma) y
+# no el resultado: un mp4 de 1080x1920 pesa megas, cambia en cada render y
+# se vuelve a generar con un comando.
+publicidad/videos/node_modules/
+publicidad/videos/videos/
+publicidad/videos/out/

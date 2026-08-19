@@ -1,0 +1,21 @@
+{
+  "name": "pamplohogar-videos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Videos de publicidad de PamploHogar, hechos con Remotion.",
+  "scripts": {
+    "ver": "remotion studio",
+    "historia": "remotion render HistoriaSinConocidos videos/historia-sin-conocidos.mp4",
+    "foto": "remotion still HistoriaSinConocidos videos/portada.png --frame=90"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.17",
+    "typescript": "^5.7.2"
+  }
+}
