@@ -88,20 +88,35 @@ esto en vez de CapCut.
 
 ---
 
-## El video de 31 segundos
+## El video de 33 segundos
 
 ```
 npm run video
 ```
 
-Sale en `videos/pamplohogar.mp4`. Tarda dos minutos y medio.
+Sale en `videos/pamplohogar.mp4`. Tarda unos tres minutos.
 
 Está armado con capturas reales del sitio, metidas en marcos de celular y de
 computador dibujados con código. Sin grabar nada.
 
 Duraba 42 segundos y se sentía lento. Se recortó un tercio sin quitar nada: en
 publicidad el tiempo se mide en cuánto tarda alguien en deslizar el dedo, no en
-cuánto tarda uno en leer cómodo.
+cuánto tarda uno en leer cómodo. Los 33 de ahora incluyen el sello del logo.
+
+### El naranja marca una palabra, no media frase
+
+El texto se escribe con la palabra importante entre asteriscos:
+
+```
+'Buscar arriendo en Pamplona es *preguntar.*'
+```
+
+Vale igual para las frases del comienzo y para los rótulos de cada pantalla.
+Resaltar media frase no resalta nada: el ojo no sabe dónde parar.
+
+**El punto y la coma van DENTRO de los asteriscos.** Si quedan fuera, el
+programa los trata como una palabra suelta y aparecen separados del texto, con
+un espacio en medio.
 
 ### Para cambiarlo
 

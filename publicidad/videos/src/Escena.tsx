@@ -1,6 +1,7 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { MarcoCelular, MarcoComputador } from './Marcos';
 import { COLOR, LETRA } from './marca';
+import { color, trozos } from './Texto';
 
 /*
   Una escena: un aparato con una captura adentro, un rotulo abajo y un
@@ -9,16 +10,22 @@ import { COLOR, LETRA } from './marca';
   Es generica a proposito. Para cambiar el video no hay que tocar este archivo:
   se cambia la lista de escenas en VideoCompleto.tsx.
 
-  DE DONDE SALE LA SENSACION DE QUE ESTA BIEN HECHO. No es una sola cosa, son
-  cuatro pequenas al tiempo:
+  COMO SE ACOMODA EN EL CUADRO. El aparato y el rotulo son un solo bloque
+  centrado, no dos cosas sueltas. Antes el rotulo iba pegado al pie y el
+  aparato al centro, y como el portatil es bajito y el celular altisimo, cada
+  escena repartia el aire de una forma distinta: en unas quedaba un vacio
+  enorme arriba y en otras el texto casi tocaba el telefono. Como bloque unico,
+  el aire de arriba y el de abajo salen iguales en las seis.
+
+  DE DONDE SALE LA SENSACION DE QUE ESTA BIEN HECHO:
 
   1. Los aparatos se encadenan: uno sale por la izquierda mientras el otro
-     entra por la derecha, y alternan lado. Es el mismo recurso de un comercial
-     de television: nunca hay un momento en que la pantalla este quieta.
-  2. La pantalla de adentro se desplaza de verdad, no se agranda.
-  3. El rotulo aparece por detras de un borde, como en un titular de cine. Sin
-     recuadro negro encima: el texto va sobre el fondo de la marca.
-  4. Cada escena arranca antes de que termine la anterior.
+     entra por la derecha, y alternan lado.
+  2. Ya acomodado, el aparato no se queda quieto: flota. La sombra del piso se
+     abre y se cierra con el, que es lo que hace creer que hay un objeto y no
+     un dibujo.
+  3. La pantalla de adentro se desplaza de verdad, no se agranda.
+  4. El rotulo aparece por detras de un borde, como en un titular de cine.
 */
 
 export type Movimiento = 'bajar' | 'subir' | 'quieto' | 'acercar';
@@ -26,7 +33,10 @@ export type Movimiento = 'bajar' | 'subir' | 'quieto' | 'acercar';
 export interface DatosEscena {
   captura: string;
   dispositivo: 'celular' | 'computador';
-  /** Una linea por renglon. Partirlas a mano es lo que hace que se lean bien. */
+  /**
+   * Una linea por renglon. Partirlas a mano es lo que hace que se lean bien.
+   * La palabra entre asteriscos sale en naranja.
+   */
   rotulo: string[];
   movimiento: Movimiento;
   /**
@@ -37,7 +47,7 @@ export interface DatosEscena {
   hasta?: number;
   /**
    * Cuanto se amplia la pagina dentro del aparato. El portatil cabe entero
-   * pero entero no se lee, asi que sus escenas van entre 1,4 y 1,7.
+   * pero entero no se lee, asi que sus escenas van entre 1,25 y 1,6.
    */
   ampliar?: number;
   /** Que punto horizontal de la pagina queda al centro, de 0 a 1. */
@@ -81,8 +91,13 @@ export function Escena({
     extrapolateRight: 'clamp',
   });
 
-  const correr = interpolate(entrada, [0, 1], [520 * lado, 0]) - salida * 520 * lado;
-  const giro = interpolate(entrada, [0, 1], [16 * lado, 0]) - salida * 16 * lado;
+  // Flotacion: una vuelta cada tres segundos y medio, seis pixeles. Es
+  // demasiado poco para verlo y suficiente para que la escena no se congele.
+  const flotar = Math.sin(cuadro / 17) * 6;
+  const balanceo = Math.sin(cuadro / 29) * 1.1;
+
+  const correr = interpolate(entrada, [0, 1], [560 * lado, 0]) - salida * 560 * lado;
+  const giro = interpolate(entrada, [0, 1], [18 * lado, 0]) - salida * 18 * lado + balanceo;
   const opacidad = Math.min(entrada * 1.4, 1) * (1 - salida);
 
   const recorrido = (() => {
@@ -101,27 +116,31 @@ export function Escena({
   // imagen no parezca congelada, sin que se note el emborronado.
   const aumento = movimiento === 'acercar' ? interpolate(avance, [0, 1], [1, 1.08]) : 1;
 
+  const anchoAparato = dispositivo === 'celular' ? 540 : 960;
+
   return (
-    <AbsoluteFill style={{ fontFamily: LETRA }}>
-      <AbsoluteFill
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingBottom: dispositivo === 'celular' ? 340 : 300,
-          perspective: 1800,
-        }}
-      >
+    <AbsoluteFill
+      style={{
+        fontFamily: LETRA,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 90,
+        perspective: 1800,
+      }}
+    >
+      <div style={{ width: 900, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div
           style={{
             opacity: opacidad,
-            transform: `translateX(${correr}px) rotateY(${giro}deg)`,
+            transform: `translateX(${correr}px) translateY(${flotar}px) rotateY(${giro}deg)`,
             transformStyle: 'preserve-3d',
+            position: 'relative',
           }}
         >
           {dispositivo === 'celular' ? (
             <MarcoCelular
               captura={captura}
-              ancho={540}
+              ancho={anchoAparato}
               recorrido={recorrido}
               ampliar={ampliar * aumento}
               centroX={centroX}
@@ -129,16 +148,33 @@ export function Escena({
           ) : (
             <MarcoComputador
               captura={captura}
-              ancho={960}
+              ancho={anchoAparato}
               recorrido={recorrido}
               ampliar={ampliar * aumento}
               centroX={centroX}
             />
           )}
-        </div>
-      </AbsoluteFill>
 
-      <Rotulo lineas={rotulo} indice={indice} total={total} salida={salida} />
+          {/* La sombra del piso. Se abre cuando el aparato baja y se cierra
+              cuando sube: sin eso, flotar se ve como que la imagen tiembla. */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              bottom: -46,
+              width: anchoAparato * (0.78 + flotar / 260),
+              height: 26,
+              marginLeft: (-anchoAparato * (0.78 + flotar / 260)) / 2,
+              borderRadius: '50%',
+              background: 'rgba(31,27,23,0.16)',
+              filter: 'blur(18px)',
+              opacity: 0.9 - flotar / 90,
+            }}
+          />
+        </div>
+
+        <Rotulo lineas={rotulo} indice={indice} total={total} salida={salida} />
+      </div>
     </AbsoluteFill>
   );
 }
@@ -178,18 +214,9 @@ function Rotulo({
   const dosDigitos = (n: number) => String(n).padStart(2, '0');
 
   return (
-    <AbsoluteFill
-      style={{ justifyContent: 'flex-end', padding: '0 90px 200px', opacity: 1 - salida }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 22, marginBottom: 26 }}>
-        <div
-          style={{
-            height: 8,
-            width: 120 * barra,
-            borderRadius: 999,
-            background: COLOR.terracota,
-          }}
-        />
+    <div style={{ width: '100%', marginTop: 58, opacity: 1 - salida }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 22, marginBottom: 24 }}>
+        <div style={{ height: 8, width: 120 * barra, borderRadius: 999, background: COLOR.terracota }} />
         <span
           style={{
             fontSize: 30,
@@ -205,7 +232,7 @@ function Rotulo({
 
       {lineas.map((linea, i) => {
         const entrada = spring({
-          frame: cuadro - Math.round(fps * 0.24) - i * 5,
+          frame: cuadro - Math.round(fps * 0.22) - i * 5,
           fps,
           config: { damping: 200, stiffness: 110 },
         });
@@ -219,15 +246,21 @@ function Rotulo({
                 fontWeight: 800,
                 lineHeight: 1.14,
                 letterSpacing: -2,
-                color: i === 0 ? COLOR.piedra : COLOR.terracota,
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0 16px',
                 transform: `translateY(${interpolate(entrada, [0, 1], [110, 0])}%)`,
               }}
             >
-              {linea}
+              {trozos(linea).map(({ palabra, fuerte }, j) => (
+                <span key={palabra + j} style={{ color: color(fuerte) }}>
+                  {palabra}
+                </span>
+              ))}
             </p>
           </div>
         );
       })}
-    </AbsoluteFill>
+    </div>
   );
 }

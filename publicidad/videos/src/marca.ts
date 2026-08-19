@@ -30,3 +30,12 @@ export const VIDEO = {
 };
 
 export const LETRA = "'Segoe UI', system-ui, -apple-system, sans-serif";
+
+/*
+  La letra con gracia del nombre.
+
+  La pagina usa Fraunces, que no esta instalada en este computador y no se
+  puede descargar dentro del video. Georgia es la que mas se le parece de las
+  que hay siempre: con gracia, de trazo grueso y sin aire de documento.
+*/
+export const LETRA_SERIF = "Georgia, 'Times New Roman', serif";
