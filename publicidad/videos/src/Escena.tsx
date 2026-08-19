@@ -3,7 +3,7 @@ import { MarcoCelular, MarcoComputador } from './Marcos';
 import { COLOR, LETRA } from './marca';
 
 /*
-  Una escena: un dispositivo con una captura adentro, un rotulo abajo y un
+  Una escena: un aparato con una captura adentro, un rotulo abajo y un
   movimiento.
 
   Es generica a proposito. Para cambiar el video no hay que tocar este archivo:
@@ -12,12 +12,13 @@ import { COLOR, LETRA } from './marca';
   DE DONDE SALE LA SENSACION DE QUE ESTA BIEN HECHO. No es una sola cosa, son
   cuatro pequenas al tiempo:
 
-  1. El dispositivo entra girado en el espacio y se endereza. Un objeto que se
-     acomoda se lee como solido; uno que solo aparece, como una calcomania.
+  1. Los aparatos se encadenan: uno sale por la izquierda mientras el otro
+     entra por la derecha, y alternan lado. Es el mismo recurso de un comercial
+     de television: nunca hay un momento en que la pantalla este quieta.
   2. La pantalla de adentro se desplaza de verdad, no se agranda.
-  3. El rotulo llega despues que la imagen: primero se ve, despues se lee.
-  4. Al final la escena se va con un desvanecido, encimandose con la
-     siguiente. Cortar en seco entre dos pantallas quietas se siente brusco.
+  3. El rotulo aparece por detras de un borde, como en un titular de cine. Sin
+     recuadro negro encima: el texto va sobre el fondo de la marca.
+  4. Cada escena arranca antes de que termine la anterior.
 */
 
 export type Movimiento = 'bajar' | 'subir' | 'quieto' | 'acercar';
@@ -25,7 +26,8 @@ export type Movimiento = 'bajar' | 'subir' | 'quieto' | 'acercar';
 export interface DatosEscena {
   captura: string;
   dispositivo: 'celular' | 'computador';
-  rotulo: string;
+  /** Una linea por renglon. Partirlas a mano es lo que hace que se lean bien. */
+  rotulo: string[];
   movimiento: Movimiento;
   /**
    * Donde empieza y termina el recorrido, como fraccion del alto de la imagen.
@@ -33,8 +35,20 @@ export interface DatosEscena {
    */
   desde?: number;
   hasta?: number;
-  /** Resalta un punto de la pantalla con un halo. Para la funcion estrella. */
-  senalar?: { x: number; y: number };
+  /**
+   * Cuanto se amplia la pagina dentro del aparato. El portatil cabe entero
+   * pero entero no se lee, asi que sus escenas van entre 1,4 y 1,7.
+   */
+  ampliar?: number;
+  /** Que punto horizontal de la pagina queda al centro, de 0 a 1. */
+  centroX?: number;
+}
+
+interface PropsEscena extends DatosEscena {
+  /** Por que lado entra: 1 por la derecha, -1 por la izquierda. */
+  lado: 1 | -1;
+  indice: number;
+  total: number;
 }
 
 export function Escena({
@@ -44,24 +58,32 @@ export function Escena({
   movimiento,
   desde = 0,
   hasta = 0.3,
-  senalar,
-}: DatosEscena) {
+  ampliar = 1,
+  centroX = 0.5,
+  lado,
+  indice,
+  total,
+}: PropsEscena) {
   const cuadro = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
   const avance = cuadro / durationInFrames;
+  const CRUCE = 14; // cuadros que dura la entrada y tambien la salida
 
-  // Entrada: el aparato llega girado y se endereza con un rebote corto.
-  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 70 } });
-  const giro = interpolate(entrada, [0, 1], [dispositivo === 'celular' ? 14 : -12, 0]);
-  const alzada = interpolate(entrada, [0, 1], [70, 0]);
+  // Entrada: llega desplazado y girado, y se acomoda. Un objeto que se acomoda
+  // se lee como solido; uno que solo aparece, como una calcomania.
+  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 130 } });
 
-  // Salida: los ultimos 12 cuadros se desvanece, para encimarse con la
-  // escena siguiente en vez de cortar en seco.
-  const salida = interpolate(cuadro, [durationInFrames - 12, durationInFrames], [1, 0], {
+  // Salida: se va por el lado contrario al que entro, mientras la escena
+  // siguiente ya viene entrando.
+  const salida = interpolate(cuadro, [durationInFrames - CRUCE, durationInFrames], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
+
+  const correr = interpolate(entrada, [0, 1], [520 * lado, 0]) - salida * 520 * lado;
+  const giro = interpolate(entrada, [0, 1], [16 * lado, 0]) - salida * 16 * lado;
+  const opacidad = Math.min(entrada * 1.4, 1) * (1 - salida);
 
   const recorrido = (() => {
     switch (movimiento) {
@@ -75,100 +97,137 @@ export function Escena({
     }
   })();
 
-  // El acercamiento es minimo: 6% en toda la escena. Lo justo para que la
+  // El acercamiento es minimo: 8% en toda la escena. Lo justo para que la
   // imagen no parezca congelada, sin que se note el emborronado.
-  const acercamiento = movimiento === 'acercar' ? interpolate(avance, [0, 1], [1, 1.06]) : 1;
-
-  const entradaRotulo = spring({
-    frame: cuadro - Math.round(fps * 0.4),
-    fps,
-    config: { damping: 200, stiffness: 90 },
-  });
+  const aumento = movimiento === 'acercar' ? interpolate(avance, [0, 1], [1, 1.08]) : 1;
 
   return (
-    <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
+    <AbsoluteFill style={{ fontFamily: LETRA }}>
       <AbsoluteFill
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          paddingBottom: 190,
+          paddingBottom: dispositivo === 'celular' ? 340 : 300,
           perspective: 1800,
         }}
       >
         <div
           style={{
-            opacity: entrada,
-            transform: `translateY(${alzada}px) rotateY(${giro}deg) rotateX(${giro * 0.25}deg)`,
+            opacity: opacidad,
+            transform: `translateX(${correr}px) rotateY(${giro}deg)`,
             transformStyle: 'preserve-3d',
-            position: 'relative',
           }}
         >
           {dispositivo === 'celular' ? (
-            <MarcoCelular captura={captura} ancho={600} recorrido={recorrido} acercamiento={acercamiento} />
+            <MarcoCelular
+              captura={captura}
+              ancho={540}
+              recorrido={recorrido}
+              ampliar={ampliar * aumento}
+              centroX={centroX}
+            />
           ) : (
-            <MarcoComputador captura={captura} ancho={980} recorrido={recorrido} acercamiento={acercamiento} />
+            <MarcoComputador
+              captura={captura}
+              ancho={960}
+              recorrido={recorrido}
+              ampliar={ampliar * aumento}
+              centroX={centroX}
+            />
           )}
-
-          {senalar && <Halo x={senalar.x} y={senalar.y} />}
         </div>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ justifyContent: 'flex-end', paddingBottom: 250 }}>
-        <div
-          style={{
-            margin: '0 60px',
-            background: 'rgba(31,27,23,0.92)',
-            borderRadius: 28,
-            padding: '32px 42px',
-            opacity: entradaRotulo,
-            transform: `translateY(${interpolate(entradaRotulo, [0, 1], [34, 0])}px)`,
-            boxShadow: '0 20px 40px -18px rgba(31,27,23,0.6)',
-          }}
-        >
-          <p style={{ margin: 0, fontSize: 52, fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>
-            {rotulo}
-          </p>
-        </div>
-      </AbsoluteFill>
+      <Rotulo lineas={rotulo} indice={indice} total={total} salida={salida} />
     </AbsoluteFill>
   );
 }
 
 /**
- * Un halo que late sobre un punto de la pantalla.
+ * El rotulo de la escena.
  *
- * Se usa una sola vez en todo el video, sobre la regla de precios. Un recurso
- * que se repite deja de senalar: si todo esta resaltado, nada lo esta.
+ * Antes era un recuadro negro con el texto encima. Un recuadro asi es lo que
+ * hace que un video se vea de plantilla: tapa el diseno en vez de formar parte
+ * de el. Ahora el texto va sobre el fondo de la marca, con una barra de color
+ * que se estira y el numero de la funcion al lado.
+ *
+ * Cada renglon entra por debajo de un borde invisible, como el titular de una
+ * pelicula. Es el mismo efecto que se ve caro y son cuatro lineas de codigo:
+ * una caja que recorta y el texto subiendo dentro de ella.
  */
-function Halo({ x, y }: { x: number; y: number }) {
+function Rotulo({
+  lineas,
+  indice,
+  total,
+  salida,
+}: {
+  lineas: string[];
+  indice: number;
+  total: number;
+  salida: number;
+}) {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const aparece = spring({
-    frame: cuadro - Math.round(fps * 0.8),
+  const barra = spring({
+    frame: cuadro - Math.round(fps * 0.18),
     fps,
     config: { damping: 200, stiffness: 90 },
   });
 
-  // Late despacio, dos veces por segundo seria un semaforo.
-  const latido = 1 + Math.sin(cuadro / 9) * 0.06;
+  const dosDigitos = (n: number) => String(n).padStart(2, '0');
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: `${x}%`,
-        top: `${y}%`,
-        width: 240,
-        height: 240,
-        marginLeft: -120,
-        marginTop: -120,
-        borderRadius: '50%',
-        border: `5px solid ${COLOR.terracotaClaro}`,
-        boxShadow: `0 0 0 12px rgba(210,105,30,0.16)`,
-        opacity: aparece * 0.9,
-        transform: `scale(${aparece * latido})`,
-      }}
-    />
+    <AbsoluteFill
+      style={{ justifyContent: 'flex-end', padding: '0 90px 200px', opacity: 1 - salida }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 22, marginBottom: 26 }}>
+        <div
+          style={{
+            height: 8,
+            width: 120 * barra,
+            borderRadius: 999,
+            background: COLOR.terracota,
+          }}
+        />
+        <span
+          style={{
+            fontSize: 30,
+            fontWeight: 700,
+            letterSpacing: 4,
+            color: COLOR.terracota,
+            opacity: barra,
+          }}
+        >
+          {dosDigitos(indice + 1)} / {dosDigitos(total)}
+        </span>
+      </div>
+
+      {lineas.map((linea, i) => {
+        const entrada = spring({
+          frame: cuadro - Math.round(fps * 0.24) - i * 5,
+          fps,
+          config: { damping: 200, stiffness: 110 },
+        });
+
+        return (
+          <div key={linea} style={{ overflow: 'hidden', paddingBottom: 6 }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: 62,
+                fontWeight: 800,
+                lineHeight: 1.14,
+                letterSpacing: -2,
+                color: i === 0 ? COLOR.piedra : COLOR.terracota,
+                transform: `translateY(${interpolate(entrada, [0, 1], [110, 0])}%)`,
+              }}
+            >
+              {linea}
+            </p>
+          </div>
+        );
+      })}
+    </AbsoluteFill>
   );
 }

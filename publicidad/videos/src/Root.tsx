@@ -1,6 +1,6 @@
 import { Composition } from 'remotion';
 import { HistoriaSinConocidos } from './HistoriaSinConocidos';
-import { VideoCompleto } from './VideoCompleto';
+import { DURACION_TOTAL, VideoCompleto } from './VideoCompleto';
 import { TarjetaCierre, TarjetaFuncion, TarjetaGiro, TarjetaTexto } from './Tarjetas';
 import { VIDEO } from './marca';
 
@@ -13,11 +13,12 @@ import { VIDEO } from './marca';
 export function Root() {
   return (
     <>
-      {/* El video de 40 segundos, el principal. */}
+      {/* El video principal. La duracion la calcula el propio video sumando
+          sus actos: si se agrega una funcion, se alarga solo. */}
       <Composition
         id="VideoCompleto"
         component={VideoCompleto}
-        durationInFrames={VIDEO.fps * 42}
+        durationInFrames={DURACION_TOTAL}
         fps={VIDEO.fps}
         width={VIDEO.ancho}
         height={VIDEO.alto}

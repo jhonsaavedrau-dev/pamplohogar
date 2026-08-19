@@ -15,8 +15,13 @@ import { COLOR } from './marca';
   abajo. Moverla hacia arriba es entonces un desplazamiento de verdad, con
   cada pixel en su sitio.
 
-  Antes se agrandaba una captura corta para simular movimiento, y agrandar una
-  imagen es inventarse pixeles: por eso se veia blanda.
+  POR QUE SE PUEDE AMPLIAR SIN QUE SE VEA MAL. Las capturas se toman al doble
+  de resolucion: la del computador mide 2560 de ancho para una ventana de
+  1280. Metida en un portatil de 960 en pantalla, sobra la mitad de la
+  informacion. Ampliarla hasta un 60% sigue estando por debajo de su tamano
+  real, asi que no se inventa ni un pixel, y en cambio el texto de la pagina
+  pasa de ilegible a legible en un celular. Ese es el problema del portatil:
+  cabe entero, pero entero no se lee.
 */
 
 const MARCO = '#2A2521';
@@ -24,27 +29,33 @@ const MARCO = '#2A2521';
 interface PropsPantalla {
   captura: string;
   /**
-   * Cuanto se ha bajado, de 0 a 1: la fraccion del alto de la imagen que
-   * queda por encima del borde superior de la pantalla.
+   * Cuanto se ha bajado, de 0 a 1: la fraccion del alto de la PAGINA que
+   * queda por encima del borde superior de la pantalla. No cambia de
+   * significado al ampliar.
    */
   recorrido?: number;
-  /** Acercamiento suave. Con moderacion: mucho zoom vuelve a emborronar. */
-  acercamiento?: number;
+  /** 1 es la pagina entera de ancho. 1,6 muestra dos tercios, mas grande. */
+  ampliar?: number;
+  /** Que punto horizontal de la pagina queda al centro, de 0 a 1. */
+  centroX?: number;
 }
 
-function Pantalla({ captura, recorrido = 0, acercamiento = 1 }: PropsPantalla) {
+function Pantalla({ captura, recorrido = 0, ampliar = 1, centroX = 0.5 }: PropsPantalla) {
+  // Cuanto hay que correr la imagen para que centroX quede en el medio,
+  // medido en porcentaje del ancho de la propia imagen.
+  const x = (-(centroX * ampliar - 0.5) / ampliar) * 100;
+
   return (
     <div style={{ width: '100%', height: '100%', overflow: 'hidden', background: COLOR.crema }}>
       <Img
         src={staticFile(captura)}
         style={{
-          width: '100%',
+          width: `${ampliar * 100}%`,
           height: 'auto',
           display: 'block',
-          // El porcentaje de translateY se mide sobre el alto de la propia
-          // imagen, que es justo lo que hace falta para desplazar la pagina.
-          transform: `scale(${acercamiento}) translateY(${-recorrido * 100}%)`,
-          transformOrigin: 'top center',
+          // Los dos porcentajes se miden sobre el tamano de la propia imagen,
+          // que es justo lo que hace falta para recorrer la pagina.
+          transform: `translate(${x}%, ${-recorrido * 100}%)`,
         }}
       />
     </div>
@@ -56,7 +67,8 @@ export function MarcoCelular({
   captura,
   ancho = 620,
   recorrido,
-  acercamiento,
+  ampliar,
+  centroX,
 }: PropsPantalla & { ancho?: number }) {
   const borde = Math.round(ancho * 0.026);
   const alto = Math.round((ancho * 844) / 390 + borde * 3.4);
@@ -76,7 +88,7 @@ export function MarcoCelular({
       <div
         style={{ width: '100%', height: '100%', borderRadius: ancho * 0.075, overflow: 'hidden' }}
       >
-        <Pantalla captura={captura} recorrido={recorrido} acercamiento={acercamiento} />
+        <Pantalla captura={captura} recorrido={recorrido} ampliar={ampliar} centroX={centroX} />
       </div>
 
       {/* La islita, en el borde de arriba y no encima de la pantalla: asi no
@@ -102,7 +114,8 @@ export function MarcoComputador({
   captura,
   ancho = 1000,
   recorrido,
-  acercamiento,
+  ampliar,
+  centroX,
 }: PropsPantalla & { ancho?: number }) {
   const alto = Math.round((ancho * 800) / 1280);
   const borde = Math.round(ancho * 0.014);
@@ -120,7 +133,7 @@ export function MarcoComputador({
         }}
       >
         <div style={{ width: '100%', height: '100%', borderRadius: 12, overflow: 'hidden' }}>
-          <Pantalla captura={captura} recorrido={recorrido} acercamiento={acercamiento} />
+          <Pantalla captura={captura} recorrido={recorrido} ampliar={ampliar} centroX={centroX} />
         </div>
       </div>
 

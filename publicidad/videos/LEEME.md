@@ -88,16 +88,20 @@ esto en vez de CapCut.
 
 ---
 
-## El video de 40 segundos
+## El video de 31 segundos
 
 ```
 npm run video
 ```
 
-Sale en `videos/pamplohogar-40s.mp4`. Tarda un minuto y medio.
+Sale en `videos/pamplohogar.mp4`. Tarda dos minutos y medio.
 
 Está armado con capturas reales del sitio, metidas en marcos de celular y de
 computador dibujados con código. Sin grabar nada.
+
+Duraba 42 segundos y se sentía lento. Se recortó un tercio sin quitar nada: en
+publicidad el tiempo se mide en cuánto tarda alguien en deslizar el dedo, no en
+cuánto tarda uno en leer cómodo.
 
 ### Para cambiarlo
 
@@ -105,22 +109,46 @@ Todo lo que se cambia está en dos listas al principio de
 `src/VideoCompleto.tsx`:
 
 - **PROBLEMA**: las tres frases del comienzo.
-- **ESCENAS**: qué captura sale, en qué dispositivo, con qué texto y con qué
+- **ESCENAS**: qué captura sale, en qué aparato, con qué texto y con qué
   movimiento.
 
-Los movimientos disponibles son cuatro, y cada uno imita algo que hace una
-persona mirando una pantalla:
+El video entero dice una sola cosa: hoy buscar arriendo en Pamplona es
+**preguntar**, y esto es no tener que preguntarle a nadie. Si se cambia un
+texto, que siga respondiendo a eso; si no, se vuelve a sentir deshilvanado.
+
+Los movimientos son cuatro:
 
 | Movimiento | Qué hace |
 |---|---|
-| `acercar` | Se inclina a mirar de cerca |
-| `alejar` | Se echa para atrás y ve el conjunto |
-| `recorrer` | Baja por la página |
-| `deriva` | La mirada se pasea sin prisa |
+| `bajar` | Recorre la página hacia abajo, de `desde` a `hasta` |
+| `subir` | Lo mismo al revés |
+| `quieto` | Se queda en `desde` |
+| `acercar` | Quieto, pero acercándose un 8% |
 
-En computador el movimiento va más fuerte a propósito: una captura de
-computador entra en el marco a menos de la mitad de su tamaño, así que sin
-acercarse no se lee nada.
+`desde` y `hasta` son fracciones del alto de la **página completa**, no de la
+pantalla: 0,3 es "un tercio de la página hacia abajo".
+
+### Por qué las capturas son de página completa
+
+Es lo que hace que no se vean borrosas. La imagen mide varias pantallas de
+alto, así que moverla es un desplazamiento de verdad, con cada píxel en su
+sitio. Antes se agrandaba una captura corta para simular movimiento, y agrandar
+una imagen es inventarse píxeles.
+
+Para capturar la página completa hay que recorrerla entera primero: la
+plataforma hace aparecer las tarjetas cuando entran en pantalla, así que lo que
+nunca se vio sale invisible en la foto. De eso se encarga
+`capturar-pantallas.mjs`.
+
+### Por qué las escenas de computador van ampliadas
+
+El portátil cabe entero en el video, pero entero no se lee: la letra queda del
+tamaño de un grano de arroz en un celular. Por eso llevan `ampliar` entre 1,25
+y 1,6, y `centroX` para decidir qué parte queda al centro.
+
+Ampliar aquí no emborrona: la captura se toma al doble de resolución (2560 de
+ancho para una ventana de 1280), así que hasta 1,6 sigue estando por debajo de
+su tamaño real. **Por encima de 2 ya se nota.**
 
 ### Para actualizar las capturas
 
@@ -131,6 +159,10 @@ node ../capturar-pantallas.mjs
 cp -r ../capturas public/
 npm run video
 ```
+
+Ojo: si cambia el diseño de una página, los `desde` y `hasta` de esa escena
+quedan apuntando a otro sitio. Se revisan con `npx remotion still` antes de
+renderizar los 939 cuadros.
 
 ### Lo que falta y no puedo hacer yo
 
