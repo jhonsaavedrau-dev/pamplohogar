@@ -1,5 +1,6 @@
 import { Composition } from 'remotion';
 import { HistoriaSinConocidos } from './HistoriaSinConocidos';
+import { VideoCompleto } from './VideoCompleto';
 import { TarjetaCierre, TarjetaFuncion, TarjetaGiro, TarjetaTexto } from './Tarjetas';
 import { VIDEO } from './marca';
 
@@ -12,6 +13,16 @@ import { VIDEO } from './marca';
 export function Root() {
   return (
     <>
+      {/* El video de 40 segundos, el principal. */}
+      <Composition
+        id="VideoCompleto"
+        component={VideoCompleto}
+        durationInFrames={VIDEO.fps * 40}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+      />
+
       <Composition
       id="HistoriaSinConocidos"
       component={HistoriaSinConocidos}

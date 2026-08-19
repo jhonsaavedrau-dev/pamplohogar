@@ -85,3 +85,55 @@ Un video que se arme solo con las publicaciones de la semana: se le pasan los
 inmuebles nuevos y saca un video con sus fotos, precios y barrios. Eso es lo
 que un editor normal no puede hacer, y es la única razón de peso para usar
 esto en vez de CapCut.
+
+---
+
+## El video de 40 segundos
+
+```
+npm run video
+```
+
+Sale en `videos/pamplohogar-40s.mp4`. Tarda un minuto y medio.
+
+Está armado con capturas reales del sitio, metidas en marcos de celular y de
+computador dibujados con código. Sin grabar nada.
+
+### Para cambiarlo
+
+Todo lo que se cambia está en dos listas al principio de
+`src/VideoCompleto.tsx`:
+
+- **PROBLEMA**: las tres frases del comienzo.
+- **ESCENAS**: qué captura sale, en qué dispositivo, con qué texto y con qué
+  movimiento.
+
+Los movimientos disponibles son cuatro, y cada uno imita algo que hace una
+persona mirando una pantalla:
+
+| Movimiento | Qué hace |
+|---|---|
+| `acercar` | Se inclina a mirar de cerca |
+| `alejar` | Se echa para atrás y ve el conjunto |
+| `recorrer` | Baja por la página |
+| `deriva` | La mirada se pasea sin prisa |
+
+En computador el movimiento va más fuerte a propósito: una captura de
+computador entra en el marco a menos de la mitad de su tamaño, así que sin
+acercarse no se lee nada.
+
+### Para actualizar las capturas
+
+Cuando la plataforma cambie:
+
+```
+node ../capturar-pantallas.mjs
+cp -r ../capturas public/
+npm run video
+```
+
+### Lo que falta y no puedo hacer yo
+
+**La música.** El video sale mudo. Ponerle una canción y decidir dónde entra
+y dónde calla es cuestión de oído: eso se hace en CapCut en diez minutos,
+abriendo el mp4 y agregando el audio.

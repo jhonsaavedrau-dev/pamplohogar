@@ -7,7 +7,8 @@
     "ver": "remotion studio",
     "historia": "remotion render HistoriaSinConocidos videos/historia-sin-conocidos.mp4",
     "foto": "remotion still HistoriaSinConocidos videos/portada.png --frame=90",
-    "tarjetas": "remotion still TarjetaGiro tarjetas/giro.png && remotion still TarjetaCierre tarjetas/cierre.png"
+    "tarjetas": "remotion still TarjetaGiro tarjetas/giro.png && remotion still TarjetaCierre tarjetas/cierre.png",
+    "video": "remotion render VideoCompleto videos/pamplohogar-40s.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
