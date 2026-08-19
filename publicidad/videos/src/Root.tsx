@@ -1,6 +1,6 @@
 import { Composition } from 'remotion';
 import { HistoriaSinConocidos } from './HistoriaSinConocidos';
-import { TarjetaCierre, TarjetaFuncion, TarjetaGiro } from './Tarjetas';
+import { TarjetaCierre, TarjetaFuncion, TarjetaGiro, TarjetaTexto } from './Tarjetas';
 import { VIDEO } from './marca';
 
 /*
@@ -47,6 +47,18 @@ export function Root() {
         width={VIDEO.ancho}
         height={VIDEO.alto}
         defaultProps={{ texto: 'El precio, sin preguntar' }}
+      />
+      <Composition
+        id="TarjetaTexto"
+        component={TarjetaTexto}
+        durationInFrames={1}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+        defaultProps={{
+          texto: 'En Pamplona, conseguir dónde vivir',
+          resaltado: 'depende de a quién conozcas.',
+        }}
       />
     </>
   );

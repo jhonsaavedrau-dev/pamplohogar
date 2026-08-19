@@ -44,3 +44,5 @@ publicidad/videos/videos/
 publicidad/videos/out/
 # Las tarjetas para CapCut se regeneran con generar-tarjetas.mjs.
 publicidad/videos/tarjetas/
+# Las capturas se vuelven a tomar con publicidad/capturar-pantallas.mjs.
+publicidad/capturas/

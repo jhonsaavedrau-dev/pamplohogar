@@ -112,3 +112,38 @@ export function TarjetaFuncion({ texto = 'El precio, sin preguntar' }: { texto?:
     </AbsoluteFill>
   );
 }
+
+/*
+  Tarjeta de texto suelta, para los tramos donde no hay nada que mostrar.
+
+  El acto 1 del video cuenta el problema, y del problema no hay capturas: no
+  se puede fotografiar la ausencia de una plataforma. Va contado con frases
+  cortas sobre el crema de la marca.
+
+  La palabra en terracota se marca escribiendo el texto en dos partes.
+*/
+export function TarjetaTexto({
+  texto = 'En Pamplona, conseguir dónde vivir',
+  resaltado = 'depende de a quién conozcas.',
+}: {
+  texto?: string;
+  resaltado?: string;
+}) {
+  return (
+    <AbsoluteFill style={base}>
+      <p
+        style={{
+          fontSize: 86,
+          fontWeight: 800,
+          lineHeight: 1.1,
+          letterSpacing: -2,
+          color: COLOR.piedra,
+          margin: 0,
+        }}
+      >
+        {texto}{' '}
+        <span style={{ color: COLOR.terracota }}>{resaltado}</span>
+      </p>
+    </AbsoluteFill>
+  );
+}

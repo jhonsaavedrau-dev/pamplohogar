@@ -35,6 +35,21 @@ for (const [archivo, texto] of ROTULOS) {
   process.stdout.write(`rotulo-${archivo}.png   "${texto}"\n`);
 }
 
+// Las tarjetas del acto 1, que cuentan el problema. Van en dos partes: lo
+// normal y lo que queda en terracota.
+const TEXTOS = [
+  ['t1', 'En Pamplona, conseguir dónde vivir', 'depende de a quién conozcas.'],
+  ['t2', 'Grupos de WhatsApp. Avisos en un poste.', 'Conocidos de conocidos.'],
+  ['t3', 'Y el precio,', 'solo si preguntas.'],
+];
+
+for (const [archivo, texto, resaltado] of TEXTOS) {
+  writeFileSync(CONFIG, JSON.stringify({ texto, resaltado }), 'utf8');
+  remotion(['still', 'TarjetaTexto', `tarjetas/texto-${archivo}.png`, `--props=${CONFIG}`]);
+  process.stdout.write(`texto-${archivo}.png
+`);
+}
+
 rmSync(CONFIG, { force: true });
 
 remotion(['still', 'TarjetaGiro', 'tarjetas/giro.png']);
