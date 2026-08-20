@@ -208,8 +208,27 @@ cuando termines.
 **2.** Desde `backend/`:
 
 ```
-npm run seed:produccion
+npm run ejemplos:produccion
 ```
+
+Ese comando **solo agrega lo que falte y no borra nada**. Es el que hay que usar
+ahora que en la plataforma hay gente de verdad.
+
+Existe tambien `npm run seed:produccion`, que borra las cuentas de ejemplo y las
+vuelve a crear desde cero. **Sirve para una base vacia y no para esta.** Borrar
+una cuenta de ejemplo se lleva por delante las conversaciones que una persona de
+verdad le escribio y los favoritos que guardo sobre esas publicaciones, y eso no
+se recupera.
+
+Para saber que hay antes de tocar nada:
+
+```
+node prisma/revisarProduccion.mjs
+```
+
+Dice cuantas cuentas, publicaciones y opiniones son de ejemplo y cuantas son de
+gente de verdad, y cuantas conversaciones se perderian si se corriera la semilla
+completa.
 
 El comando revisa el archivo antes de conectarse a nada. Si todavia dice
 `PEGA-AQUI`, si lo que hay no parece una direccion de base de datos, o si por

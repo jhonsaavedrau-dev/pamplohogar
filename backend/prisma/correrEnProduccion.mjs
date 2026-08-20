@@ -1,13 +1,14 @@
 /*
-  Carga los datos de ejemplo en la base de datos de internet.
+  Corre un programa contra la base de datos de INTERNET, la que lee
+  pamplohogar.com.
 
-  La semilla normal (`npm run seed`) trabaja contra la base de pruebas, que es
-  la que esta configurada en .env. Esta corre exactamente la misma semilla pero
-  apuntando a la base de verdad, la que lee pamplohogar.com.
+  Los programas normales (`npm run seed`, por ejemplo) trabajan contra la base
+  de pruebas, que es la que esta configurada en .env. Este los corre igual pero
+  apuntando a la de verdad.
 
-  Va aparte y no como una bandera de la otra a proposito: escribir en la base de
-  internet tiene que costar un comando distinto y escrito a mano. Una bandera
-  que se olvida puesta es un accidente esperando.
+  Va aparte y no como una bandera de los otros a proposito: escribir en la base
+  de internet tiene que costar un comando distinto y escrito a mano. Una
+  bandera que se olvida puesta es un accidente esperando.
 
   LA DIRECCION NO SE GUARDA EN EL PROYECTO. Se lee de backend/.env.produccion,
   que .gitignore ignora y que se borra apenas se termina. Es la llave de la base
@@ -18,7 +19,11 @@
     - las cuentas @test.com que dejan las pruebas de la API
   Ninguna cuenta ni publicacion de una persona real se toca.
 
-  Uso:  npm run seed:produccion
+  Uso:  node prisma/correrEnProduccion.mjs prisma/loQueSea.ts
+
+  Con nombre propio, que es como se usa:
+    npm run ejemplos:produccion   agrega lo que falte, sin borrar nada
+    npm run seed:produccion       borra los ejemplos y los vuelve a crear
 */
 import { readFileSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -82,7 +87,9 @@ const DIRECT_URL = directa && !directa.includes('PEGA-AQUI') ? directa : url;
 const servidor = url.match(/@([^/?]+)/)?.[1] ?? '(desconocido)';
 process.stdout.write(`Sembrando la base de INTERNET (${servidor})...\n\n`);
 
-const resultado = spawnSync('npx', ['tsx', join(aqui, 'seed.ts')], {
+const programa = process.argv[2] ?? 'prisma/seed.ts';
+
+const resultado = spawnSync('npx', ['tsx', programa], {
   stdio: 'inherit',
   shell: process.platform === 'win32',
   env: { ...process.env, DATABASE_URL: url, DIRECT_URL },
