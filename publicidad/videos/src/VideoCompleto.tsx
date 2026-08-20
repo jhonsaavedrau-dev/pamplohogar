@@ -83,12 +83,20 @@ const CAPITULOS: Capitulo[] = [
         captura: 'capturas/celular/1-portada.png',
         dispositivo: 'celular',
         rotulo: ['Todos los arriendos,', 'en una sola pantalla'],
-        movimiento: 'acercar',
+        // Quieta y no acercandose, que es lo unico que no puede hacer esta
+        // escena. La portada es una captura de UNA ventana, no de una pagina
+        // larga: al acercarse no hay pagina de donde sacar, asi que el
+        // acercamiento se come los bordes y parte las palabras de los lados.
+        // El movimiento aqui lo ponen la entrada girada y la flotacion.
+        movimiento: 'quieto',
         // La portada es una captura de una sola ventana, un pelo mas cuadrada
-        // que la pantalla del telefono. El 6% de mas la hace calzar, y bajarla
-        // un 3% reparte el recorte entre arriba y abajo.
-        ampliar: 1.06,
-        desde: 0.03,
+        // que la pantalla del telefono: sin ampliarla quedaria una franja
+        // crema. Con 1,09 sobra lo justo para que el acercamiento tenga de
+        // donde comer, y bajando un 2% el encabezado no se corta. Antes iba en
+        // 1,06 y 3%, y al agrandarse el marco de arriba del telefono el logo
+        // de la pagina quedaba mordido.
+        ampliar: 1.09,
+        desde: 0.02,
       },
       {
         captura: 'capturas/computador/8-filtros.png',
@@ -120,8 +128,13 @@ const CAPITULOS: Capitulo[] = [
         movimiento: 'bajar',
         // Calculado para que la regla de precios entre en cuadro y se quede:
         // es la funcion que no tiene nadie mas, y ampliada por fin se lee.
-        desde: 0.4,
-        hasta: 0.46,
+        //
+        // Estas fracciones bajaron de 0,40 y 0,46 porque la ficha crecio: al
+        // llenarse las opiniones del barrio la pagina paso de 5784 a 7808 de
+        // alto, y la regla de precios, que no se movio ni un pixel, quedo mas
+        // arriba en proporcion.
+        desde: 0.296,
+        hasta: 0.341,
         ampliar: 1.6,
         centroX: 0.37,
       },
@@ -130,11 +143,12 @@ const CAPITULOS: Capitulo[] = [
         dispositivo: 'celular',
         rotulo: ['Lo que cuentan', 'los que ya vivieron ahí'],
         movimiento: 'bajar',
-        // Se abre justo en "Que dicen del arrendador". Mas arriba se veia el
-        // recuadro de que todavia nadie ha contado como es el barrio, que es
-        // verdad pero no es lo que se esta mostrando.
-        desde: 0.52,
-        hasta: 0.6,
+        // Ahora se abre en "Como es vivir en Chichira", que es donde estan las
+        // opiniones del barrio. Antes ese recuadro decia que nadie habia
+        // contado nada y tocaba esquivarlo bajando hasta las resenas del
+        // arrendador; ya no hay nada que esquivar.
+        desde: 0.39,
+        hasta: 0.5,
       },
       {
         captura: 'capturas/computador/5-mapa-precios.png',
