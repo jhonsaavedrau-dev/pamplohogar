@@ -67,10 +67,33 @@ const ESTUDIANTES = [
     descripcion: 'Segundo semestre de Psicología. Vengo de Cúcuta y no conozco a casi nadie aquí.',
   },
   { nombre: 'Sebastián Ortega', email: 'sebastian.ortega@ejemplo.com', telefono: '3143216549', descripcion: null },
+  {
+    nombre: 'Juan David Carvajal',
+    email: 'juan.carvajal@ejemplo.com',
+    telefono: '3126549870',
+    descripcion: 'Estudio Zootecnia. Salgo temprano a las prácticas, así que necesito quedar cerca de la vía.',
+  },
+  {
+    nombre: 'Mariana Suárez',
+    email: 'mariana.suarez@ejemplo.com',
+    telefono: '3197412580',
+    descripcion: 'Enfermería, séptimo semestre. Hago turnos en el hospital y a veces llego tarde en la noche.',
+  },
+  { nombre: 'Brayan Estiven Parra', email: 'brayan.parra@ejemplo.com', telefono: '3134569871', descripcion: null },
 ];
 
-// Opiniones sobre los barrios. Se necesitan al menos tres por barrio para que
-// la pagina muestre un promedio, asi que van completas y no salteadas.
+/*
+  Opiniones sobre los barrios.
+
+  Van TRES POR CADA BARRIO en el que hay algo publicado, y ese numero no es
+  gratuito: la pagina solo muestra el promedio cuando hay tres o mas. Con dos
+  sale el aviso de que todavia nadie ha contado como es vivir ahi, que es
+  justo lo que hacia ver la seccion vacia en las fichas de los barrios que
+  faltaban.
+
+  Una persona no puede opinar dos veces del mismo barrio -- la base lo
+  impide -- asi que las opiniones se reparten entre los ocho estudiantes.
+*/
 const RESENAS_DE_BARRIO: {
   barrio: string;
   indiceEstudiante: number;
@@ -159,6 +182,201 @@ const RESENAS_DE_BARRIO: {
     transporte: 2,
     comentario:
       'Vecinos muy amables y nunca vi nada raro. Lo del transporte sí es real, si vas a coger clases de siete de la noche piénsalo dos veces.',
+  },
+  {
+    barrio: 'Chichira',
+    indiceEstudiante: 0,
+    tranquilidad: 5,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Es de lo más callado que hay estando tan cerca de la U: se llega caminando en menos de quince minutos y no toca coger buseta. De noche no pasa casi nadie, así que uno duerme bien.',
+  },
+  {
+    barrio: 'Chichira',
+    indiceEstudiante: 5,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Viví ahí un año. Hay tienda y papelería a la vuelta, y para lo demás toca bajar al centro. La subida de vuelta cansa los primeros días y después ya ni se siente.',
+  },
+  {
+    barrio: 'Chichira',
+    indiceEstudiante: 6,
+    tranquilidad: 5,
+    seguridad: 3,
+    transporte: 3,
+    comentario:
+      'Muy tranquilo para estudiar y el arriendo rinde más que en el centro. Hay tramos con poca luz, así que volviendo de un turno de noche prefiero venirme acompañada.',
+  },
+
+  {
+    barrio: 'Santa Marta',
+    indiceEstudiante: 1,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 4,
+    comentario:
+      'Barrio de familias de toda la vida, no de estudiantes de fiesta. Eso se agradece en época de parciales. Queda cerca del hospital y pasa buseta seguido por la principal.',
+  },
+  {
+    barrio: 'Santa Marta',
+    indiceEstudiante: 4,
+    tranquilidad: 4,
+    seguridad: 5,
+    transporte: 4,
+    comentario:
+      'De los barrios donde más seguro me he sentido volviendo tarde. Siempre hay vecinos en las puertas y todo el mundo se conoce.',
+  },
+  {
+    barrio: 'Santa Marta',
+    indiceEstudiante: 7,
+    tranquilidad: 3,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Bien ubicado y con transporte a toda hora. Lo único es que sobre la vía principal se oyen los carros desde temprano.',
+  },
+
+  {
+    barrio: 'Cristo Rey',
+    indiceEstudiante: 2,
+    tranquilidad: 5,
+    seguridad: 4,
+    transporte: 2,
+    comentario:
+      'La vista de la ciudad desde allá arriba es lo mejor que tiene, y es callado de verdad. Pero es subida pura: con bolsas de mercado se sufre.',
+  },
+  {
+    barrio: 'Cristo Rey',
+    indiceEstudiante: 5,
+    tranquilidad: 5,
+    seguridad: 3,
+    transporte: 2,
+    comentario:
+      'Los arriendos son de los más baratos y las casas grandes. La buseta sube poco, así que la mayoría bajamos caminando y subimos en taxi cuando llueve.',
+  },
+  {
+    barrio: 'Cristo Rey',
+    indiceEstudiante: 3,
+    tranquilidad: 4,
+    seguridad: 3,
+    transporte: 2,
+    comentario:
+      'Tranquilo y con buenos vecinos. Si tienes clase a primera hora piénsalo, porque bajar son veinte minutos largos y en la mañana hace un frío bravo.',
+  },
+
+  {
+    barrio: 'El Escorial',
+    indiceEstudiante: 0,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 4,
+    comentario:
+      'Es de los barrios más nuevos: las casas están mejor terminadas y no hay tanta humedad como en el centro. Se llega a la U en buseta en diez minutos.',
+  },
+  {
+    barrio: 'El Escorial',
+    indiceEstudiante: 6,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Callado y limpio. Lo que hace falta es comercio: para un almuerzo o una fotocopia toca salir del barrio.',
+  },
+  {
+    barrio: 'El Escorial',
+    indiceEstudiante: 7,
+    tranquilidad: 5,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Se estudia bien de noche, no se oye nada. La buseta deja de pasar temprano, eso sí: después de las nueve toca taxi.',
+  },
+
+  {
+    barrio: 'Juan XXIII',
+    indiceEstudiante: 1,
+    tranquilidad: 3,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Muy bien conectado, pasa transporte a cada rato y hay tiendas abiertas hasta tarde. A cambio siempre hay movimiento en la calle.',
+  },
+  {
+    barrio: 'Juan XXIII',
+    indiceEstudiante: 4,
+    tranquilidad: 3,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Para quien no quiere depender de horarios de buseta es buenísimo. El ruido es de calle normal, no de bar; uno se acostumbra en dos semanas.',
+  },
+  {
+    barrio: 'Juan XXIII',
+    indiceEstudiante: 5,
+    tranquilidad: 4,
+    seguridad: 3,
+    transporte: 5,
+    comentario:
+      'Nunca me pasó nada, pero de madrugada hay cuadras solas. Por lo demás, es de los sitios donde menos se gasta uno en pasajes.',
+  },
+
+  {
+    barrio: 'Ursua',
+    indiceEstudiante: 2,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Barrio residencial y bastante callado. Se llega caminando a la U en veinte minutos y en buseta en cinco, así que uno decide según la pereza.',
+  },
+  {
+    barrio: 'Ursua',
+    indiceEstudiante: 6,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Las casas son amplias y hay varias que arriendan por habitación. La zona es tranquila, aunque de noche hay poco movimiento y eso a algunos les pesa.',
+  },
+  {
+    barrio: 'Ursua',
+    indiceEstudiante: 3,
+    tranquilidad: 5,
+    seguridad: 4,
+    transporte: 3,
+    comentario:
+      'Me quedé dos semestres y volvería. Silencioso, vecinos amables y el arriendo más barato que en el centro por el mismo espacio.',
+  },
+
+  {
+    barrio: 'San Francisco',
+    indiceEstudiante: 0,
+    tranquilidad: 3,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Está pegado al centro sin ser el centro: se camina a todo y no hay el ruido del comercio. Para mí es el mejor equilibrio de la ciudad.',
+  },
+  {
+    barrio: 'San Francisco',
+    indiceEstudiante: 4,
+    tranquilidad: 3,
+    seguridad: 5,
+    transporte: 5,
+    comentario:
+      'Siempre hay gente pasando, lo que lo hace seguro a cualquier hora. Los apartamentos son de los más caros, eso hay que tenerlo claro.',
+  },
+  {
+    barrio: 'San Francisco',
+    indiceEstudiante: 7,
+    tranquilidad: 4,
+    seguridad: 4,
+    transporte: 5,
+    comentario:
+      'Viví ahí en primer semestre sin conocer a nadie y fue fácil moverse: todo queda a diez minutos a pie. Los fines de semana sí se siente más movido.',
   },
 ];
 
@@ -540,6 +758,47 @@ const RESENAS = [
     calificacion: 4,
     comentario:
       'La señora Gloria es muy amable y la casa es segura. El desayuno incluido si se cumple. Recomendado sobre todo si vienes de otra ciudad y no conoces a nadie.',
+  },  {
+    indiceEstudiante: 4,
+    indiceArrendador: 0,
+    calificacion: 5,
+    comentario:
+      'Me arrendó sin conocerme de nada y me trató como si llevara años ahí. Cuando se dañó la ducha mandó al plomero al otro día.',
+  },
+  {
+    indiceEstudiante: 5,
+    indiceArrendador: 1,
+    calificacion: 4,
+    comentario:
+      'Todo tal cual lo publicado. Es estricto con el silencio después de las once, pero eso lo avisa desde el principio y a mí me sirvió para estudiar.',
+  },
+  {
+    indiceEstudiante: 3,
+    indiceArrendador: 1,
+    calificacion: 5,
+    comentario:
+      'Vivi año y medio en su apartamento. Nunca me subió el arriendo a mitad de semestre y siempre respondió el teléfono.',
+  },
+  {
+    indiceEstudiante: 6,
+    indiceArrendador: 2,
+    calificacion: 5,
+    comentario:
+      'Me recibió recién llegada de Cúcuta y hasta me explicó qué buseta coger. La casa es limpia y el barrio callado.',
+  },
+  {
+    indiceEstudiante: 7,
+    indiceArrendador: 2,
+    calificacion: 4,
+    comentario:
+      'Buen trato y precio justo. Lo único es que el agua caliente a veces demora, pero la señora Gloria avisó de eso antes de que firmáramos.',
+  },
+  {
+    indiceEstudiante: 1,
+    indiceArrendador: 2,
+    calificacion: 5,
+    comentario:
+      'Es de las pocas que muestra la habitación en persona antes de pedir plata. Eso solo ya da confianza.',
   },
 ];
 

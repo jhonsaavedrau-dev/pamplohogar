@@ -94,6 +94,7 @@
 
   .boton-primario,
   .boton-confianza,
+  .boton-contorno,
   .boton-suave {
     @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-base font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -113,6 +114,16 @@
 
   .boton-suave {
     @apply border border-piedra-200 bg-white text-piedra-800 hover:border-piedra-300 hover:bg-piedra-50 active:scale-[0.985];
+  }
+
+  /*
+    El boton de marca sin rellenar. Para lo que no es ni una accion principal ni
+    una accion neutra: abrir los filtros, por ejemplo. Relleno competiria con el
+    boton principal de la pantalla, y en gris se perderia dentro de una tarjeta
+    blanca.
+  */
+  .boton-contorno {
+    @apply border-2 border-terracota-200 bg-white text-terracota-700 hover:border-terracota-300 hover:bg-terracota-50 active:scale-[0.985];
   }
 
   .campo {

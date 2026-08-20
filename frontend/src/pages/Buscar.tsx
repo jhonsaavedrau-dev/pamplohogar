@@ -170,15 +170,21 @@ export function Buscar() {
                 onChange={(e) => actualizar('q', e.target.value)}
                 aria-label="Buscar vivienda"
               />
+              {/*
+                Va en contorno de marca y no en azul relleno. Abrir los filtros
+                no es la accion que la portada quiere que uno haga, es una
+                herramienta; un boton relleno al lado del buscador se lleva la
+                atencion que le toca al titular.
+              */}
               <button
                 type="button"
                 onClick={() => setFiltrosAbiertos((v) => !v)}
-                className="boton-confianza shrink-0"
+                className="boton-contorno shrink-0"
                 aria-expanded={filtrosAbiertos}
               >
                 {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
                 {serviciosActivos.length > 0 && (
-                  <span className="rounded-full bg-white/25 px-2 text-sm">
+                  <span className="rounded-full bg-terracota-100 px-2 text-sm">
                     {serviciosActivos.length}
                   </span>
                 )}
