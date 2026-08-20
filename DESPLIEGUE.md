@@ -193,12 +193,14 @@ nunca se toca la base de la gente sin querer.
 
 **1.** En el panel de Render, entra al servicio `pamplohogar-api`, abre
 **Environment** y copia el valor de `DATABASE_URL`. Crea el archivo
-`backend/.env.produccion` con estas dos lineas, pegando ese valor en las dos:
+`backend/.env.produccion` con esa direccion, en una sola linea:
 
 ```
-DATABASE_URL="lo que copiaste de Render"
-DIRECT_URL="lo que copiaste de Render"
+DATABASE_URL=lo que copiaste de Render
 ```
+
+Las comillas no hacen falta, y `DIRECT_URL` tampoco: solo la usan las
+migraciones, y si no esta escrita el comando reutiliza la misma direccion.
 
 Ese archivo NO se sube a GitHub, ya esta en la lista de ignorados. Y borralo
 cuando termines.
@@ -208,6 +210,11 @@ cuando termines.
 ```
 npm run seed:produccion
 ```
+
+El comando revisa el archivo antes de conectarse a nada. Si todavia dice
+`PEGA-AQUI`, si lo que hay no parece una direccion de base de datos, o si por
+equivocacion quedo pegada la direccion de la base de pruebas, se detiene y lo
+dice en una linea en vez de soltar el error de la libreria, que no se entiende.
 
 **Que borra y que no.** Borra y vuelve a crear unicamente las cuentas de
 ejemplo, las que terminan en `@ejemplo.com`, y las de prueba, que terminan en
