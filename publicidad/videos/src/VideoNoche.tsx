@@ -22,9 +22,11 @@ import { COLOR, LETRA, LETRA_SERIF, VIDEO } from './marca';
   Las tres preguntas son verificables una por una en la plataforma, y esa es la
   unica razon por la que se pueden decir.
 
-  Y ES DE NOCHE por algo, no por variar: la tercera pregunta es como se siente
-  ese barrio a las nueve de la noche, y esa es la que nadie contesta por
-  WhatsApp.
+  ESTA ESCRITO COMO SE HABLA. "Me estaran viendo la cara", "son cuarenta
+  minutos de subida", "el barrio como es en serio". Antes decia cosas como
+  "como es esa cuadra a las nueve de la noche" y sonaba a folleto: nadie dice
+  eso. Una frase de publicidad que nadie diria en voz alta se siente falsa
+  aunque el argumento sea bueno.
 */
 
 const s = (segundos: number) => Math.round(segundos * VIDEO.fps);
@@ -34,10 +36,18 @@ const DURACION_PREGUNTA = s(3);
 const DURACION_REMATE = s(3);
 const DURACION_CIERRE = s(2.5);
 
+/*
+  Las tres preguntas, dichas como las dice la gente.
+
+  Antes decian cosas como "como es esa cuadra a las nueve de la noche", que es
+  una frase de folleto: nadie habla asi. Un estudiante que esta mirando una
+  habitacion piensa "me estaran viendo la cara" y "sera que si queda cerca".
+  Esas son las palabras que hay que usar, no las de un informe.
+*/
 const PREGUNTAS = [
-  ['¿Cuánto se cobra', 'normalmente', 'en ese barrio?'],
-  ['¿A cuántos minutos', 'queda de la U,', 'de verdad?'],
-  ['¿Cómo es esa cuadra', 'a las nueve', 'de la noche?'],
+  ['¿Ese precio es lo normal', 'o me están viendo', 'la cara?'],
+  ['¿Sí queda cerca', 'o son cuarenta minutos', 'de subida?'],
+  ['¿Y el barrio', 'cómo es', 'en serio?'],
 ];
 
 const COMIENZO_PREGUNTAS = DURACION_ENTRADA;

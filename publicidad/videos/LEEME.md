@@ -88,66 +88,85 @@ esto en vez de CapCut.
 
 ---
 
-## Hay cinco videos, y ninguno es otro recortado
+## Hay quince videos, y ninguno es otro recortado
 
-| Comando | Sale en | Dura | Estilo | A quién le habla |
-|---|---|---|---|---|
-| `npm run video` | `pamplohogar.mp4` | 59 s | Claro, tres capítulos, diez pantallas | Al estudiante: todo lo que hace |
-| `npm run video:precio` | `pamplohogar-precio.mp4` | 15 s | Claro, una sola función | Al estudiante, por la plata |
-| `npm run video:arrendadores` | `pamplohogar-arrendadores.mp4` | 20 s | Claro, hablado de usted | Al que tiene la habitación desocupada |
-| `npm run video:noche` | `pamplohogar-noche.mp4` | 18 s | **Oscuro, puro texto, sin aparatos** | Al que está a punto de firmar |
-| `npm run video:antes` | `pamplohogar-antes-y-despues.mp4` | 20 s | **Ocho segundos sin color y un barrido** | Al que ya está en esos grupos |
+```
+npm run videos
+```
 
-`npm run videos` los hace los cinco seguidos. Tarda unos ocho minutos.
+Los hace todos. Tarda unos veinte minutos.
 
-**Los cortos no son resúmenes del largo.** Un resumen se nota y aburre al que ya
-vio el otro. Cada uno entra por un lado distinto:
+### Para quien busca arriendo
 
-- **El de precios** se mete por una pregunta que casi todo el que arrienda en
-  Pamplona se ha hecho callado: *me estarán cobrando de más*. Muestra **una
-  sola función**. Quince segundos no dan para una lista, y una lista de quince
-  segundos no se recuerda: se recuerda una cosa.
-- **El de arrendadores** le habla a la otra mitad. Una plataforma de arriendos
-  sin arriendos publicados no le sirve a nadie. Va en *usted* y no en *tú*, y
-  **no le muestra el formulario de publicar**: a nadie lo convence un
-  formulario. Le muestra cómo queda lo suyo y quién lo va a ver.
-- **El de noche** es el único con otro aspecto: fondo oscuro, ni un aparato en
-  todo el video, y el valle de Pamplona con las ventanas encendidas. Un carrete
-  lleno de publicidad clara se vuelve un muro parejo; el que va oscuro se ve
-  raro y por eso se mira. Y es de noche por algo: su tercera pregunta es cómo
-  se siente esa cuadra a las nueve.
-- **El de antes y después** empieza mostrando **lo otro**: ocho segundos de un
-  grupo donde alguien pregunta por una habitación y la conversación se muere.
-  Sin color, y cuando entra la plataforma un barrido lo devuelve de golpe. Ese
-  contraste es todo el video.
+| Comando | Dura | Estilo |
+|---|---|---|
+| `npm run video` | 59 s | El completo: tres capítulos, diez pantallas |
+| `npm run video:precio` | 15 s | Una sola función: la comparación de precios |
+| `npm run video:noche` | 18 s | Fondo oscuro, puro texto, ni un aparato |
+| `npm run video:antes` | 20 s | Ocho segundos sin color y un barrido |
+| `npm run video:recibo` | 16 s | Una tirilla de caja que se imprime sola |
+| `npm run video:scroll` | 14 s | Una sola toma, sin un corte |
+| `npm run video:mapa` | 18 s | El mapa a pantalla completa, sin marco |
+| `npm run video:tarjetas` | 15 s | Cartas repartidas como una mano de naipes |
+| `npm run video:cifras` | 13 s | Fondo naranja entero y contadores enormes |
 
-Los cinco comparten las piezas (`src/Piezas.tsx`), los marcos de los aparatos y
-el fondo. Arreglar el desenfoque de las palabras se arregla una vez.
+### Para arrendadores
 
-### Dos reglas que no se pueden romper
+| Comando | Dura | Estilo |
+|---|---|---|
+| `npm run video:arrendadores` | 20 s | Cómo se ve lo suyo, hablado de usted |
+| `npm run video:cartel` | 16 s | El aviso del poste, con flequitos que se arrancan |
+| `npm run video:llamadas` | 15 s | Una lista de llamadas que se llena sola |
+| `npm run video:calendario` | 15 s | Hojas de calendario que caen |
+| `npm run video:ficha` | 17 s | Un formulario que se llena y un sello de caucho |
+| `npm run video:contraste` | 16 s | Pantalla partida, y partida todo el video |
 
-**Nada de datos inventados.** Da la tentación de abrir con *"el 70% de los
-estudiantes..."*, que es lo que hace todo el mundo, pero ese dato no existe.
-Todo lo que se afirma en los cinco videos se puede comprobar en la plataforma.
+**Ninguno es un resumen de otro.** Un resumen se nota y aburre al que ya vio el
+primero. Cada uno entra por un lado distinto, y varios ni siquiera muestran la
+plataforma hasta la segunda mitad: el del cartel empieza por un aviso de poste,
+el de las llamadas por una lista de llamadas perdidas, el de antes y después por
+un grupo donde nadie contesta.
 
-**Las burbujas del video de antes y después no imitan ninguna aplicación.** Nada
-de verde, ni visto azul, ni barra de arriba con foto de perfil: son rectángulos
-redondeados en los grises de la marca. Se entiende que es un grupo de mensajes
-sin hacer pasar el video por una captura de algo que no es.
+**Los quince comparten** las piezas (`src/Piezas.tsx`), los marcos de los
+aparatos, el fondo y el logo. Arreglar el desenfoque de las palabras se arregla
+una vez.
 
 ### Dónde publicar cada uno
 
-- **15 s (precios)** — historia de Instagram y estado de WhatsApp, que es lo
-  que aguantan sin partirse en dos.
-- **18 s (noche)** — reels y TikTok, donde lo que se ve distinto es lo que
-  frena el dedo.
-- **20 s (arrendadores)** — para mandarle por WhatsApp a un arrendador, o a un
-  grupo de propietarios.
-- **20 s (antes y después)** — para los grupos de estudiantes, que es
-  justamente donde pasa lo que muestra.
-- **59 s** — para el perfil, la página, y para quien ya mostró interés.
+- **13 a 15 s** — historia de Instagram y estado de WhatsApp, que es lo que
+  aguantan sin partirse en dos. Ahí van `cifras`, `scroll`, `precio`,
+  `tarjetas`, `llamadas` y `calendario`.
+- **16 a 20 s** — reels y TikTok. `noche`, `mapa`, `recibo`, `cartel`, `ficha`,
+  `contraste` y `antes`.
+- **Para mandarle directo a un arrendador** por WhatsApp: `cartel`, `contraste`
+  o `ficha`.
+- **Para los grupos de estudiantes**: `antes`, que es donde pasa justamente lo
+  que muestra.
+- **59 s** — el perfil, la página, y quien ya mostró interés.
 
----
+### Cuatro reglas que no se pueden romper
+
+**Nada de datos inventados.** Da la tentación de abrir con *"el 70% de los
+estudiantes..."*, que es lo que hace todo el mundo, pero ese dato no existe.
+Las cifras del video naranja son las que responde la plataforma hoy, y por eso
+el cartel final dice *"de lo que hay publicado hoy"* y no *"de Pamplona"*: lo
+primero es comprobable y lo segundo no.
+
+**Ninguna pantalla imita una aplicación ajena.** Las burbujas del video de antes
+y después no llevan verde, ni visto azul, ni barra de arriba con foto de perfil:
+son rectángulos redondeados en los grises de la marca. Se entiende que es un
+grupo de mensajes sin hacer pasar el video por una captura de algo que no es.
+
+**Los teléfonos que salen en pantalla son inventados** — 300 000 0000, que no le
+pertenece a nadie. Un número de verdad en un video que circula termina sonando
+en el teléfono de una persona.
+
+**Se escribe como se habla.** *"Me estarán viendo la cara"*, *"son cuarenta
+minutos de subida"*, *"y así toda la semana"*. Antes había frases como *"cómo es
+esa cuadra a las nueve de la noche"* y sonaban a folleto: nadie dice eso. Una
+frase de publicidad que nadie diría en voz alta se siente falsa aunque el
+argumento sea bueno, y esa desconfianza se le pega a todo lo demás que dice el
+video.
 
 ## El video de un minuto
 

@@ -13,7 +13,17 @@
     "video:arrendadores": "remotion render VideoArrendadores videos/pamplohogar-arrendadores.mp4",
     "video:noche": "remotion render VideoNoche videos/pamplohogar-noche.mp4",
     "video:antes": "remotion render VideoAntesYDespues videos/pamplohogar-antes-y-despues.mp4",
-    "videos": "npm run video && npm run video:precio && npm run video:arrendadores && npm run video:noche && npm run video:antes"
+    "video:recibo": "remotion render VideoRecibo videos/pamplohogar-recibo.mp4",
+    "video:scroll": "remotion render VideoUnSoloScroll videos/pamplohogar-un-solo-scroll.mp4",
+    "video:mapa": "remotion render VideoMapa videos/pamplohogar-mapa.mp4",
+    "video:tarjetas": "remotion render VideoTarjetas videos/pamplohogar-tarjetas.mp4",
+    "video:cifras": "remotion render VideoCuenta videos/pamplohogar-cifras.mp4",
+    "video:cartel": "remotion render VideoCartel videos/pamplohogar-cartel.mp4",
+    "video:llamadas": "remotion render VideoLlamadas videos/pamplohogar-llamadas.mp4",
+    "video:calendario": "remotion render VideoCalendario videos/pamplohogar-calendario.mp4",
+    "video:ficha": "remotion render VideoFicha videos/pamplohogar-ficha.mp4",
+    "video:contraste": "remotion render VideoContraste videos/pamplohogar-contraste.mp4",
+    "videos": "npm run video && npm run video:precio && npm run video:arrendadores && npm run video:noche && npm run video:antes && npm run video:recibo && npm run video:scroll && npm run video:mapa && npm run video:tarjetas && npm run video:cifras && npm run video:cartel && npm run video:llamadas && npm run video:calendario && npm run video:ficha && npm run video:contraste"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
