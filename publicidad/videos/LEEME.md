@@ -88,36 +88,63 @@ esto en vez de CapCut.
 
 ---
 
-## Hay tres videos, y no son el mismo recortado
+## Hay cinco videos, y ninguno es otro recortado
 
-| Comando | Sale en | Dura | A quien le habla |
-|---|---|---|---|
-| `npm run video` | `pamplohogar.mp4` | 59 s | Al estudiante. Todo lo que hace la plataforma |
-| `npm run video:precio` | `pamplohogar-precio.mp4` | 15 s | Al estudiante, por la plata |
-| `npm run video:arrendadores` | `pamplohogar-arrendadores.mp4` | 20 s | Al que tiene la habitación desocupada |
+| Comando | Sale en | Dura | Estilo | A quién le habla |
+|---|---|---|---|---|
+| `npm run video` | `pamplohogar.mp4` | 59 s | Claro, tres capítulos, diez pantallas | Al estudiante: todo lo que hace |
+| `npm run video:precio` | `pamplohogar-precio.mp4` | 15 s | Claro, una sola función | Al estudiante, por la plata |
+| `npm run video:arrendadores` | `pamplohogar-arrendadores.mp4` | 20 s | Claro, hablado de usted | Al que tiene la habitación desocupada |
+| `npm run video:noche` | `pamplohogar-noche.mp4` | 18 s | **Oscuro, puro texto, sin aparatos** | Al que está a punto de firmar |
+| `npm run video:antes` | `pamplohogar-antes-y-despues.mp4` | 20 s | **Ocho segundos sin color y un barrido** | Al que ya está en esos grupos |
 
-**Los cortos no son resúmenes del largo.** Un resumen se nota y aburre al que
-ya vio el otro. Cada uno entra por un lado distinto:
+`npm run videos` los hace los cinco seguidos. Tarda unos ocho minutos.
+
+**Los cortos no son resúmenes del largo.** Un resumen se nota y aburre al que ya
+vio el otro. Cada uno entra por un lado distinto:
 
 - **El de precios** se mete por una pregunta que casi todo el que arrienda en
   Pamplona se ha hecho callado: *me estarán cobrando de más*. Muestra **una
-  sola función**, la comparación de precios. Quince segundos no dan para una
-  lista, y una lista de quince segundos no se recuerda: se recuerda una cosa.
-- **El de arrendadores** le habla a la otra mitad. Todo lo demás —el video
-  largo, las encuestas, los volantes— le habla al estudiante, y una plataforma
-  de arriendos sin arriendos publicados no le sirve a nadie. Va en *usted* y no
-  en *tú*, y **no le muestra el formulario de publicar**: a nadie lo convence un
+  sola función**. Quince segundos no dan para una lista, y una lista de quince
+  segundos no se recuerda: se recuerda una cosa.
+- **El de arrendadores** le habla a la otra mitad. Una plataforma de arriendos
+  sin arriendos publicados no le sirve a nadie. Va en *usted* y no en *tú*, y
+  **no le muestra el formulario de publicar**: a nadie lo convence un
   formulario. Le muestra cómo queda lo suyo y quién lo va a ver.
+- **El de noche** es el único con otro aspecto: fondo oscuro, ni un aparato en
+  todo el video, y el valle de Pamplona con las ventanas encendidas. Un carrete
+  lleno de publicidad clara se vuelve un muro parejo; el que va oscuro se ve
+  raro y por eso se mira. Y es de noche por algo: su tercera pregunta es cómo
+  se siente esa cuadra a las nueve.
+- **El de antes y después** empieza mostrando **lo otro**: ocho segundos de un
+  grupo donde alguien pregunta por una habitación y la conversación se muere.
+  Sin color, y cuando entra la plataforma un barrido lo devuelve de golpe. Ese
+  contraste es todo el video.
 
-Los tres comparten las piezas (`src/Piezas.tsx`), los marcos de los aparatos y
+Los cinco comparten las piezas (`src/Piezas.tsx`), los marcos de los aparatos y
 el fondo. Arreglar el desenfoque de las palabras se arregla una vez.
+
+### Dos reglas que no se pueden romper
+
+**Nada de datos inventados.** Da la tentación de abrir con *"el 70% de los
+estudiantes..."*, que es lo que hace todo el mundo, pero ese dato no existe.
+Todo lo que se afirma en los cinco videos se puede comprobar en la plataforma.
+
+**Las burbujas del video de antes y después no imitan ninguna aplicación.** Nada
+de verde, ni visto azul, ni barra de arriba con foto de perfil: son rectángulos
+redondeados en los grises de la marca. Se entiende que es un grupo de mensajes
+sin hacer pasar el video por una captura de algo que no es.
 
 ### Dónde publicar cada uno
 
-- **15 s** — historia de Instagram y estado de WhatsApp, que es lo que aguantan
-  sin partirse en dos.
-- **20 s** — para mandarle por WhatsApp a un arrendador, o a un grupo de
-  propietarios.
+- **15 s (precios)** — historia de Instagram y estado de WhatsApp, que es lo
+  que aguantan sin partirse en dos.
+- **18 s (noche)** — reels y TikTok, donde lo que se ve distinto es lo que
+  frena el dedo.
+- **20 s (arrendadores)** — para mandarle por WhatsApp a un arrendador, o a un
+  grupo de propietarios.
+- **20 s (antes y después)** — para los grupos de estudiantes, que es
+  justamente donde pasa lo que muestra.
 - **59 s** — para el perfil, la página, y para quien ya mostró interés.
 
 ---

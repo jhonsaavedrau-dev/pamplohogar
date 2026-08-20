@@ -14,6 +14,15 @@ export const COLOR = {
   piedraGris: '#4A443B',
   piedraSuave: '#655E52',
   blanco: '#FFFFFF',
+
+  /*
+    La version de noche. El fondo no es negro sino la piedra de la marca muy
+    oscurecida: un negro puro sobre un video vertical se ve como un hueco, y
+    ademas rompe con el resto del material, que es todo tierra.
+  */
+  noche: '#17130F',
+  nocheSuave: '#241E19',
+  cremaTexto: '#FBF3EC',
 };
 
 /*

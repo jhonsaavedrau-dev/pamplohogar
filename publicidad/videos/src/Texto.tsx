@@ -31,7 +31,13 @@ export function trozos(texto: string): Trozo[] {
     );
 }
 
-/** El color que le toca a un trozo. */
-export function color(fuerte: boolean) {
+/**
+ * El color que le toca a un trozo.
+ *
+ * De noche el naranja se aclara y el texto normal pasa a crema: el terracota
+ * de la marca sobre fondo oscuro se apaga y se lee marron sucio.
+ */
+export function color(fuerte: boolean, oscuro = false) {
+  if (oscuro) return fuerte ? COLOR.terracotaClaro : COLOR.cremaTexto;
   return fuerte ? COLOR.terracota : COLOR.piedra;
 }

@@ -30,12 +30,15 @@ export function Frase({
   duracion,
   tamano = 86,
   cadencia = 2.5,
+  oscuro = false,
 }: {
   texto: string;
   duracion: number;
   tamano?: number;
   /** Cuadros entre una palabra y la siguiente. Menos es mas rapido. */
   cadencia?: number;
+  /** Sobre fondo de noche. */
+  oscuro?: boolean;
 }) {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -79,7 +82,7 @@ export function Frase({
             <span
               key={palabra + i}
               style={{
-                color: color(fuerte),
+                color: color(fuerte, oscuro),
                 opacity: entrada,
                 transform: `translateY(${interpolate(entrada, [0, 1], [30, 0])}px)`,
                 filter: `blur(${interpolate(entrada, [0, 1], [12, 0])}px)`,
@@ -151,14 +154,18 @@ export function Marca() {
  * no sabe si esto va para largo; ver la barra a media asta es motivo para
  * quedarse.
  */
-export function Avance({ total }: { total: number }) {
+export function Avance({ total, oscuro = false }: { total: number; oscuro?: boolean }) {
   const cuadro = useCurrentFrame();
 
   return (
     <AbsoluteFill style={{ justifyContent: 'flex-end' }}>
-      <div style={{ height: 7, background: 'rgba(31,27,23,0.10)' }}>
+      <div style={{ height: 7, background: oscuro ? 'rgba(251,243,236,0.14)' : 'rgba(31,27,23,0.10)' }}>
         <div
-          style={{ height: '100%', width: `${(cuadro / total) * 100}%`, background: COLOR.terracota }}
+          style={{
+            height: '100%',
+            width: `${(cuadro / total) * 100}%`,
+            background: oscuro ? COLOR.terracotaClaro : COLOR.terracota,
+          }}
         />
       </div>
     </AbsoluteFill>
@@ -176,11 +183,14 @@ export function Cierre({
   conCodigo = false,
   remate,
   tamanoLogo = 190,
+  oscuro = false,
 }: {
   conCodigo?: boolean;
   /** La frase de abajo. Sin ella el cierre queda solo con la direccion. */
   remate?: string;
   tamanoLogo?: number;
+  /** Sobre fondo de noche. */
+  oscuro?: boolean;
 }) {
   const cuadro = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
@@ -223,7 +233,7 @@ export function Cierre({
         textAlign: 'center',
       }}
     >
-      <Logo tamano={tamanoLogo} />
+      <Logo tamano={tamanoLogo} oscuro={oscuro} />
 
       <p
         style={{
@@ -231,7 +241,7 @@ export function Cierre({
           fontSize: 68,
           fontWeight: 800,
           letterSpacing: -2,
-          color: COLOR.terracota,
+          color: oscuro ? COLOR.terracotaClaro : COLOR.terracota,
           clipPath: `inset(0 ${(1 - direccion) * 100}% 0 0)`,
         }}
       >
@@ -270,7 +280,7 @@ export function Cierre({
           }}
         >
           {trozos(remate).map(({ palabra, fuerte }, i) => (
-            <span key={palabra + i} style={{ color: color(fuerte) }}>
+            <span key={palabra + i} style={{ color: color(fuerte, oscuro) }}>
               {palabra}
             </span>
           ))}

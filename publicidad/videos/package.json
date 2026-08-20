@@ -10,7 +10,10 @@
     "tarjetas": "remotion still TarjetaGiro tarjetas/giro.png && remotion still TarjetaCierre tarjetas/cierre.png",
     "video": "remotion render VideoCompleto videos/pamplohogar.mp4",
     "video:precio": "remotion render VideoPrecio videos/pamplohogar-precio.mp4",
-    "video:arrendadores": "remotion render VideoArrendadores videos/pamplohogar-arrendadores.mp4"
+    "video:arrendadores": "remotion render VideoArrendadores videos/pamplohogar-arrendadores.mp4",
+    "video:noche": "remotion render VideoNoche videos/pamplohogar-noche.mp4",
+    "video:antes": "remotion render VideoAntesYDespues videos/pamplohogar-antes-y-despues.mp4",
+    "videos": "npm run video && npm run video:precio && npm run video:arrendadores && npm run video:noche && npm run video:antes"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",

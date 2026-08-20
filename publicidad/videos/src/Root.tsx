@@ -3,6 +3,8 @@ import { HistoriaSinConocidos } from './HistoriaSinConocidos';
 import { DURACION_TOTAL, VideoCompleto } from './VideoCompleto';
 import { DURACION_ARRENDADORES, VideoArrendadores } from './VideoArrendadores';
 import { DURACION_PRECIO, VideoPrecio } from './VideoPrecio';
+import { DURACION_NOCHE, VideoNoche } from './VideoNoche';
+import { DURACION_ANTES, VideoAntesYDespues } from './VideoAntesYDespues';
 import { TarjetaCierre, TarjetaFuncion, TarjetaGiro, TarjetaTexto } from './Tarjetas';
 import { VIDEO } from './marca';
 
@@ -46,6 +48,30 @@ export function Root() {
         id="VideoArrendadores"
         component={VideoArrendadores}
         durationInFrames={DURACION_ARRENDADORES}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+      />
+
+      {/*
+        Y los dos que cambian de estilo, no solo de enfoque.
+
+          VideoNoche         18 s   fondo oscuro, puro texto, ni un aparato
+          VideoAntesYDespues 20 s   ocho segundos sin color y un barrido
+      */}
+      <Composition
+        id="VideoNoche"
+        component={VideoNoche}
+        durationInFrames={DURACION_NOCHE}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+      />
+
+      <Composition
+        id="VideoAntesYDespues"
+        component={VideoAntesYDespues}
+        durationInFrames={DURACION_ANTES}
         fps={VIDEO.fps}
         width={VIDEO.ancho}
         height={VIDEO.alto}

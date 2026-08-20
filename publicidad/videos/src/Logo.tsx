@@ -23,12 +23,15 @@ export function Logo({
   tamano = 200,
   conDireccion = false,
   retraso = 0,
+  oscuro = false,
 }: {
   /** Ancho de la casita. El resto del conjunto sale de ahi. */
   tamano?: number;
   /** Si debajo del nombre va tambien pamplohogar.com. */
   conDireccion?: boolean;
   retraso?: number;
+  /** Sobre fondo de noche: el nombre va en crema y el naranja se aclara. */
+  oscuro?: boolean;
 }) {
   const cuadro = useCurrentFrame() - retraso;
   const { fps } = useVideoConfig();
@@ -118,11 +121,12 @@ export function Logo({
           fontWeight: 700,
           letterSpacing: -1,
           lineHeight: 1,
-          color: COLOR.piedra,
+          color: oscuro ? COLOR.cremaTexto : COLOR.piedra,
           clipPath: `inset(0 ${(1 - nombre) * 100}% 0 0)`,
         }}
       >
-        Pamplo<span style={{ color: COLOR.terracota }}>Hogar</span>
+        Pamplo
+        <span style={{ color: oscuro ? COLOR.terracotaClaro : COLOR.terracota }}>Hogar</span>
       </p>
 
       {conDireccion && (
@@ -132,7 +136,7 @@ export function Logo({
             fontSize: tamano * 0.19,
             fontWeight: 700,
             letterSpacing: 1,
-            color: COLOR.piedraGris,
+            color: oscuro ? 'rgba(251,243,236,0.62)' : COLOR.piedraGris,
             opacity: direccion,
             transform: `translateY(${interpolate(direccion, [0, 1], [16, 0])}px)`,
           }}
