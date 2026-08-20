@@ -6,146 +6,219 @@ import { color, trozos } from './Texto';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
-  El video de PamploHogar: 33 segundos, sin grabar nada.
+  El video de PamploHogar: 59 segundos, sin grabar nada.
 
-    0 - 7 s      El problema, en tres frases.
-    7 - 9,4 s    El giro.
-    9,4 - 10,9 s El sello: el logo, animado.
-    10,9 - 28 s  La plataforma: seis pantallas, una cada 2,9 segundos.
-    28 - 33 s    El cierre con el codigo.
+    0 - 8,7 s     El problema, en tres frases.
+    8,7 - 11,7 s  El giro.
+    11,7 - 13,9 s El sello: el logo, animado.
+    13,9 - 53,5 s La plataforma: tres capitulos, diez pantallas.
+    53,5 - 59 s   El cierre con el codigo.
+
+  POR QUE UN MINUTO Y NO MEDIO. Con seis pantallas se contaba lo que hace la
+  plataforma; con diez se demuestra. Buscar, decidir y dar el paso son tres
+  cosas distintas, y separarlas en capitulos deja ver que esto no es una lista
+  de funciones sueltas sino un camino completo.
 
   EL HILO. Todo el video dice una sola cosa: hoy buscar arriendo en Pamplona es
   PREGUNTAR, y esto es no tener que preguntarle a nadie. El problema plantea la
-  pregunta, el giro la nombra, cada funcion la responde y el cierre la remata.
+  pregunta, el giro la nombra, los tres capitulos la responden y el cierre la
+  remata.
 
-  EL NARANJA marca UNA palabra por frase, la que carga el sentido, escrita
-  entre asteriscos. Resaltar media frase no resalta nada: el ojo no sabe donde
-  parar. Aqui se resaltan preguntar, esperar, nadie, todos, precio, minutos.
+  EL NARANJA se reserva para tres palabras en todo el video -- preguntar,
+  esperar, nadie -- y para la etiqueta del capitulo. Antes se marcaba una
+  palabra en cada rotulo y terminaba resaltando cosas que no lo merecian: si
+  todo esta resaltado, nada lo esta.
 
-  EL SELLO del segundo 9,4 no es relleno. Es la bisagra del video: se acaba de
-  plantear el problema y ahi aparece de quien es la respuesta. La marca sale en
-  los dos momentos que la gente recuerda, la bisagra y el final, que es lo que
-  hace cualquier comercial que se precie.
+  EL RITMO va un tercio mas lento que la version anterior. Cada frase dura casi
+  tres segundos y cada pantalla tres y medio, y las palabras entran mas
+  espaciadas. Rapido no es lo mismo que agil: si no da tiempo de leer, la prisa
+  se vuelve ruido.
 
   Para cambiar el video se tocan las dos listas de abajo.
 */
 
 const s = (segundos: number) => Math.round(segundos * VIDEO.fps);
 
-const DURACION_FRASE = s(2.3);
-const DURACION_GIRO = s(2.4);
-const DURACION_SELLO = s(1.5);
-const DURACION_ESCENA = s(2.9);
-const DURACION_CIERRE = s(4.6);
+const DURACION_FRASE = s(2.9);
+const DURACION_GIRO = s(3);
+const DURACION_SELLO = s(2.2);
+const DURACION_CAPITULO = s(1.4);
+const DURACION_ESCENA = s(3.5);
+const DURACION_CIERRE = s(5.5);
 
 const PROBLEMA = [
   'Buscar arriendo en Pamplona es *preguntar.*',
-  'Preguntarle al grupo. Al vecino. Al *conocido de un conocido.*',
+  'Preguntarle al grupo. Al vecino. Al conocido de un conocido.',
   'Y *esperar.* A veces, nadie contesta.',
 ];
 
 /*
-  Las seis pantallas.
+  Los tres capitulos y sus pantallas.
 
-  El orden no es casual: primero lo que se ve de una, despues lo que hay que
-  abrir, y al final lo que no tiene nadie mas.
+  El orden cuenta un camino: primero se busca, despues se decide y al final se
+  da el paso. Dentro de cada capitulo va primero lo que se ve de una y despues
+  lo que hay que abrir.
 
-  Se alternan celular y computador: el cambio de forma, una alta y una ancha,
-  refresca la vista sin que uno se de cuenta.
+  Se alternan celular y computador siempre que se puede: el cambio de forma,
+  una alta y una ancha, refresca la vista sin que uno se de cuenta.
 
-  Los recorridos van sobre capturas de pagina completa. El listado del celular
-  mide diez pantallas, asi que bajar hasta 0,2 ya recorre dos pantallas largas.
+  Los recorridos van sobre capturas de pagina completa, y desde/hasta son
+  fracciones del alto de la PAGINA, no de la pantalla.
 
   Las escenas de computador van ampliadas. El portatil cabe entero en el video,
   pero entero no se lee: la letra de la pagina queda del tamano de un grano de
   arroz en un celular. Como la captura se toma al doble de resolucion, ampliar
   hasta 1,6 sigue estando por debajo de su tamano real.
 */
-const ESCENAS: DatosEscena[] = [
+interface Capitulo {
+  titulo: string;
+  escenas: DatosEscena[];
+}
+
+const CAPITULOS: Capitulo[] = [
   {
-    captura: 'capturas/celular/1-portada.png',
-    dispositivo: 'celular',
-    rotulo: ['*Todos* los arriendos,', 'en una sola pantalla'],
-    movimiento: 'acercar',
-    // La portada es una captura de una sola ventana, un pelo mas cuadrada que
-    // la pantalla del telefono. El 6% de mas la hace calzar, y bajarla un 2%
-    // reparte el recorte entre arriba y abajo en vez de comerse la barra.
-    ampliar: 1.06,
-    desde: 0.03,
+    titulo: 'Para buscar',
+    escenas: [
+      {
+        captura: 'capturas/celular/1-portada.png',
+        dispositivo: 'celular',
+        rotulo: ['Todos los arriendos,', 'en una sola pantalla'],
+        movimiento: 'acercar',
+        // La portada es una captura de una sola ventana, un pelo mas cuadrada
+        // que la pantalla del telefono. El 6% de mas la hace calzar, y bajarla
+        // un 3% reparte el recorte entre arriba y abajo.
+        ampliar: 1.06,
+        desde: 0.03,
+      },
+      {
+        captura: 'capturas/computador/8-filtros.png',
+        dispositivo: 'computador',
+        rotulo: ['Filtra por barrio, precio', 'y lo que necesites'],
+        movimiento: 'bajar',
+        desde: 0.12,
+        hasta: 0.26,
+        ampliar: 1.4,
+        centroX: 0.44,
+      },
+      {
+        captura: 'capturas/celular/2-listado-largo.png',
+        dispositivo: 'celular',
+        rotulo: ['El precio va de frente,', 'sin preguntar'],
+        movimiento: 'bajar',
+        desde: 0.04,
+        hasta: 0.24,
+      },
+    ],
   },
   {
-    captura: 'capturas/celular/2-listado-largo.png',
-    dispositivo: 'celular',
-    rotulo: ['El *precio* va de frente,', 'sin preguntar'],
-    movimiento: 'bajar',
-    desde: 0.04,
-    hasta: 0.22,
+    titulo: 'Para decidir',
+    escenas: [
+      {
+        captura: 'capturas/computador/3-ficha-larga.png',
+        dispositivo: 'computador',
+        rotulo: ['Si te están cobrando de más,', 'te lo dice'],
+        movimiento: 'bajar',
+        // Calculado para que la regla de precios entre en cuadro y se quede:
+        // es la funcion que no tiene nadie mas, y ampliada por fin se lee.
+        desde: 0.4,
+        hasta: 0.46,
+        ampliar: 1.6,
+        centroX: 0.37,
+      },
+      {
+        captura: 'capturas/celular/3-ficha-larga.png',
+        dispositivo: 'celular',
+        rotulo: ['Lo que cuentan', 'los que ya vivieron ahí'],
+        movimiento: 'bajar',
+        // Se abre justo en "Que dicen del arrendador". Mas arriba se veia el
+        // recuadro de que todavia nadie ha contado como es el barrio, que es
+        // verdad pero no es lo que se esta mostrando.
+        desde: 0.52,
+        hasta: 0.6,
+      },
+      {
+        captura: 'capturas/computador/5-mapa-precios.png',
+        dispositivo: 'computador',
+        rotulo: ['El mapa de precios', 'de toda la ciudad'],
+        movimiento: 'acercar',
+        desde: 0.11,
+        ampliar: 1.25,
+      },
+      {
+        captura: 'capturas/computador/4-comparar.png',
+        dispositivo: 'computador',
+        rotulo: ['Y hasta tres,', 'lado a lado'],
+        movimiento: 'bajar',
+        desde: 0.14,
+        hasta: 0.34,
+        ampliar: 1.35,
+        centroX: 0.44,
+      },
+    ],
   },
   {
-    captura: 'capturas/computador/2-listado-largo.png',
-    dispositivo: 'computador',
-    rotulo: ['Y a cuántos *minutos*', 'queda de la U'],
-    movimiento: 'bajar',
-    desde: 0.16,
-    hasta: 0.3,
-    ampliar: 1.4,
-  },
-  {
-    captura: 'capturas/computador/3-ficha-larga.png',
-    dispositivo: 'computador',
-    rotulo: ['Si te están cobrando *de más,*', 'te lo dice'],
-    movimiento: 'bajar',
-    // Calculado para que la regla de precios entre en cuadro y se quede: es
-    // la funcion que no tiene nadie mas, y ampliada por fin se lee.
-    desde: 0.4,
-    hasta: 0.45,
-    ampliar: 1.6,
-    centroX: 0.37,
-  },
-  {
-    captura: 'capturas/computador/5-mapa-precios.png',
-    dispositivo: 'computador',
-    rotulo: ['El *mapa de precios*', 'de toda la ciudad'],
-    movimiento: 'acercar',
-    desde: 0.11,
-    ampliar: 1.25,
-  },
-  {
-    captura: 'capturas/celular/7-roomies-largo.png',
-    dispositivo: 'celular',
-    rotulo: ['Y con *quién* compartir,', 'antes de mudarte'],
-    movimiento: 'bajar',
-    desde: 0.06,
-    hasta: 0.36,
+    titulo: 'Para dar el paso',
+    escenas: [
+      {
+        captura: 'capturas/celular/7-roomies-largo.png',
+        dispositivo: 'celular',
+        rotulo: ['Y con quién compartir,', 'antes de mudarte'],
+        movimiento: 'bajar',
+        desde: 0.06,
+        hasta: 0.36,
+      },
+      {
+        captura: 'capturas/celular/5-ficha-imprimible.png',
+        dispositivo: 'celular',
+        rotulo: ['La ficha, para llevártela', 'impresa o en PDF'],
+        movimiento: 'bajar',
+        desde: 0.03,
+        hasta: 0.28,
+      },
+      {
+        captura: 'capturas/computador/7-el-proyecto.png',
+        dispositivo: 'computador',
+        rotulo: ['Hecho en Pamplona,', 'por una sola persona'],
+        movimiento: 'bajar',
+        desde: 0.02,
+        hasta: 0.16,
+        ampliar: 1.35,
+        centroX: 0.47,
+      },
+    ],
   },
 ];
 
+const ESCENAS_TOTALES = CAPITULOS.reduce((n, c) => n + c.escenas.length, 0);
+
 const COMIENZO_SELLO = DURACION_FRASE * PROBLEMA.length + DURACION_GIRO;
-const COMIENZO_ESCENAS = COMIENZO_SELLO + DURACION_SELLO;
-const COMIENZO_CIERRE = COMIENZO_ESCENAS + DURACION_ESCENA * ESCENAS.length;
+const COMIENZO_ACTO = COMIENZO_SELLO + DURACION_SELLO;
+const DURACION_ACTO =
+  DURACION_CAPITULO * CAPITULOS.length + DURACION_ESCENA * ESCENAS_TOTALES;
+const COMIENZO_CIERRE = COMIENZO_ACTO + DURACION_ACTO;
 
 export const DURACION_TOTAL = COMIENZO_CIERRE + DURACION_CIERRE;
 
 /**
  * Una frase del problema, palabra por palabra.
  *
- * Aparecer de golpe se lee como una diapositiva. Palabra por palabra obliga a
- * leer al ritmo que uno quiere, que es el mismo truco de un buen subtitulo.
+ * Cada palabra entra desenfocada, sube y se enfoca. El desenfoque es lo que
+ * separa un texto que aparece de un texto que ENTRA: el ojo lo lee como algo
+ * que se acerca desde el fondo, y es el mismo recurso de los titulos de cine.
  *
- * Ademas el bloque entero se acerca despacio mientras se escribe. Un texto
- * quieto sobre un fondo quieto es una diapositiva por mucho que las palabras
- * entren de a una.
+ * Van a dos cuadros y medio por palabra. Con uno y medio la frase se escribia
+ * mas rapido de lo que se puede leer, que era el reclamo.
  */
 function Frase({ texto }: { texto: string }) {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const salida = interpolate(cuadro, [DURACION_FRASE - 8, DURACION_FRASE], [1, 0], {
+  const salida = interpolate(cuadro, [DURACION_FRASE - 9, DURACION_FRASE], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const acercar = interpolate(cuadro, [0, DURACION_FRASE], [1, 1.035]);
-  const subir = interpolate(cuadro, [0, DURACION_FRASE], [0, -18]);
+  const acercar = interpolate(cuadro, [0, DURACION_FRASE], [1, 1.04]);
+  const subir = interpolate(cuadro, [0, DURACION_FRASE], [0, -20]);
 
   return (
     <AbsoluteFill
@@ -161,7 +234,7 @@ function Frase({ texto }: { texto: string }) {
         style={{
           fontSize: 86,
           fontWeight: 800,
-          lineHeight: 1.12,
+          lineHeight: 1.14,
           letterSpacing: -2,
           margin: 0,
           display: 'flex',
@@ -171,9 +244,9 @@ function Frase({ texto }: { texto: string }) {
       >
         {trozos(texto).map(({ palabra, fuerte }, i) => {
           const entrada = spring({
-            frame: cuadro - i * 1.5,
+            frame: cuadro - i * 2.5,
             fps,
-            config: { damping: 200, stiffness: 160 },
+            config: { damping: 200, stiffness: 130 },
           });
           return (
             <span
@@ -181,7 +254,8 @@ function Frase({ texto }: { texto: string }) {
               style={{
                 color: color(fuerte),
                 opacity: entrada,
-                transform: `translateY(${interpolate(entrada, [0, 1], [26, 0])}px)`,
+                transform: `translateY(${interpolate(entrada, [0, 1], [30, 0])}px)`,
+                filter: `blur(${interpolate(entrada, [0, 1], [12, 0])}px)`,
                 display: 'inline-block',
               }}
             >
@@ -199,9 +273,8 @@ function Giro() {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 90 } });
-  const acercar = interpolate(cuadro, [0, DURACION_GIRO], [1.06, 1]);
-  const salida = interpolate(cuadro, [DURACION_GIRO - 9, DURACION_GIRO], [1, 0], {
+  const acercar = interpolate(cuadro, [0, DURACION_GIRO], [1.07, 1]);
+  const salida = interpolate(cuadro, [DURACION_GIRO - 10, DURACION_GIRO], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -212,7 +285,7 @@ function Giro() {
         fontFamily: LETRA,
         padding: '0 90px',
         justifyContent: 'center',
-        opacity: entrada * salida,
+        opacity: salida,
         transform: `scale(${acercar})`,
       }}
     >
@@ -220,7 +293,7 @@ function Giro() {
         style={{
           fontSize: 88,
           fontWeight: 800,
-          lineHeight: 1.1,
+          lineHeight: 1.12,
           letterSpacing: -2,
           margin: 0,
           display: 'flex',
@@ -228,11 +301,27 @@ function Giro() {
           gap: '0 20px',
         }}
       >
-        {trozos('¿Y si no tuvieras que preguntarle a *nadie?*').map(({ palabra, fuerte }, i) => (
-          <span key={palabra + i} style={{ color: color(fuerte) }}>
-            {palabra}
-          </span>
-        ))}
+        {trozos('¿Y si no tuvieras que preguntarle a *nadie?*').map(({ palabra, fuerte }, i) => {
+          const entrada = spring({
+            frame: cuadro - i * 2.5,
+            fps,
+            config: { damping: 200, stiffness: 130 },
+          });
+          return (
+            <span
+              key={palabra + i}
+              style={{
+                color: color(fuerte),
+                opacity: entrada,
+                transform: `translateY(${interpolate(entrada, [0, 1], [30, 0])}px)`,
+                filter: `blur(${interpolate(entrada, [0, 1], [12, 0])}px)`,
+                display: 'inline-block',
+              }}
+            >
+              {palabra}
+            </span>
+          );
+        })}
       </p>
     </AbsoluteFill>
   );
@@ -242,7 +331,7 @@ function Giro() {
 function Sello() {
   const cuadro = useCurrentFrame();
 
-  const salida = interpolate(cuadro, [DURACION_SELLO - 8, DURACION_SELLO], [1, 0], {
+  const salida = interpolate(cuadro, [DURACION_SELLO - 9, DURACION_SELLO], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -251,7 +340,72 @@ function Sello() {
     <AbsoluteFill
       style={{ fontFamily: LETRA, alignItems: 'center', justifyContent: 'center', opacity: salida }}
     >
-      <Logo tamano={230} conDireccion />
+      <Logo tamano={240} conDireccion />
+    </AbsoluteFill>
+  );
+}
+
+/**
+ * La portada de un capitulo.
+ *
+ * Segundo y medio de respiro entre bloques de pantallas. Sin estos cortes las
+ * diez escenas se leen como una lista larga; con ellos se lee un camino de tres
+ * pasos, que es lo que de verdad es.
+ */
+function PortadaCapitulo({ titulo, numero }: { titulo: string; numero: number }) {
+  const cuadro = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 100 } });
+  const linea = spring({
+    frame: cuadro - Math.round(fps * 0.18),
+    fps,
+    config: { damping: 200, stiffness: 70 },
+  });
+  const salida = interpolate(cuadro, [DURACION_CAPITULO - 8, DURACION_CAPITULO], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <AbsoluteFill
+      style={{
+        fontFamily: LETRA,
+        justifyContent: 'center',
+        padding: '0 90px',
+        opacity: salida,
+      }}
+    >
+      <span
+        style={{
+          fontSize: 34,
+          fontWeight: 700,
+          letterSpacing: 8,
+          color: COLOR.terracota,
+          opacity: entrada,
+        }}
+      >
+        {String(numero).padStart(2, '0')}
+      </span>
+
+      <div style={{ overflow: 'hidden', padding: '18px 0 10px' }}>
+        <p
+          style={{
+            margin: 0,
+            fontSize: 96,
+            fontWeight: 800,
+            lineHeight: 1.05,
+            letterSpacing: -3,
+            color: COLOR.piedra,
+            transform: `translateY(${interpolate(entrada, [0, 1], [110, 0])}%)`,
+            filter: `blur(${interpolate(entrada, [0, 1], [14, 0])}px)`,
+          }}
+        >
+          {titulo}
+        </p>
+      </div>
+
+      <div style={{ height: 6, width: `${linea * 100}%`, background: COLOR.terracota, borderRadius: 999 }} />
     </AbsoluteFill>
   );
 }
@@ -292,7 +446,8 @@ function Marca() {
  *
  * Dice cuanto falta sin decirlo. En un video vertical la gente desliza cuando
  * no sabe si esto va para largo; ver la barra a media asta es motivo para
- * quedarse.
+ * quedarse, y en un video de un minuto pesa mas que en uno de treinta
+ * segundos.
  */
 function Avance() {
   const cuadro = useCurrentFrame();
@@ -323,12 +478,12 @@ function Cierre() {
     config: { damping: 200, stiffness: 90 },
   });
   const codigo = spring({
-    frame: cuadro - Math.round(fps * 0.85),
+    frame: cuadro - Math.round(fps * 0.9),
     fps,
     config: { damping: 200, stiffness: 110 },
   });
   const remate = spring({
-    frame: cuadro - Math.round(fps * 1.25),
+    frame: cuadro - Math.round(fps * 1.35),
     fps,
     config: { damping: 200, stiffness: 90 },
   });
@@ -396,6 +551,11 @@ function Cierre() {
 }
 
 export function VideoCompleto() {
+  // Las escenas se encabalgan quince cuadros: la que entra empieza antes de que
+  // termine de irse la anterior. Por eso el reloj se lleva a mano en vez de
+  // multiplicar indices.
+  let reloj = COMIENZO_ACTO;
+
   return (
     <AbsoluteFill style={{ backgroundColor: COLOR.crema }}>
       <Fondo />
@@ -414,23 +574,37 @@ export function VideoCompleto() {
         <Sello />
       </Sequence>
 
-      <Sequence from={COMIENZO_ESCENAS} durationInFrames={DURACION_ESCENA * ESCENAS.length}>
+      <Sequence from={COMIENZO_ACTO} durationInFrames={DURACION_ACTO}>
         <Marca />
       </Sequence>
 
-      {/* Las escenas se encabalgan: la que entra empieza catorce cuadros antes
-          de que se vaya la anterior, y cada una entra por el lado contrario a
-          la de antes. Ese cruce es lo que hace que nunca haya un momento
-          quieto entre dos pantallas. */}
-      {ESCENAS.map((escena, i) => (
-        <Sequence
-          key={escena.captura}
-          from={COMIENZO_ESCENAS + DURACION_ESCENA * i}
-          durationInFrames={DURACION_ESCENA + 14}
-        >
-          <Escena {...escena} lado={i % 2 === 0 ? 1 : -1} indice={i} total={ESCENAS.length} />
-        </Sequence>
-      ))}
+      {CAPITULOS.flatMap((capitulo, c) => {
+        const piezas = [
+          <Sequence key={capitulo.titulo} from={reloj} durationInFrames={DURACION_CAPITULO}>
+            <PortadaCapitulo titulo={capitulo.titulo} numero={c + 1} />
+          </Sequence>,
+        ];
+        reloj += DURACION_CAPITULO;
+
+        capitulo.escenas.forEach((escena, i) => {
+          piezas.push(
+            <Sequence
+              key={escena.captura}
+              from={reloj}
+              durationInFrames={DURACION_ESCENA + 15}
+            >
+              <Escena
+                {...escena}
+                lado={i % 2 === 0 ? 1 : -1}
+                capitulo={capitulo.titulo}
+              />
+            </Sequence>,
+          );
+          reloj += DURACION_ESCENA;
+        });
+
+        return piezas;
+      })}
 
       <Sequence from={COMIENZO_CIERRE} durationInFrames={DURACION_CIERRE}>
         <Cierre />

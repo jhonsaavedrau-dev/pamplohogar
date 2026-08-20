@@ -1,0 +1,13 @@
+{
+  "name": "pamplohogar-publicidad",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Herramientas de publicidad. Por ahora, el capturador de pantallas del sitio.",
+  "scripts": {
+    "capturas": "node capturar-pantallas.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}
