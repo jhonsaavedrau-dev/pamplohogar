@@ -162,8 +162,63 @@ Si algo falla, mandame lo que ves en pantalla y lo arreglamos.
 
 ## Notas
 
-**Los datos de ejemplo ya estan en produccion.** Como usamos la misma base de datos de Neon para tu
-computador y para internet, los diez inmuebles aparecen apenas publiques. No hay que cargar nada.
+### Hay DOS bases de datos, no una
+
+Esta guia decia que era una sola. Ya no lo es, y conviene saberlo antes de que
+sorprenda:
+
+- La de **tu computador** es la que dice `backend/.env`. Ahi se prueba sin miedo.
+- La de **internet** es la que dice `DATABASE_URL` en el panel de Render. Es la
+  que ve la gente.
+
+Estan separadas a proposito. Una vez las pruebas dejaron cuentas falsas en la
+base de internet justamente porque eran la misma, y separarlas es lo que impide
+que vuelva a pasar.
+
+**Como saber en cual estas parado:** si el numero de inmuebles no cuadra, son
+distintas.
+
+```
+curl "https://api.pamplohogar.com/api/inmuebles?pagina=1"
+```
+
+El campo `total` de esa respuesta es lo que hay en internet.
+
+### Cargar los datos de ejemplo en la base de internet
+
+Los ejemplos (los inmuebles, las opiniones de barrio, las resenas) viven en
+`backend/prisma/seed.ts`. Cargarlos en tu computador es `npm run seed`. Para
+cargarlos en internet hacen falta dos pasos, y van separados a proposito: asi
+nunca se toca la base de la gente sin querer.
+
+**1.** En el panel de Render, entra al servicio `pamplohogar-api`, abre
+**Environment** y copia el valor de `DATABASE_URL`. Crea el archivo
+`backend/.env.produccion` con estas dos lineas, pegando ese valor en las dos:
+
+```
+DATABASE_URL="lo que copiaste de Render"
+DIRECT_URL="lo que copiaste de Render"
+```
+
+Ese archivo NO se sube a GitHub, ya esta en la lista de ignorados. Y borralo
+cuando termines.
+
+**2.** Desde `backend/`:
+
+```
+npm run seed:produccion
+```
+
+**Que borra y que no.** Borra y vuelve a crear unicamente las cuentas de
+ejemplo, las que terminan en `@ejemplo.com`, y las de prueba, que terminan en
+`@test.com` — con sus publicaciones y sus resenas. **No toca ninguna cuenta ni
+ninguna publicacion de una persona de verdad.** Se puede correr las veces que
+haga falta.
+
+**Cuando corras esto, la publicidad cambia.** El video de `publicidad/` se arma
+con capturas del sitio publicado, asi que despues de cargar los ejemplos hay que
+volver a tomarlas y volver a renderizar. Esta explicado en
+`publicidad/videos/LEEME.md`.
 
 **Cada vez que cambiemos el codigo**, basta con subirlo a GitHub y tanto Render como Vercel se
 actualizan solos. No hay que repetir nada de esta guia.

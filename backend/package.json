@@ -11,6 +11,7 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "seed": "tsx prisma/seed.ts",
+    "seed:produccion": "tsx --env-file=.env.produccion prisma/seed.ts",
     "hacer-admin": "tsx prisma/hacerAdmin.ts",
     "limpiar-pruebas": "tsx prisma/limpiarPruebas.ts",
     "test": "vitest run",

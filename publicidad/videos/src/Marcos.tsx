@@ -71,7 +71,17 @@ export function MarcoCelular({
   centroX,
 }: PropsPantalla & { ancho?: number }) {
   const borde = Math.round(ancho * 0.026);
-  const alto = Math.round((ancho * 844) / 390 + borde * 3.4);
+
+  /*
+    El marco de arriba tiene que ser mas alto que la islita, o la islita se le
+    monta a la pantalla y tapa el logo de la pagina. La islita empieza en
+    borde*0.85 y mide ancho*0.055, asi que termina justo por debajo de
+    borde*3.4. Antes el marco media borde*2.4 y se comia ocho pixeles de
+    pantalla.
+  */
+  const bordeArriba = Math.round(borde * 3.4);
+  const bordeAbajo = Math.round(borde * 2);
+  const alto = Math.round((ancho * 844) / 390) + bordeArriba + bordeAbajo;
 
   return (
     <div
@@ -80,7 +90,7 @@ export function MarcoCelular({
         height: alto,
         borderRadius: ancho * 0.095,
         background: MARCO,
-        padding: `${borde * 2.4}px ${borde}px`,
+        padding: `${bordeArriba}px ${borde}px ${bordeAbajo}px`,
         boxShadow: '0 50px 90px -25px rgba(31,27,23,0.5)',
         position: 'relative',
       }}
