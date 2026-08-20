@@ -1,6 +1,8 @@
 import { Composition } from 'remotion';
 import { HistoriaSinConocidos } from './HistoriaSinConocidos';
 import { DURACION_TOTAL, VideoCompleto } from './VideoCompleto';
+import { DURACION_ARRENDADORES, VideoArrendadores } from './VideoArrendadores';
+import { DURACION_PRECIO, VideoPrecio } from './VideoPrecio';
 import { TarjetaCierre, TarjetaFuncion, TarjetaGiro, TarjetaTexto } from './Tarjetas';
 import { VIDEO } from './marca';
 
@@ -19,6 +21,31 @@ export function Root() {
         id="VideoCompleto"
         component={VideoCompleto}
         durationInFrames={DURACION_TOTAL}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+      />
+
+      {/*
+        Los dos cortos. No son recortes del largo: cada uno entra por otro lado
+        y le habla a otra persona.
+
+          VideoPrecio        15 s   al estudiante, por la plata
+          VideoArrendadores  20 s   al que tiene la habitacion desocupada
+      */}
+      <Composition
+        id="VideoPrecio"
+        component={VideoPrecio}
+        durationInFrames={DURACION_PRECIO}
+        fps={VIDEO.fps}
+        width={VIDEO.ancho}
+        height={VIDEO.alto}
+      />
+
+      <Composition
+        id="VideoArrendadores"
+        component={VideoArrendadores}
+        durationInFrames={DURACION_ARRENDADORES}
         fps={VIDEO.fps}
         width={VIDEO.ancho}
         height={VIDEO.alto}

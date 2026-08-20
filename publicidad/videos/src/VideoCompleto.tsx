@@ -1,7 +1,7 @@
-import { AbsoluteFill, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Escena, type DatosEscena } from './Escena';
 import { Fondo } from './Fondo';
-import { Logo } from './Logo';
+import { Avance, Cierre, Frase, Marca, Sello } from './Piezas';
 import { color, trozos } from './Texto';
 import { COLOR, LETRA, VIDEO } from './marca';
 
@@ -213,75 +213,6 @@ const COMIENZO_CIERRE = COMIENZO_ACTO + DURACION_ACTO;
 
 export const DURACION_TOTAL = COMIENZO_CIERRE + DURACION_CIERRE;
 
-/**
- * Una frase del problema, palabra por palabra.
- *
- * Cada palabra entra desenfocada, sube y se enfoca. El desenfoque es lo que
- * separa un texto que aparece de un texto que ENTRA: el ojo lo lee como algo
- * que se acerca desde el fondo, y es el mismo recurso de los titulos de cine.
- *
- * Van a dos cuadros y medio por palabra. Con uno y medio la frase se escribia
- * mas rapido de lo que se puede leer, que era el reclamo.
- */
-function Frase({ texto }: { texto: string }) {
-  const cuadro = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const salida = interpolate(cuadro, [DURACION_FRASE - 9, DURACION_FRASE], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const acercar = interpolate(cuadro, [0, DURACION_FRASE], [1, 1.04]);
-  const subir = interpolate(cuadro, [0, DURACION_FRASE], [0, -20]);
-
-  return (
-    <AbsoluteFill
-      style={{
-        fontFamily: LETRA,
-        padding: '0 90px',
-        justifyContent: 'center',
-        opacity: salida,
-        transform: `scale(${acercar}) translateY(${subir}px)`,
-      }}
-    >
-      <p
-        style={{
-          fontSize: 86,
-          fontWeight: 800,
-          lineHeight: 1.14,
-          letterSpacing: -2,
-          margin: 0,
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '0 20px',
-        }}
-      >
-        {trozos(texto).map(({ palabra, fuerte }, i) => {
-          const entrada = spring({
-            frame: cuadro - i * 2.5,
-            fps,
-            config: { damping: 200, stiffness: 130 },
-          });
-          return (
-            <span
-              key={palabra + i}
-              style={{
-                color: color(fuerte),
-                opacity: entrada,
-                transform: `translateY(${interpolate(entrada, [0, 1], [30, 0])}px)`,
-                filter: `blur(${interpolate(entrada, [0, 1], [12, 0])}px)`,
-                display: 'inline-block',
-              }}
-            >
-              {palabra}
-            </span>
-          );
-        })}
-      </p>
-    </AbsoluteFill>
-  );
-}
-
 /** El giro: la pregunta que abre la segunda mitad. */
 function Giro() {
   const cuadro = useCurrentFrame();
@@ -337,24 +268,6 @@ function Giro() {
           );
         })}
       </p>
-    </AbsoluteFill>
-  );
-}
-
-/** El sello: la marca aparece en la bisagra del video. */
-function Sello() {
-  const cuadro = useCurrentFrame();
-
-  const salida = interpolate(cuadro, [DURACION_SELLO - 9, DURACION_SELLO], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  return (
-    <AbsoluteFill
-      style={{ fontFamily: LETRA, alignItems: 'center', justifyContent: 'center', opacity: salida }}
-    >
-      <Logo tamano={240} conDireccion />
     </AbsoluteFill>
   );
 }
@@ -424,146 +337,6 @@ function PortadaCapitulo({ titulo, numero }: { titulo: string; numero: number })
   );
 }
 
-/**
- * La marca arriba, mientras se muestran las funciones.
- *
- * Un comercial nunca esconde de quien es. Va pequena y quieta: si se moviera
- * competiria con lo unico que tiene que mirarse, que es la pantalla.
- */
-function Marca() {
-  const cuadro = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 80 } });
-
-  return (
-    <AbsoluteFill
-      style={{
-        fontFamily: LETRA,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 64,
-        opacity: entrada * 0.85,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <Img src={staticFile('marca-icono.png')} style={{ width: 56, height: 56 }} />
-        <span style={{ fontSize: 34, fontWeight: 700, color: COLOR.piedraGris, letterSpacing: -0.5 }}>
-          pamplohogar.com
-        </span>
-      </div>
-    </AbsoluteFill>
-  );
-}
-
-/**
- * La barra de avance del pie.
- *
- * Dice cuanto falta sin decirlo. En un video vertical la gente desliza cuando
- * no sabe si esto va para largo; ver la barra a media asta es motivo para
- * quedarse, y en un video de un minuto pesa mas que en uno de treinta
- * segundos.
- */
-function Avance() {
-  const cuadro = useCurrentFrame();
-
-  return (
-    <AbsoluteFill style={{ justifyContent: 'flex-end' }}>
-      <div style={{ height: 7, background: 'rgba(31,27,23,0.10)' }}>
-        <div
-          style={{
-            height: '100%',
-            width: `${(cuadro / DURACION_TOTAL) * 100}%`,
-            background: COLOR.terracota,
-          }}
-        />
-      </div>
-    </AbsoluteFill>
-  );
-}
-
-/** El cierre: el logo animado, la direccion, el codigo y el remate. */
-function Cierre() {
-  const cuadro = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const direccion = spring({
-    frame: cuadro - Math.round(fps * 0.55),
-    fps,
-    config: { damping: 200, stiffness: 90 },
-  });
-  const codigo = spring({
-    frame: cuadro - Math.round(fps * 0.9),
-    fps,
-    config: { damping: 200, stiffness: 110 },
-  });
-  const remate = spring({
-    frame: cuadro - Math.round(fps * 1.35),
-    fps,
-    config: { damping: 200, stiffness: 90 },
-  });
-
-  return (
-    <AbsoluteFill
-      style={{
-        fontFamily: LETRA,
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Logo tamano={190} />
-
-      <p
-        style={{
-          margin: '38px 0 0',
-          fontSize: 68,
-          fontWeight: 800,
-          letterSpacing: -2,
-          color: COLOR.terracota,
-          clipPath: `inset(0 ${(1 - direccion) * 100}% 0 0)`,
-        }}
-      >
-        pamplohogar.com
-      </p>
-
-      <div
-        style={{
-          opacity: codigo,
-          marginTop: 42,
-          transform: `scale(${interpolate(codigo, [0, 1], [0.85, 1])})`,
-          background: '#fff',
-          padding: 18,
-          borderRadius: 26,
-          boxShadow: '0 24px 50px -20px rgba(31,27,23,0.35)',
-        }}
-      >
-        <Img src={staticFile('qr-pamplohogar.png')} style={{ width: 240, height: 240 }} />
-      </div>
-
-      <p
-        style={{
-          margin: '38px 0 0',
-          fontSize: 44,
-          fontWeight: 700,
-          letterSpacing: -1,
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: '0 12px',
-          opacity: remate,
-          transform: `translateY(${interpolate(remate, [0, 1], [22, 0])}px)`,
-        }}
-      >
-        {trozos('Arriendos en Pamplona. Sin preguntarle a *nadie.*').map(({ palabra, fuerte }, i) => (
-          <span key={palabra + i} style={{ color: color(fuerte) }}>
-            {palabra}
-          </span>
-        ))}
-      </p>
-    </AbsoluteFill>
-  );
-}
-
 export function VideoCompleto() {
   // Las escenas se encabalgan quince cuadros: la que entra empieza antes de que
   // termine de irse la anterior. Por eso el reloj se lleva a mano en vez de
@@ -576,7 +349,7 @@ export function VideoCompleto() {
 
       {PROBLEMA.map((texto, i) => (
         <Sequence key={texto} from={DURACION_FRASE * i} durationInFrames={DURACION_FRASE}>
-          <Frase texto={texto} />
+          <Frase texto={texto} duracion={DURACION_FRASE} />
         </Sequence>
       ))}
 
@@ -585,7 +358,7 @@ export function VideoCompleto() {
       </Sequence>
 
       <Sequence from={COMIENZO_SELLO} durationInFrames={DURACION_SELLO}>
-        <Sello />
+        <Sello duracion={DURACION_SELLO} />
       </Sequence>
 
       <Sequence from={COMIENZO_ACTO} durationInFrames={DURACION_ACTO}>
@@ -602,16 +375,8 @@ export function VideoCompleto() {
 
         capitulo.escenas.forEach((escena, i) => {
           piezas.push(
-            <Sequence
-              key={escena.captura}
-              from={reloj}
-              durationInFrames={DURACION_ESCENA + 15}
-            >
-              <Escena
-                {...escena}
-                lado={i % 2 === 0 ? 1 : -1}
-                capitulo={capitulo.titulo}
-              />
+            <Sequence key={escena.captura} from={reloj} durationInFrames={DURACION_ESCENA + 15}>
+              <Escena {...escena} lado={i % 2 === 0 ? 1 : -1} capitulo={capitulo.titulo} />
             </Sequence>,
           );
           reloj += DURACION_ESCENA;
@@ -621,10 +386,10 @@ export function VideoCompleto() {
       })}
 
       <Sequence from={COMIENZO_CIERRE} durationInFrames={DURACION_CIERRE}>
-        <Cierre />
+        <Cierre conCodigo remate="Arriendos en Pamplona. Sin preguntarle a *nadie.*" />
       </Sequence>
 
-      <Avance />
+      <Avance total={DURACION_TOTAL} />
     </AbsoluteFill>
   );
 }

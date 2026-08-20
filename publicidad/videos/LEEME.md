@@ -88,6 +88,40 @@ esto en vez de CapCut.
 
 ---
 
+## Hay tres videos, y no son el mismo recortado
+
+| Comando | Sale en | Dura | A quien le habla |
+|---|---|---|---|
+| `npm run video` | `pamplohogar.mp4` | 59 s | Al estudiante. Todo lo que hace la plataforma |
+| `npm run video:precio` | `pamplohogar-precio.mp4` | 15 s | Al estudiante, por la plata |
+| `npm run video:arrendadores` | `pamplohogar-arrendadores.mp4` | 20 s | Al que tiene la habitación desocupada |
+
+**Los cortos no son resúmenes del largo.** Un resumen se nota y aburre al que
+ya vio el otro. Cada uno entra por un lado distinto:
+
+- **El de precios** se mete por una pregunta que casi todo el que arrienda en
+  Pamplona se ha hecho callado: *me estarán cobrando de más*. Muestra **una
+  sola función**, la comparación de precios. Quince segundos no dan para una
+  lista, y una lista de quince segundos no se recuerda: se recuerda una cosa.
+- **El de arrendadores** le habla a la otra mitad. Todo lo demás —el video
+  largo, las encuestas, los volantes— le habla al estudiante, y una plataforma
+  de arriendos sin arriendos publicados no le sirve a nadie. Va en *usted* y no
+  en *tú*, y **no le muestra el formulario de publicar**: a nadie lo convence un
+  formulario. Le muestra cómo queda lo suyo y quién lo va a ver.
+
+Los tres comparten las piezas (`src/Piezas.tsx`), los marcos de los aparatos y
+el fondo. Arreglar el desenfoque de las palabras se arregla una vez.
+
+### Dónde publicar cada uno
+
+- **15 s** — historia de Instagram y estado de WhatsApp, que es lo que aguantan
+  sin partirse en dos.
+- **20 s** — para mandarle por WhatsApp a un arrendador, o a un grupo de
+  propietarios.
+- **59 s** — para el perfil, la página, y para quien ya mostró interés.
+
+---
+
 ## El video de un minuto
 
 ```
