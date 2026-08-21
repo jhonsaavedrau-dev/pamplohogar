@@ -9,6 +9,7 @@ import { useRevelarAlEntrar } from '../lib/revelar';
 import { GuardarBusqueda } from '../components/GuardarBusqueda';
 import { EstadoError, EstadoVacio, TarjetaFantasma } from '../components/Estados';
 import { pesos } from '../lib/formato';
+import { BARRIOS_DE_PAMPLONA } from '../lib/barrios';
 
 const INMUEBLE_DISPONIBLE = 'inmueble disponible';
 const INMUEBLES_DISPONIBLES = 'inmuebles disponibles';
@@ -166,10 +167,19 @@ export function Buscar() {
                 type="search"
                 className="campo flex-1 border-transparent bg-transparent text-[1.05rem] focus:ring-0"
                 placeholder="Busca por barrio: Centro, El Buque, Cristo Rey..."
+                list="barrios-de-pamplona"
                 value={valor('q')}
                 onChange={(e) => actualizar('q', e.target.value)}
                 aria-label="Buscar vivienda"
               />
+              {/* Los barrios de verdad, sugeridos mientras se escribe. Ahorra
+                  el error de tipeo, que en una busqueda por texto no devuelve
+                  nada y parece que no hubiera arriendos. */}
+              <datalist id="barrios-de-pamplona">
+                {BARRIOS_DE_PAMPLONA.map((b) => (
+                  <option key={b} value={b} />
+                ))}
+              </datalist>
               {/*
                 Va en contorno de marca y no en azul relleno. Abrir los filtros
                 no es la accion que la portada quiere que uno haga, es una

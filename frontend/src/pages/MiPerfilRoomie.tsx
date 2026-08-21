@@ -6,6 +6,7 @@ import { useSesion } from '../lib/sesion';
 import type { ConQuienConvivir, PerfilRoomie, RitmoDeVida } from '../lib/tiposRoomie';
 import { AYUDA_RITMO, ETIQUETAS_CON_QUIEN, ETIQUETAS_RITMO } from '../lib/tiposRoomie';
 import { Aviso, Cargando } from '../components/Estados';
+import { BARRIOS_DE_PAMPLONA } from '../lib/barrios';
 
 const RITMOS: RitmoDeVida[] = ['MADRUGADOR', 'NOCTURNO', 'MIXTO'];
 const CON_QUIEN: ConQuienConvivir[] = ['CUALQUIERA', 'SOLO_MUJERES', 'SOLO_HOMBRES'];
@@ -232,9 +233,16 @@ export function MiPerfilRoomie() {
               className="campo"
               maxLength={60}
               placeholder="El Buque, Centro..."
+              list="barrios-de-pamplona"
               value={form.zonaPreferida}
               onChange={(e) => cambiar('zonaPreferida', e.target.value)}
             />
+            {/* Los barrios de verdad, sugeridos mientras se escribe. */}
+            <datalist id="barrios-de-pamplona">
+              {BARRIOS_DE_PAMPLONA.map((b) => (
+                <option key={b} value={b} />
+              ))}
+            </datalist>
           </div>
 
           <div>

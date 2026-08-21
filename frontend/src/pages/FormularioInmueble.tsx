@@ -8,6 +8,7 @@ import { CENTRO_PAMPLONA } from '../components/coordenadas';
 import { MapaSelectorDiferido } from '../components/MapaDiferido';
 import { Aviso, Cargando } from '../components/Estados';
 import { PedirCelular } from '../components/PedirCelular';
+import { BARRIOS_DE_PAMPLONA } from '../lib/barrios';
 
 const TIPOS: TipoInmueble[] = ['HABITACION', 'APARTAESTUDIO', 'APARTAMENTO', 'CASA'];
 
@@ -347,14 +348,27 @@ export function FormularioInmueble() {
             <label className="etiqueta" htmlFor="barrio">
               Barrio
             </label>
+            {/*
+              Sugiere los barrios de verdad mientras se escribe, pero deja
+              escribir cualquier cosa. Un desplegable obligatorio se ve mas
+              ordenado y es peor: el dia que alguien arriende en un sector que
+              no este en la lista, no podria publicar.
+            */}
             <input
               id="barrio"
               className="campo"
               maxLength={60}
               placeholder="Centro"
+              list="barrios-de-pamplona"
+              autoComplete="off"
               value={form.barrio}
               onChange={(e) => cambiar('barrio', e.target.value)}
             />
+            <datalist id="barrios-de-pamplona">
+              {BARRIOS_DE_PAMPLONA.map((b) => (
+                <option key={b} value={b} />
+              ))}
+            </datalist>
           </div>
 
           <div>
