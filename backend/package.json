@@ -10,6 +10,8 @@
     "postinstall": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
+    "panel": "node panel/servidor.mjs",
+    "datos": "prisma studio",
     "seed": "tsx prisma/seed.ts",
     "seed:produccion": "node prisma/correrEnProduccion.mjs prisma/seed.ts",
     "ejemplos": "tsx prisma/agregarEjemplos.ts",
