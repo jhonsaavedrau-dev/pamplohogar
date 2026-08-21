@@ -1,10 +1,40 @@
 # PamploHogar
 
-Plataforma web que conecta a los estudiantes que llegan cada semestre a Pamplona, Norte de
-Santander, con arrendadores que publican habitaciones, apartaestudios y apartamentos. La idea es
-que nadie tenga que depender del voz a voz ni caer en cobros abusivos para encontrar donde vivir.
+**[pamplohogar.com](https://pamplohogar.com)** · Vivienda estudiantil en Pamplona, Norte de Santander
 
-Todo esta pensado primero para el celular, porque es desde ahi que entra la mayoria de estudiantes.
+[![En linea](https://img.shields.io/badge/en%20l%C3%ADnea-pamplohogar.com-B25317)](https://pamplohogar.com)
+![React](https://img.shields.io/badge/React-18-1F1B17)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-1F1B17)
+![Node](https://img.shields.io/badge/Node-Express-1F1B17)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Prisma-1F1B17)
+![Licencia](https://img.shields.io/badge/licencia-MIT-655E52)
+
+Encontrar arriendo en Pamplona depende de a quien conozcas: grupos de WhatsApp,
+avisos en un poste, conocidos de conocidos. El que llega de otra ciudad sin
+conocer a nadie termina tomando lo primero que aparece, sin saber si el precio
+es el normal de ese barrio ni a cuantos minutos queda de la universidad.
+
+PamploHogar pone eso en un solo sitio, y agrega lo que el voz a voz no da:
+**el precio comparado con lo que se cobra en ese barrio**, la distancia medida
+hasta la Unipamplona, y lo que cuentan quienes ya vivieron ahi.
+
+Hecho por una persona, sin equipo y sin financiacion.
+
+---
+
+## De un vistazo
+
+| | |
+|---|---|
+| **En internet** | [pamplohogar.com](https://pamplohogar.com) |
+| **Frontend** | React 18, Vite, TypeScript, Tailwind v4, TanStack Query |
+| **Backend** | Node, Express, Prisma, PostgreSQL |
+| **Infraestructura** | Vercel, Render, Neon, Cloudflare, Cloudinary, Resend |
+| **Android** | Aplicacion TWA lista para Play Store |
+| **Publicidad** | Quince videos verticales generados con codigo (Remotion) |
+| **Pruebas** | 99 del backend, mas una prueba de carga de 1000 usuarios |
+
+---
 
 ## Que hace hoy
 
