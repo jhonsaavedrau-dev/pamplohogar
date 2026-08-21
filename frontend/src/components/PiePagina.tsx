@@ -22,6 +22,21 @@ import { Marca } from './Marca';
 
   Y entraron dos enlaces que faltaban: el mapa de precios, que es de lo mejor
   que tiene la plataforma y no estaba en el pie, y el correo de contacto.
+
+  EL REPARTO A LO ANCHO. Las cuatro columnas -- la marca y las tres de enlaces
+  -- van en una rejilla pareja. Antes la marca se quedaba con la izquierda y los
+  enlaces se iban todos contra el borde derecho, y en el medio quedaba un hueco
+  del ancho de media pantalla.
+
+  EN CELULAR LOS ENLACES VAN EN DOS COLUMNAS, no en una. Apilados de a uno, la
+  columna de Estudiantes sola medía cinco enlaces de 44 pixeles y el pie se
+  volvia una pagina entera de bajar.
+
+  Y LOS ENLACES VAN MAS JUNTOS EN EL COMPUTADOR. La clase `tocable` le pone 44
+  pixeles de alto a cada enlace, que es el minimo para que un dedo no le pegue
+  al de al lado. En un celular hace falta; en un computador, donde se apunta con
+  el raton, esos 44 pixeles por enlace estiraban la columna de Estudiantes hasta
+  el doble de alto que las otras dos y dejaban el pie desbalanceado.
 */
 
 const ENLACES = [
@@ -54,10 +69,10 @@ const ENLACES = [
 export function PiePagina() {
   return (
     <footer className="sin-imprimir mt-20 border-t border-piedra-200 bg-white">
-      <div className="contenedor-app py-12">
+      <div className="contenedor-app py-10">
         {/* ------------------------------------------ la marca y los enlaces */}
-        <div className="grid gap-10 sm:grid-cols-[minmax(0,1fr)_auto]">
-          <div className="max-w-sm">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="col-span-2 lg:col-span-1 lg:max-w-xs">
             {/*
               El logo del pie tambien lleva al inicio. Antes era solo un dibujo:
               quien llega al final de la pagina y quiere volver a empezar le
@@ -72,32 +87,25 @@ export function PiePagina() {
             </p>
           </div>
 
-          {/*
-            Tres columnas en pantalla ancha y dos en celular. En celular las
-            tres no caben sin apretar la letra, y una columna de enlaces
-            apretada es una columna en la que se pulsa el enlace de al lado.
-          */}
-          <nav className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-3 sm:gap-x-14">
-            {ENLACES.map((columna) => (
-              <div key={columna.titulo}>
-                <p className="mb-3 text-xs font-bold tracking-wide text-piedra-600 uppercase">
-                  {columna.titulo}
-                </p>
-                <ul className="space-y-1">
-                  {columna.items.map((item) => (
-                    <li key={item.a}>
-                      <Link
-                        to={item.a}
-                        className="tocable text-sm text-piedra-700 hover:text-terracota-600"
-                      >
-                        {item.texto}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
+          {ENLACES.map((columna) => (
+            <nav key={columna.titulo} aria-label={columna.titulo}>
+              <p className="mb-3 text-xs font-bold tracking-wide text-piedra-600 uppercase">
+                {columna.titulo}
+              </p>
+              <ul>
+                {columna.items.map((item) => (
+                  <li key={item.a}>
+                    <Link
+                      to={item.a}
+                      className="inline-flex min-h-11 items-center text-sm text-piedra-700 hover:text-terracota-600 sm:min-h-0 sm:py-[5px]"
+                    >
+                      {item.texto}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
         {/* ------------------------------------------- el aviso, solo y visible */}
