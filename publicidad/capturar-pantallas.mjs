@@ -36,11 +36,25 @@
 */
 import puppeteer from 'puppeteer-core';
 import { mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
-const CHROME =
-  'C:/Users/jhons/OneDrive/Desktop/CLAUDECODEFACTORA/PAMPLONAHOGAR/publicidad/videos/node_modules/.remotion/chrome-headless-shell/win64/chrome-headless-shell-win64/chrome-headless-shell.exe';
+/*
+  Las rutas se calculan desde donde esta ESTE archivo, no escritas a mano.
 
-const SALIDA = 'C:/Users/jhons/OneDrive/Desktop/CLAUDECODEFACTORA/PAMPLONAHOGAR/publicidad/capturas/';
+  Antes estaban puestas completas, empezando por C:/Users/jhons/OneDrive/...
+  Eso funciona hasta el dia en que la carpeta cambia de nombre o de sitio, y
+  ese dia el programa se cae sin decir por que. Calculadas desde el archivo,
+  la carpeta se puede mover, renombrar o copiar a otro computador.
+*/
+const AQUI = dirname(fileURLToPath(import.meta.url));
+
+const CHROME = join(
+  AQUI,
+  'videos/node_modules/.remotion/chrome-headless-shell/win64/chrome-headless-shell-win64/chrome-headless-shell.exe',
+);
+
+const SALIDA = join(AQUI, 'capturas') + '/';
 const SITIO = 'https://pamplohogar.com';
 
 /*

@@ -17,7 +17,7 @@
   "maskableIconUrl": "https://pamplohogar.com/icono-recortable-512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "C:/Users/jhons/OneDrive/Desktop/CLAUDECODEFACTORA/PAMPLOHOGAR-LLAVES/pamplohogar-subida.keystore",
+    "path": "C:/Users/jhons/OneDrive/Desktop/PROYECTOS/llaves/pamplohogar/pamplohogar-subida.keystore",
     "alias": "subida"
   },
   "appVersionName": "1.1.0",

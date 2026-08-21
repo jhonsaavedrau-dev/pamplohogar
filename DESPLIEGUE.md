@@ -56,7 +56,7 @@ se te abre el navegador. Pega el codigo ahi y autoriza.
 Cuando termine, avisame y yo subo el codigo. O si quieres hacerlo tu, son estos dos comandos:
 
 ```bash
-cd "C:\Users\jhons\OneDrive\Desktop\PAMPLONAHOGAR"
+cd "C:\Users\jhons\OneDrive\Desktop\pamplohogar"
 ```
 
 ```bash

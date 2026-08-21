@@ -70,7 +70,7 @@ Todo esta pensado primero para el celular, porque es desde ahi que entra la mayo
 ## Como esta organizado el proyecto
 
 ```
-PAMPLONAHOGAR/
+pamplohogar/
 ├── backend/              El servidor: atiende las peticiones y habla con la base de datos
 │   ├── prisma/
 │   │   ├── schema.prisma   Definicion de las tablas
