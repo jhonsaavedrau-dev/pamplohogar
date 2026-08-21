@@ -2,6 +2,7 @@ import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoC
 import { Escena, type DatosEscena } from './Escena';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, Pie, Titular, ZONA } from './Titulo';
 import { COLOR, LETRA, LETRA_SERIF, VIDEO } from './marca';
 
 /*
@@ -54,11 +55,7 @@ function Cartel() {
   const { fps } = useVideoConfig();
 
   const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 60 } });
-  const sentencia = spring({
-    frame: cuadro - Math.round(fps * 7.6),
-    fps,
-    config: { damping: 200, stiffness: 95 },
-  });
+  const sentencia = Math.round(fps * 7.2);
   const salida = interpolate(cuadro, [DURACION_CARTEL - 12, DURACION_CARTEL], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -69,7 +66,7 @@ function Cartel() {
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 180 }}>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 210 }}>
         <div
           style={{
             width: 700,
@@ -155,23 +152,15 @@ function Cartel() {
         </div>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ justifyContent: 'flex-end', padding: '0 90px 150px' }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 64,
-            fontWeight: 800,
-            lineHeight: 1.14,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: sentencia,
-            transform: `translateY(${interpolate(sentencia, [0, 1], [28, 0])}px)`,
-          }}
-        >
-          Su aviso llega hasta
-          <br />
-          <span style={{ color: COLOR.terracota }}>donde llega el poste.</span>
-        </p>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Para arrendadores" />
+      </AbsoluteFill>
+
+      <AbsoluteFill
+        style={{ justifyContent: 'flex-end', padding: `0 ${ZONA.lados}px ${ZONA.abajo}px` }}
+      >
+        <Titular lineas={['Su aviso llega hasta', 'donde llega *el poste.*']} tamano={62} retraso={sentencia} />
+        <Pie texto="Y el que viene de otra ciudad nunca pasa por ahí." retraso={sentencia + 10} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

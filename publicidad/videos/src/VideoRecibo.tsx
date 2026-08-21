@@ -1,6 +1,7 @@
 import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, ZONA } from './Titulo';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
@@ -67,7 +68,12 @@ function Tirilla() {
     'linear-gradient(45deg, transparent 0 12px, #FFFDFA 12px) 0 0 / 24px 24px';
 
   return (
-    <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: salida }}>
+    <AbsoluteFill style={{ opacity: salida }}>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Antes de ir a verla" />
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 110 }}>
       <div
         style={{
           width: 760,
@@ -157,6 +163,7 @@ function Tirilla() {
           }}
         />
       </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 }

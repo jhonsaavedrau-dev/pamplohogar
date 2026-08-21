@@ -2,6 +2,7 @@ import { AbsoluteFill, Easing, Sequence, interpolate, spring, useCurrentFrame, u
 import { Fondo } from './Fondo';
 import { MarcoCelular } from './Marcos';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, ZONA } from './Titulo';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
@@ -58,7 +59,11 @@ function Toma() {
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 150 }}>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Sin soltar el dedo" />
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 60, paddingBottom: 250 }}>
         <div
           style={{
             opacity: entrada,
@@ -74,7 +79,7 @@ function Toma() {
       </AbsoluteFill>
 
       {/* Las palabras, quietas mientras la pagina corre. */}
-      <AbsoluteFill style={{ justifyContent: 'flex-end', paddingBottom: 132 }}>
+      <AbsoluteFill style={{ justifyContent: 'flex-end', paddingBottom: 250 }}>
         {PALABRAS.map((palabra) => {
           const desde = Math.round(fps * palabra.en);
           const aparece = spring({
@@ -96,7 +101,7 @@ function Toma() {
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                bottom: 132,
+                bottom: 250,
                 margin: 0,
                 textAlign: 'center',
                 fontSize: 58,

@@ -1,6 +1,7 @@
 import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, Pie, Titular, ZONA } from './Titulo';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
@@ -59,32 +60,13 @@ function Baraja() {
     config: { damping: 200, stiffness: 55 },
   });
 
-  const titulo = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 90 } });
-  const remate = spring({
-    frame: cuadro - Math.round(fps * 8.8),
-    fps,
-    config: { damping: 200, stiffness: 90 },
-  });
+  const remate = Math.round(fps * 8.8);
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
-      <AbsoluteFill style={{ padding: '110px 90px 0' }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 72,
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: titulo,
-            transform: `translateY(${interpolate(titulo, [0, 1], [24, 0])}px)`,
-          }}
-        >
-          Lo que hay hoy
-          <br />
-          <span style={{ color: COLOR.terracota }}>en Pamplona.</span>
-        </p>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Lo que hay hoy" />
+        <Titular lineas={['Cinco habitaciones', 'en *cinco barrios.*']} tamano={72} retraso={6} />
       </AbsoluteFill>
 
       <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 40 }}>
@@ -156,23 +138,11 @@ function Baraja() {
         })}
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ justifyContent: 'flex-end', padding: '0 90px 140px' }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 60,
-            fontWeight: 800,
-            lineHeight: 1.14,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: remate,
-            transform: `translateY(${interpolate(remate, [0, 1], [28, 0])}px)`,
-          }}
-        >
-          Con precio y con barrio,
-          <br />
-          desde la primera mirada.
-        </p>
+      <AbsoluteFill
+        style={{ justifyContent: 'flex-end', padding: `0 ${ZONA.lados}px ${ZONA.abajo}px` }}
+      >
+        <Titular lineas={['Con precio y con barrio,', 'de una sola mirada.']} tamano={60} retraso={remate} />
+        <Pie texto="Sin llamar a preguntar cuánto." retraso={remate + 10} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

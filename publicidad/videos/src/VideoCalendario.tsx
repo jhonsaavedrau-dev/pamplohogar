@@ -2,6 +2,7 @@ import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoC
 import { Escena, type DatosEscena } from './Escena';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, Pie, Titular, ZONA } from './Titulo';
 import { COLOR, LETRA, LETRA_SERIF, VIDEO } from './marca';
 
 /*
@@ -58,11 +59,7 @@ function Calendario() {
   const { fps } = useVideoConfig();
 
   const entrada = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 60 } });
-  const sentencia = spring({
-    frame: cuadro - Math.round(fps * 6.6),
-    fps,
-    config: { damping: 200, stiffness: 95 },
-  });
+  const sentencia = Math.round(fps * 6.4);
   const salida = interpolate(cuadro, [DURACION_CALENDARIO - 12, DURACION_CALENDARIO], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -70,7 +67,7 @@ function Calendario() {
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 250 }}>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 200 }}>
         <div style={{ position: 'relative', width: 560, height: 640, opacity: entrada }}>
           {/* Las hojas van al reves para que la primera quede encima. */}
           {HOJAS.map((hoja, i) => {
@@ -165,23 +162,15 @@ function Calendario() {
         </div>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ justifyContent: 'flex-end', padding: '0 90px 140px' }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 64,
-            fontWeight: 800,
-            lineHeight: 1.14,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: sentencia,
-            transform: `translateY(${interpolate(sentencia, [0, 1], [28, 0])}px)`,
-          }}
-        >
-          Un mes desocupada
-          <br />
-          <span style={{ color: COLOR.terracota }}>no se recupera.</span>
-        </p>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Para arrendadores" />
+      </AbsoluteFill>
+
+      <AbsoluteFill
+        style={{ justifyContent: 'flex-end', padding: `0 ${ZONA.lados}px ${ZONA.abajo}px` }}
+      >
+        <Titular lineas={['Un mes desocupada', '*no se recupera.*']} tamano={62} retraso={sentencia} />
+        <Pie texto="Y los estudiantes buscan todos al mismo tiempo." retraso={sentencia + 10} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

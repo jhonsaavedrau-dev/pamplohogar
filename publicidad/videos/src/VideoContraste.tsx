@@ -1,5 +1,6 @@
 import { AbsoluteFill, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Avance, Cierre } from './Piezas';
+import { Titular } from './Titulo';
 import { COLOR, LETRA, LETRA_SERIF, VIDEO } from './marca';
 
 /*
@@ -49,11 +50,7 @@ function Partida() {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const remate = spring({
-    frame: cuadro - Math.round(fps * 10.6),
-    fps,
-    config: { damping: 200, stiffness: 95 },
-  });
+  const remate = Math.round(fps * 10.6);
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
@@ -223,22 +220,9 @@ function Partida() {
             })}
           </div>
 
-          <p
-            style={{
-              margin: '30px 0 0',
-              fontSize: 54,
-              fontWeight: 800,
-              lineHeight: 1.14,
-              letterSpacing: -2,
-              color: COLOR.piedra,
-              opacity: remate,
-              transform: `translateY(${interpolate(remate, [0, 1], [24, 0])}px)`,
-            }}
-          >
-            La misma habitación.
-            <br />
-            <span style={{ color: COLOR.terracota }}>Contada completa.</span>
-          </p>
+          <div style={{ marginTop: 26 }}>
+            <Titular lineas={['La misma habitación.', '*Contada completa.*']} tamano={54} retraso={remate} />
+          </div>
         </div>
       </div>
     </AbsoluteFill>

@@ -1,6 +1,7 @@
 import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, Pie, Titular, ZONA } from './Titulo';
 import { COLOR, LETRA, LETRA_SERIF, VIDEO } from './marca';
 
 /*
@@ -56,11 +57,7 @@ function Formulario() {
     fps,
     config: { damping: 11, mass: 0.7, stiffness: 130 },
   });
-  const nota = spring({
-    frame: cuadro - Math.round(fps * 11.4),
-    fps,
-    config: { damping: 200, stiffness: 95 },
-  });
+  const nota = Math.round(fps * 11.2);
   const salida = interpolate(cuadro, [DURACION_FORMULARIO - 14, DURACION_FORMULARIO], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -68,7 +65,7 @@ function Formulario() {
 
   return (
     <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 120 }}>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', paddingBottom: 150 }}>
         <div
           style={{
             position: 'relative',
@@ -154,23 +151,14 @@ function Formulario() {
         </div>
       </AbsoluteFill>
 
-      <AbsoluteFill style={{ justifyContent: 'flex-end', padding: '0 90px 130px' }}>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 58,
-            fontWeight: 800,
-            lineHeight: 1.16,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: nota,
-            transform: `translateY(${interpolate(nota, [0, 1], [26, 0])}px)`,
-          }}
-        >
-          Usted pone cuatro datos.
-          <br />
-          <span style={{ color: COLOR.terracota }}>El resto lo pone la página.</span>
-        </p>
+      <AbsoluteFill style={{ padding: `${ZONA.arriba}px ${ZONA.lados}px 0` }}>
+        <Antetitulo texto="Para arrendadores" />
+      </AbsoluteFill>
+
+      <AbsoluteFill
+        style={{ justifyContent: 'flex-end', padding: `0 ${ZONA.lados}px ${ZONA.abajo}px` }}
+      >
+        <Titular lineas={['Usted pone cuatro datos.', '*El resto lo pone la página.*']} tamano={56} retraso={nota} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

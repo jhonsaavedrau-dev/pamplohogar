@@ -2,6 +2,7 @@ import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoC
 import { Escena, type DatosEscena } from './Escena';
 import { Fondo } from './Fondo';
 import { Avance, Cierre } from './Piezas';
+import { Antetitulo, Pie, Titular, ZONA } from './Titulo';
 import { COLOR, LETRA, VIDEO } from './marca';
 
 /*
@@ -59,36 +60,22 @@ function Lista() {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const titulo = spring({ frame: cuadro, fps, config: { damping: 200, stiffness: 90 } });
-  const sentencia = spring({
-    frame: cuadro - Math.round(fps * 6.6),
-    fps,
-    config: { damping: 200, stiffness: 95 },
-  });
+  const sentencia = Math.round(fps * 6.6);
   const salida = interpolate(cuadro, [DURACION_LISTA - 12, DURACION_LISTA], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   return (
-    <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida, padding: '0 80px' }}>
-      <AbsoluteFill style={{ justifyContent: 'center' }}>
-        <p
-          style={{
-            margin: '0 0 44px',
-            fontSize: 66,
-            fontWeight: 800,
-            lineHeight: 1.12,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: titulo,
-            transform: `translateY(${interpolate(titulo, [0, 1], [24, 0])}px)`,
-          }}
-        >
-          Un día cualquiera
-          <br />
-          con el aviso puesto.
-        </p>
+    <AbsoluteFill style={{ fontFamily: LETRA, opacity: salida }}>
+      {/* El relleno va aqui y no en el padre: los AbsoluteFill se posicionan
+          solos y no heredan el relleno del de arriba, asi que puesto alla las
+          tarjetas salian pegadas a los dos bordes. */}
+      <AbsoluteFill style={{ justifyContent: 'center', padding: `0 ${ZONA.lados}px` }}>
+        <div style={{ marginBottom: 40 }}>
+          <Antetitulo texto="Para arrendadores" />
+          <Titular lineas={['Un día cualquiera', 'con el aviso puesto.']} tamano={64} retraso={6} />
+        </div>
 
         {LLAMADAS.map((llamada, i) => {
           const cae = spring({
@@ -157,22 +144,9 @@ function Lista() {
           );
         })}
 
-        <p
-          style={{
-            margin: '38px 0 0',
-            fontSize: 62,
-            fontWeight: 800,
-            lineHeight: 1.14,
-            letterSpacing: -2,
-            color: COLOR.piedra,
-            opacity: sentencia,
-            transform: `translateY(${interpolate(sentencia, [0, 1], [26, 0])}px)`,
-          }}
-        >
-          Las mismas cinco preguntas,
-          <br />
-          <span style={{ color: COLOR.terracota }}>todos los días.</span>
-        </p>
+        <div style={{ marginTop: 34 }}>
+          <Titular lineas={['Las mismas preguntas,', '*todos los días.*']} tamano={60} retraso={sentencia} />
+        </div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
