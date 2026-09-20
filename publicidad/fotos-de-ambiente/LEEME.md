@@ -15,6 +15,10 @@ con un pie de foto que diga dónde es.
 | `llave.jpg` | "Aún no has publicado nada", del arrendador |
 | `ventana-vacia.jpg` | Página que no existe |
 | `ventana-montana.jpg` | Sin usar todavía |
+| `cocina-compartida.jpg` | Portada de Roomies |
+| `sala-compartida.jpg` | "Todavía no hay nadie aquí", en Roomies |
+| `avisos-en-el-poste.jpg` | Arriba de "Sobre el proyecto" |
+| `pueblo-desde-arriba.jpg` | **Solo para anuncios.** No va en la página: se ve como una vista de Pamplona y no lo es |
 
 Las versiones que usa la página están en `frontend/public/fotos/`, ya
 comprimidas en WebP.
