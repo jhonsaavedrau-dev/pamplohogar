@@ -6,10 +6,15 @@ import 'leaflet/dist/leaflet.css';
 /*
   Lo que comparten los tres mapas de la pagina.
 
-  El fondo ya no es el de OpenStreetMap crudo, que se ve viejo y con las calles
-  demasiado marcadas. Se usa Voyager de CARTO, que es el mismo mapa de
-  OpenStreetMap pero dibujado con colores suaves, y ademas se piden las
-  baldosas al doble de resolucion para que no se vean borrosas en el celular.
+  EL FONDO YA NO ES EL DE CARTO. Voyager se veia muy bien, pero CARTO empezo a
+  exigir una clave de pago y sus baldosas salen atravesadas por un letrero que
+  dice API KEY REQUIRED: el mapa de precios de la pagina en vivo se veia rayado
+  de lado a lado. Ahora se dibuja con las baldosas del Humanitarian OSM Team,
+  que son libres, no piden clave y ademas vienen en crema y gris, que es la
+  paleta de la pagina.
+
+  Si ese servidor no responde, la capa se pasa sola a las baldosas normales de
+  OpenStreetMap. Un mapa en blanco es peor que un mapa feo.
 
   Y hay vista satelite, porque para alguien que no conoce Pamplona ver los
   techos y los arboles de verdad dice mucho mas que un plano de calles.
@@ -17,12 +22,13 @@ import 'leaflet/dist/leaflet.css';
 
 export type VistaDelMapa = 'mapa' | 'satelite';
 
+const CREDITO_OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
 const CAPAS: Record<VistaDelMapa, { url: string; credito: string; maxZoom: number }> = {
   mapa: {
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    credito:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    maxZoom: 20,
+    url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+    credito: `${CREDITO_OSM}, baldosas de <a href="https://www.hotosm.org/">HOT</a> y OSM France`,
+    maxZoom: 19,
   },
   satelite: {
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -31,15 +37,26 @@ const CAPAS: Record<VistaDelMapa, { url: string; credito: string; maxZoom: numbe
   },
 };
 
+const REPUESTO = {
+  url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  credito: CREDITO_OSM,
+  maxZoom: 19,
+};
+
 export function CapaDelMapa({ vista }: { vista: VistaDelMapa }) {
-  const capa = CAPAS[vista];
+  // Se cambia de servidor despues de varias baldosas fallidas, no de una: una
+  // sola que se pierda no significa que el servidor este caido.
+  const [fallos, setFallos] = useState(0);
+  const capa = vista === 'mapa' && fallos >= 4 ? REPUESTO : CAPAS[vista];
+
   return (
     <TileLayer
       // La clave obliga a Leaflet a cambiar la capa entera al cambiar de vista.
-      key={vista}
+      key={`${vista}-${capa.url}`}
       url={capa.url}
       attribution={capa.credito}
       maxZoom={capa.maxZoom}
+      eventHandlers={{ tileerror: () => setFallos((n) => n + 1) }}
       // Pide las baldosas al doble de resolucion en pantallas que lo aprovechan.
       detectRetina
     />

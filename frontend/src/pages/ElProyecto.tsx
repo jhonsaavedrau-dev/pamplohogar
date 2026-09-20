@@ -45,6 +45,25 @@ export function ElProyecto() {
         En Pamplona conseguir dónde vivir no depende de buscar bien. Depende de a quién conozcas.
       </p>
 
+      {/*
+        Un poste con avisos: asi se consigue arriendo hoy. La foto es una
+        ilustracion del problema, no una foto de Pamplona, y el pie de foto
+        habla de la idea y no del sitio para no decir lo que no es.
+      */}
+      <figure className="mt-8">
+        <img
+          src="/fotos/avisos-en-el-poste.webp"
+          alt="Un poste de la calle cubierto de avisos de papel rotos, unos encima de otros."
+          width={1400}
+          height={788}
+          loading="lazy"
+          className="aspect-[16/9] w-full rounded-3xl object-cover"
+        />
+        <figcaption className="mt-3 text-sm text-piedra-500">
+          Así se consigue arriendo hoy: un papel en un poste, un grupo de WhatsApp, un conocido.
+        </figcaption>
+      </figure>
+
       <div className="bloques mt-10">
         <Bloque titulo="El problema">
           <p>
@@ -55,8 +74,8 @@ export function ElProyecto() {
           </p>
           <p>
             Ese estudiante termina tomando lo primero que aparece. Sin saber si el precio es el
-            normal por esa zona, cuánto va a caminar todos los días hasta la universidad, ni cómo se
-            siente ese barrio a las nueve de la noche. Son tres cosas que uno solo descubre cuando ya
+            normal por esa zona, cuánto va a caminar todos los días hasta la universidad, ni qué
+            cuentan los que ya vivieron en esa casa. Son tres cosas que uno solo descubre cuando ya
             firmó y pagó.
           </p>
         </Bloque>
@@ -69,9 +88,9 @@ export function ElProyecto() {
             barrio, la plataforma lo dice y muestra con cuánto se está comparando.
           </p>
           <p>
-            Y están las reseñas de quienes vivieron ahí antes: cómo trató el arrendador, si el barrio
-            es tranquilo de noche, si pasa transporte. Eso antes se sabía solo preguntándole al
-            indicado.
+            Y están las reseñas de quienes vivieron ahí antes: cómo trató el arrendador, si el
+            barrio es tranquilo de noche, si pasa transporte. Eso antes se sabía solo preguntándole
+            al indicado.
           </p>
         </Bloque>
 
@@ -128,13 +147,12 @@ export function ElProyecto() {
         <Bloque titulo="¿Necesitas algo parecido?">
           <p>
             Estudio Análisis y Desarrollo de Software en el SENA y Licenciatura en Lenguas
-            Extranjeras en la Universidad de Pamplona. Esta plataforma la hice de principio a
-            fin: la página, el servidor, la base de datos, los mapas y la aplicación de celular.
+            Extranjeras en la Universidad de Pamplona. Esta plataforma la hice de principio a fin:
+            la página, el servidor, la base de datos, los mapas y la aplicación de celular.
           </p>
           <p>
-            Si en tu negocio o tu proyecto necesitas una página, una tienda en línea, o
-            automatizar algo que hoy haces a mano y te consume horas, escríbeme y lo hablamos sin
-            compromiso:{' '}
+            Si en tu negocio o tu proyecto necesitas una página, una tienda en línea, o automatizar
+            algo que hoy haces a mano y te consume horas, escríbeme y lo hablamos sin compromiso:{' '}
             <a
               className="font-semibold text-confianza-600 underline"
               href={`mailto:${AUTOR.correo}`}

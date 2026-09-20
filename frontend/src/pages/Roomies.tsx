@@ -37,29 +37,39 @@ export function Roomies() {
   return (
     <>
       <section className="border-b border-piedra-200 bg-gradient-to-b from-confianza-50 to-piedra-50">
-        <div className="contenedor-app py-10 sm:py-14">
-          <h1 className="max-w-2xl text-[2rem] leading-[1.1] font-semibold tracking-tight text-piedra-900 sm:text-[2.75rem]">
-            Entre varios, el arriendo cuesta la mitad
-          </h1>
-          <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600">
-            Un apartamento de 850 mil entre tres sale a 283 mil por cabeza, más barato que casi
-            cualquier habitación sola. Aquí encuentras con quién.
-          </p>
+        <div className="contenedor-app py-10 sm:py-14 lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center lg:gap-14">
+          <div>
+            <h1 className="max-w-2xl text-[2rem] leading-[1.1] font-semibold tracking-tight text-piedra-900 sm:text-[2.75rem]">
+              Entre varios, el arriendo cuesta la mitad
+            </h1>
+            <p className="mt-4 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600">
+              Un apartamento de 850 mil entre tres sale a 283 mil por cabeza, más barato que casi
+              cualquier habitación sola. Aquí encuentras con quién.
+            </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/roomies/mi-perfil" className="boton-primario">
-              {data?.tengoPerfil ? 'Editar mi perfil' : 'Crear mi perfil'}
-            </Link>
-            <Link to="/" className="boton-suave">
-              Ver inmuebles
-            </Link>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link to="/roomies/mi-perfil" className="boton-primario">
+                {data?.tengoPerfil ? 'Editar mi perfil' : 'Crear mi perfil'}
+              </Link>
+              <Link to="/" className="boton-suave">
+                Ver inmuebles
+              </Link>
+            </div>
+
+            {!usuario && (
+              <p className="mt-4 text-sm text-piedra-600">
+                Necesitas una cuenta para publicar tu perfil o escribirle a alguien.
+              </p>
+            )}
           </div>
 
-          {!usuario && (
-            <p className="mt-4 text-sm text-piedra-600">
-              Necesitas una cuenta para publicar tu perfil o escribirle a alguien.
-            </p>
-          )}
+          {/* Compartir no es una idea abstracta: es una cocina con dos tazas.
+              Solo en computador, donde la mitad derecha quedaba en blanco; en
+              celular ni se descarga. */}
+          <div
+            aria-hidden="true"
+            className="hidden aspect-[4/5] rounded-t-[999px] rounded-b-3xl shadow-[0_30px_60px_-30px_rgba(31,59,75,0.4)] ring-1 ring-confianza-700/10 lg:block lg:bg-[url('/fotos/cocina-compartida.webp')] lg:bg-cover lg:bg-center"
+          />
         </div>
       </section>
 
@@ -166,6 +176,7 @@ export function Roomies() {
             {data.perfiles.length === 0 ? (
               <EstadoVacio
                 titulo={hayFiltros ? 'Nadie encaja con esos filtros' : 'Todavía no hay nadie aquí'}
+                foto={hayFiltros ? undefined : '/fotos/sala-compartida.webp'}
                 descripcion={
                   hayFiltros
                     ? 'Prueba subiendo el presupuesto o quitando algún filtro.'
