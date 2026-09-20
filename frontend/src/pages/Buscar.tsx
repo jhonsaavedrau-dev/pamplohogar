@@ -146,89 +146,111 @@ export function Buscar() {
         {/* El encabezado es fijo y tapaba la etiqueta de arriba: por eso el
             espacio superior es grande. Y el de abajo tiene que dejar libres las
             montanas, que son de alto fijo y van pegadas al fondo. */}
-        <div className="contenedor-app relative pt-14 pb-32 sm:pt-20 sm:pb-44">
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
-            Pamplona, Norte de Santander
-          </p>
+        <div className="contenedor-app relative pt-14 pb-32 sm:pt-20 sm:pb-44 lg:grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:items-center lg:gap-14">
+          <div>
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-terracota-200/70 bg-white/70 px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.08em] text-terracota-700 uppercase backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-terracota-500" aria-hidden="true" />
+              Pamplona, Norte de Santander
+            </p>
 
-          <h1 className="max-w-3xl text-[2.6rem] leading-[0.98] font-semibold tracking-[-0.03em] text-piedra-900 sm:text-[4.5rem]">
-            Busca menos.{' '}
-            <span className="block text-terracota-600">Elige mejor.</span>
-          </h1>
+            <h1 className="max-w-3xl text-[2.6rem] leading-[0.98] font-semibold tracking-[-0.03em] text-piedra-900 sm:text-[4.5rem]">
+              Busca menos. <span className="block text-terracota-600">Elige mejor.</span>
+            </h1>
 
-          <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600 sm:text-lg">
-            Encuentra habitaciones y apartamentos en Pamplona con información que sí te sirve.
-          </p>
+            <p className="mt-5 max-w-xl text-[1.05rem] leading-relaxed text-piedra-600 sm:text-lg">
+              Encuentra habitaciones y apartamentos en Pamplona con información que sí te sirve.
+            </p>
 
-          <div className="mt-8 max-w-2xl rounded-2xl border border-piedra-200/80 bg-white p-2 shadow-[var(--shadow-elevada)]">
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <input
-                type="search"
-                className="campo flex-1 border-transparent bg-transparent text-[1.05rem] focus:ring-0"
-                placeholder="Busca por barrio: Centro, El Buque, Cristo Rey..."
-                list="barrios-de-pamplona"
-                value={valor('q')}
-                onChange={(e) => actualizar('q', e.target.value)}
-                aria-label="Buscar vivienda"
-              />
-              {/* Los barrios de verdad, sugeridos mientras se escribe. Ahorra
+            <div className="mt-8 max-w-2xl rounded-2xl border border-piedra-200/80 bg-white p-2 shadow-[var(--shadow-elevada)]">
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <input
+                  type="search"
+                  className="campo flex-1 border-transparent bg-transparent text-[1.05rem] focus:ring-0"
+                  placeholder="Busca por barrio: Centro, El Buque, Cristo Rey..."
+                  list="barrios-de-pamplona"
+                  value={valor('q')}
+                  onChange={(e) => actualizar('q', e.target.value)}
+                  aria-label="Buscar vivienda"
+                />
+                {/* Los barrios de verdad, sugeridos mientras se escribe. Ahorra
                   el error de tipeo, que en una busqueda por texto no devuelve
                   nada y parece que no hubiera arriendos. */}
-              <datalist id="barrios-de-pamplona">
-                {BARRIOS_DE_PAMPLONA.map((b) => (
-                  <option key={b} value={b} />
-                ))}
-              </datalist>
-              {/*
+                <datalist id="barrios-de-pamplona">
+                  {BARRIOS_DE_PAMPLONA.map((b) => (
+                    <option key={b} value={b} />
+                  ))}
+                </datalist>
+                {/*
                 Va en contorno de marca y no en azul relleno. Abrir los filtros
                 no es la accion que la portada quiere que uno haga, es una
                 herramienta; un boton relleno al lado del buscador se lleva la
                 atencion que le toca al titular.
               */}
-              <button
-                type="button"
-                onClick={() => setFiltrosAbiertos((v) => !v)}
-                className="boton-contorno shrink-0"
-                aria-expanded={filtrosAbiertos}
-              >
-                {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
-                {serviciosActivos.length > 0 && (
-                  <span className="rounded-full bg-terracota-100 px-2 text-sm">
-                    {serviciosActivos.length}
-                  </span>
-                )}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setFiltrosAbiertos((v) => !v)}
+                  className="boton-contorno shrink-0"
+                  aria-expanded={filtrosAbiertos}
+                >
+                  {filtrosAbiertos ? 'Ocultar filtros' : 'Filtros'}
+                  {serviciosActivos.length > 0 && (
+                    <span className="rounded-full bg-terracota-100 px-2 text-sm">
+                      {serviciosActivos.length}
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
 
-          <ul className="mt-8 grid gap-x-8 gap-y-3 text-sm text-piedra-600 sm:grid-cols-3">
-            {/*
+            <ul className="mt-8 grid gap-x-8 gap-y-3 text-sm text-piedra-600 sm:grid-cols-3 lg:grid-cols-1">
+              {/*
               Lo que la plataforma de verdad hace, en las palabras del
               estudiante. Antes decia "el precio que ves es el que pagas", que
               es una promesa que no depende de nosotros: quien cobra es el
               arrendador. Prometer eso y que despues le cobren mas al estudiante
               es peor que no decir nada.
             */}
-            {[
-              'La distancia real hasta la universidad',
-              'Si el precio se sale de lo normal del barrio',
-              'Lo que cuentan los que ya vivieron ahí',
-            ].map((texto) => (
-              <li key={texto} className="flex items-start gap-2">
-                <svg
-                  viewBox="0 0 20 20"
-                  className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M8.2 13.6 4.9 10.3l1.3-1.3 2 2 5.6-5.6 1.3 1.4z" />
-                  <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                </svg>
-                {texto}
-              </li>
-            ))}
-          </ul>
+              {[
+                'La distancia real hasta la universidad',
+                'Si el precio se sale de lo normal del barrio',
+                'Lo que cuentan los que ya vivieron ahí',
+              ].map((texto) => (
+                <li key={texto} className="flex items-start gap-2">
+                  <svg
+                    viewBox="0 0 20 20"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M8.2 13.6 4.9 10.3l1.3-1.3 2 2 5.6-5.6 1.3 1.4z" />
+                    <circle
+                      cx="10"
+                      cy="10"
+                      r="8.4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                    />
+                  </svg>
+                  {texto}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/*
+            La ventana. En computador la mitad derecha de la portada quedaba
+            vacia; en celular no se muestra y ni siquiera se descarga, porque
+            va como fondo y el fondo solo existe desde el ancho lg.
+
+            El arco de arriba es el de las ventanas del centro historico. La
+            foto no es de un arriendo publicado, es ambiente: por eso no lleva
+            pie de foto que diga donde es.
+          */}
+          <div
+            aria-hidden="true"
+            className="relative hidden aspect-[4/5] lg:block lg:bg-[url('/fotos/ventana-abierta.webp')] lg:bg-cover lg:bg-center rounded-t-[999px] rounded-b-3xl shadow-[0_30px_60px_-30px_rgba(100,45,14,0.45)] ring-1 ring-terracota-900/10"
+          />
         </div>
       </section>
 
@@ -417,9 +439,7 @@ export function Buscar() {
             */}
             <div className="tarjeta mb-5 flex flex-wrap items-center justify-between gap-3 px-4 py-3">
               <p className="flex items-baseline gap-2">
-                <span className="precio text-2xl font-extrabold text-piedra-900">
-                  {data.total}
-                </span>
+                <span className="precio text-2xl font-extrabold text-piedra-900">{data.total}</span>
                 <span className="text-sm text-piedra-600">
                   {data.total === 1 ? INMUEBLE_DISPONIBLE : INMUEBLES_DISPONIBLES}
                   {valor(PRECIO_MAX) && HASTA + pesos(Number(valor(PRECIO_MAX)))}

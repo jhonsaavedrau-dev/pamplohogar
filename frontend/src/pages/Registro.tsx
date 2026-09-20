@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useSesion } from '../lib/sesion';
 import { Aviso } from '../components/Estados';
 import { BotonGoogle } from '../components/BotonGoogle';
+import { PantallaConFoto } from '../components/PantallaConFoto';
 
 // El celular ya no se pide aqui. Se pide al publicar, que es cuando de verdad
 // hace falta, y asi la puerta de entrada tiene tres campos en vez de cuatro.
@@ -45,14 +46,16 @@ export function Registro() {
         password: datos.password,
         rol: datos.rol,
       });
-      navegar(usuario.rol === 'ARRENDADOR' ? '/mis-inmuebles' : '/', { replace: true });
+      navegar(usuario.rol === 'ARRENDADOR' ? '/mis-inmuebles' : '/', {
+        replace: true,
+      });
     } catch (e) {
       setErrorServidor(e instanceof Error ? e.message : 'No pudimos crear tu cuenta.');
     }
   });
 
   return (
-    <div className="contenedor-app max-w-md py-10">
+    <PantallaConFoto foto="/fotos/calle-estudiante.webp">
       <h1 className="titular">Crear cuenta</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Es gratis. Elige si vas a buscar vivienda o si vas a publicarla.
@@ -119,7 +122,9 @@ export function Registro() {
             className="campo"
             {...register('email')}
           />
-          {errors.email && <p className="mt-1 text-sm text-terracota-600">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="mt-1 text-sm text-terracota-600">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
@@ -160,6 +165,6 @@ export function Registro() {
           }}
         />
       </form>
-    </div>
+    </PantallaConFoto>
   );
 }

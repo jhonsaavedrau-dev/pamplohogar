@@ -27,6 +27,9 @@ interface PropsVacio {
   titulo: string;
   descripcion: string;
   accion?: ReactNode;
+  /** Foto de ambiente para las pantallas vacias que mas pesan, como la del
+      arrendador que todavia no publica. Las demas se quedan con las tejas. */
+  foto?: string;
 }
 
 /*
@@ -47,7 +50,12 @@ function TejasSuaves() {
     >
       <defs>
         <pattern id="tejas-vacio" width="36" height="18" patternUnits="userSpaceOnUse">
-          <path d="M0 18C0 8 8 0 18 0s18 8 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M0 18C0 8 8 0 18 0s18 8 18 18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
         </pattern>
         <linearGradient id="desvanecer-vacio" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="white" stopOpacity="0.9" />
@@ -62,7 +70,29 @@ function TejasSuaves() {
   );
 }
 
-export function EstadoVacio({ titulo, descripcion, accion }: PropsVacio) {
+export function EstadoVacio({ titulo, descripcion, accion, foto }: PropsVacio) {
+  if (foto) {
+    return (
+      <div className="tarjeta grid overflow-hidden sm:grid-cols-2">
+        <img
+          src={foto}
+          alt=""
+          width={1200}
+          height={675}
+          loading="lazy"
+          className="h-44 w-full object-cover sm:h-full sm:min-h-72"
+        />
+        <div className="flex flex-col items-start justify-center gap-3 px-6 py-8 sm:px-10">
+          <h3 className="text-2xl leading-tight font-semibold tracking-tight text-piedra-900">
+            {titulo}
+          </h3>
+          <p className="max-w-sm text-piedra-600">{descripcion}</p>
+          {accion}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="tarjeta relative overflow-hidden px-6 py-14 text-center">
       <TejasSuaves />

@@ -7,6 +7,7 @@ import { useSesion } from '../lib/sesion';
 import { pedir } from '../lib/api';
 import { Aviso } from '../components/Estados';
 import { BotonGoogle } from '../components/BotonGoogle';
+import { PantallaConFoto } from '../components/PantallaConFoto';
 
 const esquema = z.object({
   email: z.string().trim().min(1, 'Escribe tu correo.').email('Ese correo no parece válido.'),
@@ -162,7 +163,7 @@ export function Entrar() {
   }
 
   return (
-    <div className="contenedor-app max-w-md py-10">
+    <PantallaConFoto foto="/fotos/ventana-escritorio.webp">
       <h1 className="titular">Entrar a PamploHogar</h1>
       <p className="mt-2 text-sm text-piedra-600">
         Inicia sesión para guardar favoritos, contactar arrendadores y publicar inmuebles.
@@ -183,7 +184,9 @@ export function Entrar() {
             placeholder="tucorreo@unipamplona.edu.co"
             {...register('email')}
           />
-          {errors.email && <p className="mt-1 text-sm text-terracota-600">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="mt-1 text-sm text-terracota-600">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
@@ -238,6 +241,6 @@ export function Entrar() {
           }}
         />
       </form>
-    </div>
+    </PantallaConFoto>
   );
 }
